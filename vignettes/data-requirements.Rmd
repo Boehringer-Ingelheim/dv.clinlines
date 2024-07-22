@@ -1,0 +1,57 @@
+---
+title: "Data requirements"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data requirements}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  eval = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Datasets and their variables to be used to display the clinical timelines must fulfill certain demands listed below:
+
+-   Datasets of one study must be provided in a named list in which each list element represents one dataset.
+
+-   Date variables, which will be used to define the event occurrences, must be of type datetime (POSIXct). It is not possible to use dates stored as character strings.
+
+-   Dates must be provided in the format "YYYY-MM-DD HH:MM".
+
+-   All datasets must provide a unique subject identifier variable, which needs to be named equally in each dataset.
+
+-   There must be a subject level dataset with at least variables for
+
+    -   unique subject identifiers,
+    -   treatment start dates,
+    -   treatment end dates (or another variable that serves as substitute for plotting of ongoing events),
+    -   informed consent dates
+    
+To be able to display drug administration events:
+    
+-   There must be a dataset for drug administration / exposure with at least variables for
+
+    -   unique subject identifiers,
+    -   start and end dates of drug administration, 
+    -   dose ranges and dose unit
+
+To be able to define certain local adverse event filters, some additional requirements need to be met:
+
+-   There must be an adverse event dataset with at least variables for
+
+    -   unique subject identifiers, as for all provided datasets,
+    -   start and end dates of the adverse events,
+    -   system organ classes,
+    -   preferred terms,
+    -   serious adverse event flags,
+    -   and drug related adverse event flags.
+
+-   Both, the serious and drug related adverse events columns must contain the entries "Y" for "Yes" and "N" for "No", so that the respective filters can work properly. In the future, this might change for more convenience.
+
+
+Note that, when using the Module Manager, it is possible to define the module list for more than one dataset list. In this case, all datasets need to follow the same structure and must be named accordingly.

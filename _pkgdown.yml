@@ -1,0 +1,47 @@
+template:
+  bootstrap: 5
+
+navbar:
+  type: inverse
+  components:
+   articles:
+    text: Articles
+    menu:
+    - text: "Basic usage"
+    - text: "Include dv.clinlines in an app"
+      href: articles/clinlines.html
+    - text: "Additional features"
+    - text: "Add custom adverse event filters"
+      href: articles/ae-filter.html
+    - text: "Enable communication to DaVinci modules"
+      href: articles/communication.html
+    - text: "Preprocessing"
+    - text: "Data Requirements"
+      href: articles/data-requirements.html
+    - text: "Quality Control"
+    - text: "QC Report"
+      href: articles/qc.html
+
+
+home:
+  title: dv.clinlines
+  links:
+  - text: Browse source code
+    href: https://github.com/Boehringer-Ingelheim/dv.clinlines
+
+reference:
+- title: "Modules and utils"
+- contents:
+  - mod_clinical_timelines
+  - mock_clinical_timelines_app
+  - set_basic_info
+  - set_event
+  - set_drug_admin
+  - default_drug_admin
+  - default_basic_info
+  - default_mapping
+- title: "For developers"
+- contents:
+  - mod_clinical_timelines_UI
+  - mod_clinical_timelines_server
+

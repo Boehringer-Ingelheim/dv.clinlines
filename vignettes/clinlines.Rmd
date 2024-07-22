@@ -1,0 +1,322 @@
+---
+title: "{dv.clinlines} and {dv.manager}"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dv.clinlines and dv.manager}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  eval = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+DaVinci's Clinical Timelines module is intended to be used as part of an application created by means of DaVinci's {dv.manager} package.\
+If not already done, install {dv.manager} following the instructions in its package documentation.
+
+To define an app using the Module Manager, you need to
+
+-   load study data,
+-   make sure the provided data comply with the requirements of {dv.clinlines}, 
+-   define a list of modules,
+-   and launch the app via `run_app()` from {dv.manager}.
+
+The steps are described more detailed in the following sections, accompanied by a concrete example based on dummy data from the {pharmaverseadam} package.
+
+## Loading data
+
+Before anything else, you need to determine which events you would like to display as Clinical Timelines, and which data domains contain the variables needed to plot the events.
+
+In our example app, we would like to display occurrences of adverse events, and the respective treatment start and end dates for each subject, as well as drug administration events. In order to do so, we need to identify the data domains that hold variables for the determined events. Besides, the module requires a mandatory subject level dataset. 
+For demonstration purposes, we will use dummy data from the {pharmaverseadam} R package:
+
+- `adam_adsl` as subject level dataset and for the optional events "Treatment Start" and "Treatment End"
+- `adam_adae` for the optional event "Adverse Events"
+- `sdtm_ex` for the optional "Drug Administration" event
+
+
+Make sure to provide data in a named list. To load clinical data, you can use DaVinci's Data Loader package ({dv.loader}).
+
+For our example, we just put the datasets mentioned above into a named list:
+```{r load}
+data_list <- list(
+  adsl = safetyData::adam_adsl,
+  adae = safetyData::adam_adae,
+  ex = safetyData::sdtm_ex
+)
+```
+
+
+
+## Preprocess data
+
+According to the data requirements (see `vignette("data-requirements")`), the loaded datasets need some preprocessing before they are ready to be used with {dv.clinlines}. The adae and adcm data of data_list contain columns with datetimes which are not actually of type datetime. The following lines of code convert those columns from type character to POSIXct by means of the `ymd_hm()` function ofthe {lubridate} R package, and the `mutate()` function of the {dplyr} R package.
+
+Note that we drop adverse events that have missing start dates for simplification purposes. 
+
+```{r preprocess}
+data_list$adsl <- data_list$adsl %>%
+  dplyr::mutate(
+    TRTSDT = lubridate::ymd_hm(TRTSDT, truncated = 2),
+    TRTEDT = lubridate::ymd_hm(TRTEDT, truncated = 2),
+    RFICDT = lubridate::ymd_hm(RFSTDTC, truncated = 2)
+  )
+
+data_list$adae <- data_list$adae %>%
+  dplyr::filter(!is.na(ASTDT)) %>%
+  dplyr::mutate(
+    AESTDTC = lubridate::ymd_hm(ASTDT, truncated = 2),
+    AEENDTC = lubridate::ymd_hm(AENDT, truncated = 2)
+  ) 
+
+data_list$ex <- data_list$ex %>%
+  dplyr::mutate(
+    EXSTDTC = lubridate::ymd_hm(EXSTDTC, truncated = 2),
+    EXENDTC = lubridate::ymd_hm(EXENDTC, truncated = 2),
+  ) 
+```
+
+
+
+## Defining a module list
+
+After the desired study data is loaded and ready to be displayed in the Clinical Timelines module of an application, a module list needs to be defined for the Module Manage. {dv.clinlines} provides a wrapper function that defines a module with the given specifications. As the Clinical Timelines are highly customizable, `mod_clinical_timelines()` expects extensive information about the study data to be used. The parameters of the wrapper function are explained in detail below for better understanding. As it might feel overwhelming in the beginning, {dv.clinlines} offers helper functions to simplify the set-up a bit. These are described afterwards - let's introduce the wrapper first.
+
+### Introduction of `mod_clinical_timelines()`
+
+Mandatory parameters are: <!-- maybe include example code for each parameter-->
+
+-   `module_id`: Each module of the module list needs a unique identifier, provided as string.
+
+-   `basic_info`: Assigns the name of a subject level dataset and variable names of treatment start and end, and informed consent variables. It must contain the following elements:
+
+    -   `data`: Character name of the subject level analysis dataset (e.g. "adsl", "dm") as it is called in the data list that is provided to the modulemanager.
+    -   `trt_start`:  Character name of the variable that contains treatment start dates which must be present in the dataset mentioned in the `data` element.
+    -   `trt_end`: Character name of the variable that contains treatment end dates which must be present in the dataset mentioned in the `data` element.
+    -   `icf_date`: Character name of the variable that contains informed consent dates which must be present in the dataset mentioned in the `data` element.
+    
+-   `mapping`: A list of lists. It serves as instruction on which event to take from which data domain / dataset, and further from which variables to take the start and end values, etc., that will be plotted as clinical timelines. The lists needs to follow a strict hierarchy. It must contain one entry per dataset/domain that serves as basis for the events. These entries need to be named according to the names of the data list that is provided to the Module Manager. The entries by oneself must again be lists. 
+These second level lists contain the variable names that are needed to plot the events, gathered in yet another lists, which are named according to the labels that shall be assigned to each event, and that contain the following elements each.  It is possible to define multiple events for one dataset, and multiple datasets in the mapping list.
+
+    -   `start_dt_var`: Character name of the variable that contains either the event start dates (for interval events) or merely timepoints (e.g. milestones). The variable name must be present in the dataset under which the event is listed.
+
+    -   `end_dt_var`: Character name of the variable that contains the event end dates. Needs to be provided for interval events, but set to NULL for timepoints. The variable name must be present in the dataset under which the event is listed.
+
+    -   `start_dy_var`: Similar to start_dt_var, but refers to the study relative days (instead of dates). The variable name must be present in the dataset under which the event is listed. Can be set to NULL to let the module calculate the study days according to SDTM standard rules.
+
+    -   `end_dy_var`: Similar to end_dt_var, but refers to the study relative days (instead of dates). The variable name must be present in the dataset under which the event is listed. Can be set to NULL to let the module calculate the study days according to SDTM standard rules.
+
+    -   `detail_var`: Character name of the variable that contains further descriptive information that shall be displayed for the event. Can be set to NULL for no further information.
+    
+- `drug_admin`: A list of named character strings that describes which variables to use to display drug administration events. If not NULL, it must contain the following elements:
+    - `name`: Character name of the dataset that holds drug administration data (e.g. ex domain), as it is called in the datalist that is provided to the modulemanager.
+
+    - `start_var`: Character name of the variable that contains the start dates (e.g. exposure start dates) which must be present in the dataset mentioned in the name element.
+
+    - `end_var`: Character name of the variable that contains the end dates (e.g. exposure end dates) which must be present in the dataset mentioned in the name element.
+
+    - `detail_var`: Character name of the variable that contains the treatment information. Must exist in the dataset mentioned in the name element.
+
+    - `label`: Free-text character label for the drug administration event.
+
+    - `exp_dose`: Character name of the variable that contains the dosis level information. Must exist in the dataset mentioned in the name element.
+
+    - `exp_dose_unit`: Character name of the variable that contains the dosis unit. Must exist in the dataset mentioned in the name element.
+
+
+Optional parameters of `mod_clinical_timelines()` are:
+
+-   `subjid_var`: Defaults to "USUBJID". Specifies the name of the unique subject identifier variable for all datasets. Must be a single character value.
+
+- `ms`: Single numeric value. Defaults to 1000, which means that plotting in the main view will be performed with 1000 milliseconds delay. This is useful to improve performance, especially when the dataset is large and multiple adverse event filters are activated.
+
+-   `filter`: Defaults to `NULL`, which means no local filters for adverse event data will be offered within the module. Filters can be activated by providing their names through a list (see `vignette("ae-filter")`).
+
+- `receiver_id`: Character string defining the ID of the module to which to send a subject ID. The corresponding module must exist in the module list. The default is NULL which disables communication. See `vignette("communication")` for further information. 
+
+An illustrative definition of a module list (containing only a Clinical Timelines module with only mandatory parameters) is shown below:
+
+```{r modulelist}
+module_list <- list(
+  "Clinical Timelines" = mod_clinical_timelines(
+    module_id = "mod1",
+    basic_info = list(
+      data = "adsl",
+      trt_start = "TRTSDT",
+      trt_end = "TRTEDT",
+      icf_date = "RFICDT"
+    ),
+    mapping = list(
+      adsl = list(
+        "Treatment Start" = list(
+          start_dt_var = "TRTSDT",
+          end_dt_var = NULL,
+          start_dy_var = NULL,
+          end_dy_var = NULL,
+          detail_var = NULL
+        ),
+      ),
+      adae = list(
+        "Adverse Events" = list(
+          start_dt_var = "AESTDTC",
+          end_dt_var = "AEENDTC",
+          start_dy_var = NULL,
+          end_dy_var = NULL,
+          detail_var = "AEDECOD"
+        )
+      )
+    ),
+    drug_admin = list(
+      name = "exp",
+      start_var = "EXSTDTC",
+      end_var = "EXENDTC",
+      detail_var = "EXTRT",
+      label = "Drug Administration",
+      exp_dose = "EXDOSE",
+      exp_dose_unit = "EXDOSU"
+    )
+  )
+)
+```
+
+The example above concludes in a module that displays treatment start dates as timepoint events (bullets on the timeline), and adverse events, as well as drug administration periods as time intervals (horizontal bars). For the sake of simplicity, no optional parameters were set here.
+
+### Helper functions
+
+The configuration of a Clinical Timelines module is error-prone. Therefore, {dv.clinlines} offers several helper functions to generate the lists for `basic_info`, `mapping`, and `drug_admin`. These functions take the variable names as input parameters and return a list that can directly be used for the wrapper parameters. The intention is to reduce errors produced by typos or missing/wrongly named list elements. See their help pages for more detailed information on how they work.  
+For a demonstration, we defined the same module as above again. But this time, we use the helper functions instead typing the lists by our own:
+```{r helper}
+module_list <- list(
+  "Clinical Timelines" = mod_clinical_timelines(
+    module_id = "mod1",
+    basic_info = set_basic_info(
+      data = "adsl",
+      trt_start = "TRTSDT",
+      trt_end = "TRTEDT",
+      icf_date = "RFICDT"
+    ),
+    mapping = list(
+      adsl = list(
+        "Treatment Start" = set_event(start_dt_var = "TRTSDT")
+      ),
+      adae = list(
+        "Adverse Events" = set_event(
+          start_dt_var = "AESTDTC",
+          end_dt_var = "AEENDTC",
+          detail_var = "AEDECOD"
+        )
+      )
+    ),
+    drug_admin = set_drug_admin(
+      name = "ex",
+      start_var = "EXSTDTC",
+      end_var = "EXENDTC",
+      detail_var = "EXTRT",
+      label = "Drug Administration",
+      exp_dose = "EXDOSE",
+      exp_dose_unit = "EXDOSU"
+    )
+  )
+)
+```
+
+
+More details about specifying local adverse event filters can be found in `vignette("ae-filter")`.
+The communication feature to other DaVinci modules is described in `vignette("communication")`. 
+
+For further information on how to define module lists with multiple modules, see the articles of creating apps in the documentation of {dv.manager}.
+
+## Launching the app
+
+Use `run_app()` from the {dv.manager} package to launch the application with the specified modules. Note that the loaded data list from above had to be wrapped itself in a named list. 
+
+```{r launch}
+dv.manager::run_app(
+  data = list("my_data" = data_list),
+  module_list = module_list,
+  filter_data = "adsl"
+)
+```
+
+## Full example
+
+For convenience, the code chunks scattered across this page are gathered together below:
+
+```{r example}
+library(magrittr)
+library(dv.clinlines)
+
+# Load data
+data_list <- list(
+  adsl = safetyData::adam_adsl,
+  adae = safetyData::adam_adae,
+  ex = safetyData::sdtm_ex
+)
+
+# Preprocess data
+data_list$adsl <- data_list$adsl %>%
+  dplyr::mutate(
+    TRTSDT = lubridate::ymd_hm(TRTSDT, truncated = 2),
+    TRTEDT = lubridate::ymd_hm(TRTEDT, truncated = 2),
+    RFICDT = lubridate::ymd_hm(RFSTDTC, truncated = 2)
+  )
+
+data_list$adae <- data_list$adae %>%
+  dplyr::filter(!is.na(ASTDT)) %>%
+  dplyr::mutate(
+    AESTDTC = lubridate::ymd_hm(ASTDT, truncated = 2),
+    AEENDTC = lubridate::ymd_hm(AENDT, truncated = 2)
+  ) 
+
+data_list$ex <- data_list$ex %>%
+  dplyr::mutate(
+    EXSTDTC = lubridate::ymd_hm(EXSTDTC, truncated = 2),
+    EXENDTC = lubridate::ymd_hm(EXENDTC, truncated = 2),
+  ) 
+
+# Configurate module 
+module_list <- list(
+  "Clinical Timelines" = mod_clinical_timelines(
+    module_id = "mod1",
+    basic_info = set_basic_info(
+      data = "adsl",
+      trt_start = "TRTSDT",
+      trt_end = "TRTEDT",
+      icf_date = "RFICDT"
+    ),
+    mapping = list(
+      adsl = list(
+        "Treatment Start" = set_event(start_dt_var = "TRTSDT")
+      ),
+      adae = list(
+        "Adverse Events" = set_event(
+          start_dt_var = "AESTDTC",
+          end_dt_var = "AEENDTC",
+          detail_var = "AEDECOD"
+        )
+      )
+    ),
+    drug_admin = set_drug_admin(
+      name = "ex",
+      start_var = "EXSTDTC",
+      end_var = "EXENDTC",
+      detail_var = "EXTRT",
+      label = "Drug Administration",
+      exp_dose = "EXDOSE",
+      exp_dose_unit = "EXDOSU"
+    )
+  )
+)
+
+# Launch app
+dv.manager::run_app(
+  data = list("my_data" = data_list),
+  module_list = module_list,
+  filter_data = "adsl"
+)
+```
