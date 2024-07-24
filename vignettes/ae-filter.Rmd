@@ -57,7 +57,7 @@ filter <- list(
 For multiple filters, filtering will be performed using AND condition.
 <br>
 <br>
-The code below shows a module list containing a {clinlines} module with only three local adverse event filters:
+The code below shows a module list containing a Clinical Timelines module with only three local adverse event filters:
 
 ```{r ae_filter}
 module_list <- list(
@@ -111,8 +111,8 @@ module_list <- list(
         label = "Adverse Events",
         soc = "AESOC",
         serious_AE = "AESER",
-        # pref_term = "AEDECOD",
         drug_rel_AE = "AEREL"
+        # Note: The pref_term filter is not specified in this example.
       )
     )
   )
