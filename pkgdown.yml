@@ -1,0 +1,11 @@
+pandoc: 2.9.2.1
+pkgdown: 2.0.7
+pkgdown_sha: ~
+articles:
+  ae-filter: ae-filter.html
+  clinlines: clinlines.html
+  communication: communication.html
+  data-requirements: data-requirements.html
+  qc: qc.html
+last_built: 2024-07-24T14:18Z
+
