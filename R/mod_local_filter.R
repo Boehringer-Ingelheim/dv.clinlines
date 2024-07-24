@@ -41,11 +41,9 @@ mod_local_filter_UI <- function(module_id, filter_list = NULL) { #nolint
 #' @keywords internal
 #'
 mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
-
   shiny::moduleServer(
     module_id,
     function(input, output, session) {
-
       ns <- session$ns
 
       # No need for reactivity as this serves merely as a storage
@@ -78,7 +76,6 @@ mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
       # Set initial choices
       # Explicitely reset filters at dataset change
       shiny::observeEvent(changed(), {
-
         # Use bookmarking values if available
         if (!is.null(cache$sae_choice)) {
           selected_sae <- cache$sae_choice
@@ -107,7 +104,6 @@ mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
         }
 
         if (status_filters[["pref_term"]]) {
-
           shiny::updateSelectizeInput(
             inputId = "pref_term",
             choices = pt_choices()
@@ -116,26 +112,26 @@ mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
       })
 
 
-      shiny::observeEvent(input$soc, {
+      shiny::observeEvent(input$soc,
+        {
+          if (status_filters[["pref_term"]]) {
+            # In case we restore from bookmarking we need to update both, choices and
+            # selected - otherwise selected pt filters will be overwritten and set to NULL
+            # after soc filter is restored
 
-        if (status_filters[["pref_term"]]) {
+            if (cache$restored) {
+              cache$restored <<- FALSE # reset
+              shiny::updateSelectizeInput(inputId = "pref_term", choices = pt_choices(), selected = cache$pt_input)
+            } else {
+              shiny::updateSelectizeInput(inputId = "pref_term", choices = pt_choices())
+            }
 
-          # In case we restore from bookmarking we need to update both, choices and
-          # selected - otherwise selected pt filters will be overwritten and set to NULL
-          # after soc filter is restored
-
-          if (cache$restored) {
-            cache$restored <<- FALSE # reset
-            shiny::updateSelectizeInput(inputId = "pref_term", choices = pt_choices(), selected = cache$pt_input)
-          } else {
-            shiny::updateSelectizeInput(inputId = "pref_term", choices = pt_choices())
+            # Store choices for bookmarking purposes
+            cache$pt_choices <<- pt_choices()
           }
-
-          # Store choices for bookmarking purposes
-          cache$pt_choices <<- pt_choices()
-        }
-
-      }, ignoreNULL = FALSE)
+        },
+        ignoreNULL = FALSE
+      )
 
 
       # Choices need to be saved explicitely
@@ -173,7 +169,6 @@ mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
 
 
       filtered_data <- shiny::reactive({
-
         if (status_filters[["serious_AE"]]) {
           shiny::req(input$serious_AE)
         }

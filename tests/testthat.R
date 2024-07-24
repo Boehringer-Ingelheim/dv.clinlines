@@ -1,4 +1,3 @@
-
 pkg_name <- "dv.clinlines"
 
 library(testthat)

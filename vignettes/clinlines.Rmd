@@ -72,13 +72,13 @@ data_list$adae <- data_list$adae %>%
   dplyr::mutate(
     AESTDTC = lubridate::ymd_hm(ASTDT, truncated = 2),
     AEENDTC = lubridate::ymd_hm(AENDT, truncated = 2)
-  ) 
+  )
 
 data_list$ex <- data_list$ex %>%
   dplyr::mutate(
     EXSTDTC = lubridate::ymd_hm(EXSTDTC, truncated = 2),
     EXENDTC = lubridate::ymd_hm(EXENDTC, truncated = 2),
-  ) 
+  )
 ```
 
 
@@ -271,15 +271,15 @@ data_list$adae <- data_list$adae %>%
   dplyr::mutate(
     AESTDTC = lubridate::ymd_hm(ASTDT, truncated = 2),
     AEENDTC = lubridate::ymd_hm(AENDT, truncated = 2)
-  ) 
+  )
 
 data_list$ex <- data_list$ex %>%
   dplyr::mutate(
     EXSTDTC = lubridate::ymd_hm(EXSTDTC, truncated = 2),
     EXENDTC = lubridate::ymd_hm(EXENDTC, truncated = 2),
-  ) 
+  )
 
-# Configurate module 
+# Configurate module
 module_list <- list(
   "Clinical Timelines" = mod_clinical_timelines(
     module_id = "mod1",

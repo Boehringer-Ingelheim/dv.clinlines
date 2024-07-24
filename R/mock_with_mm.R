@@ -7,8 +7,6 @@
 #' @keywords internal
 #'
 mock_with_mm_app <- function() {
-
-
   # Specifiy dataset list for modulemanager
   dataset_list <- list(
     dummyData1 = prep_dummy_data(20),

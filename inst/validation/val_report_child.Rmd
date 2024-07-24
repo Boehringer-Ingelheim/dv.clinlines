@@ -78,7 +78,7 @@ data_frame_by_row <- function(colnames, data) {
 trac_matrix_col <- c("Spec ID" = "spec_id_paste", "Spec" = "spec_paste", "Test Desc" = "desc", "File" = "file")
 
 # Check that validation passes and set title ----
-VALIDATION_PASSED <- n_fail_dec == 0 && n_uncov == 0 && n_undec == 0 && n_uncov == 0 # nolint
+VALIDATION_PASSED <- n_fail_dec == 0 && n_uncov == 0 && n_undec == 0 && n_uncov == 0 #nolint
 
 result_symbol <- if (VALIDATION_PASSED) "\U02705" else "\U274C"
 title <- paste(result_symbol, params[["package"]], params[["version"]])

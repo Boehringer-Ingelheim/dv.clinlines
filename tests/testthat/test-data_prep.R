@@ -59,7 +59,7 @@ test_that(
       )
     )
     expected <- c(
-      "subject_id", "set_id", "group",  "set", "start_dt_var", "end_dt_var", "detail_var",
+      "subject_id", "set_id", "group", "set", "start_dt_var", "end_dt_var", "detail_var",
       "TRTSDT", "TRTEDT", "arrow_right", "earliest", "start_dy_var", "end_dy_var",
       "resetted", "start_exp", "end_exp", "start_exp_day", "end_exp_day",
       "exp_dose", "start_missing", "end_missing", "arrow_left", "date_min", "day_min"
@@ -85,7 +85,6 @@ test_that(
     # test that drug_admin placeholder is available
     prep <- prep_data(data_list, drug_admin = NULL)
     expect_false("exp" %in% names(prep))
-
   }
 )
 
@@ -193,7 +192,7 @@ test_that("set_events_intern() adds flags for arrows and missing values", {
 # Tests for combine_data() ----
 test_that("combine_data() names output columns correctly", {
   expected <- c(
-    "subject_id", "group",  "start_dt_var", "end_dt_var", "detail_var",
+    "subject_id", "group", "start_dt_var", "end_dt_var", "detail_var",
     "TRTSDT", "TRTEDT", "earliest", "set", "set_id", "start_exp", "end_exp",
     "exp_dose", "arrow_right", "start_missing", "end_missing", "arrow_left"
   )
@@ -367,21 +366,15 @@ test_that(
 df <- data.frame(id = 1, char_col = "a", date_col = Sys.Date())
 
 test_that("check_*() throws an error when columns names do not exist" %>%
-    vdoc[["add_spec"]](specs$app_creation_specs$errors_def),
-  {
-    expect_error(check_names(df, var_names = c("char_col", "not_existing"), subjid_var = "id"))
-  }
-)
+  vdoc[["add_spec"]](specs$app_creation_specs$errors_def), {
+  expect_error(check_names(df, var_names = c("char_col", "not_existing"), subjid_var = "id"))
+})
 test_that("check_*() throws an error when date columns are not of type date" %>%
-    vdoc[["add_spec"]](specs$app_creation_specs$errors_data),
-  {
-    expect_error(check_date_type(df, var_names = c("char_col", "date_col")))
-  }
-)
+  vdoc[["add_spec"]](specs$app_creation_specs$errors_data), {
+  expect_error(check_date_type(df, var_names = c("char_col", "date_col")))
+})
 
 test_that("check_*() produces a warning when it can’t find the receiver module" %>%
-    vdoc[["add_spec"]](c(specs$app_creation_specs$errors_def, specs$integration_specs$jumping)),
-  {
-    expect_warning(check_receiver("mod3", c("mod1", "mod2")))
-  }
-)
+  vdoc[["add_spec"]](c(specs$app_creation_specs$errors_def, specs$integration_specs$jumping)), {
+  expect_warning(check_receiver("mod3", c("mod1", "mod2")))
+})

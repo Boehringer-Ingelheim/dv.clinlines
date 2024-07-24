@@ -15,7 +15,6 @@ bmk_ui <- function(id) {
 }
 
 bmk_server <- function(input, output, session) {
-
   # For updating bookmark url automatically
   shiny::observe({
     shiny::reactiveValuesToList(input)

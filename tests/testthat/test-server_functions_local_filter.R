@@ -104,8 +104,8 @@ test_that(
 
     df_all_filters <- filter_data(df_w_ae, status, input, filter)
     df_filter_man <- df_w_ae[which(
-      df_w_ae$AESER == "Y" & df_w_ae$AESOC %in% input$soc & df_w_ae$AEDECOD %in% input$pref_term
-      & df_w_ae$AEREL == input$drug_rel_AE | df_w_ae$set != "adae"
+      df_w_ae$AESER == "Y" & df_w_ae$AESOC %in% input$soc & df_w_ae$AEDECOD %in% input$pref_term &
+        df_w_ae$AEREL == input$drug_rel_AE | df_w_ae$set != "adae"
     ), ]
 
     expect_equal(nrow(df_all_filters), nrow(df_filter_man))

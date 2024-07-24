@@ -1,7 +1,7 @@
 # Use a list to declare the specs
 specs_list <- list
 
-# nolint start line_length_linter
+#nolint start line_length_linter
 output_specs <- specs_list(
   "general_display" = "The module displays a plot and a sidebar."
 )
@@ -41,7 +41,7 @@ app_creation_specs <- specs_list(
   "errors_data" = "In case the data is not available in the necessary format, the app creator should be informed accordingly. "
 
 )
-# nolint end line_length_linter
+#nolint end line_length_linter
 
 specs <- specs_list(
   output_specs = output_specs,

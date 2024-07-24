@@ -56,7 +56,7 @@ if (FALSE) {
 }
 
 # Validation code
-# nolint start cyclocomp_linter
+#nolint start cyclocomp_linter
 local({
   specs <- source(
     system.file("validation", "specs.R", package = package_name, mustWork = TRUE),
@@ -152,4 +152,4 @@ local({
   )
 })
 
-# nolint end cyclocomp_linter
+#nolint end cyclocomp_linter

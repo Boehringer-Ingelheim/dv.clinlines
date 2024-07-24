@@ -1,4 +1,4 @@
-CL <- pack_of_constants( # nolint
+CL <- pack_of_constants( #nolint
   ERR_MSG = paste(
     "An error occurred, most likely due to the plot being too large.",
     "Please try reducing the number of subjects by adjusting the filter settings.",
@@ -49,7 +49,6 @@ mod_main_view_UI <- function(module_id, x_param = "day", boxheight_val = 60) { #
           )
         )
       ),
-
       shiny::h4("Adjust Plot"),
       shiny::hr(),
 
@@ -76,7 +75,6 @@ mod_main_view_UI <- function(module_id, x_param = "day", boxheight_val = 60) { #
         ),
         ns = ns
       ),
-
       shiny::conditionalPanel(
         condition = "input.x_scale == 'day'",
         shinyWidgets::numericRangeInput(
@@ -102,7 +100,6 @@ mod_main_view_UI <- function(module_id, x_param = "day", boxheight_val = 60) { #
       shiny::sliderInput(ns("height"), "Box Height [Px]",
         min = 30, max = 150, value = boxheight_val, step = 10
       ),
-
       shiny::br(),
       shiny::h4("Filter Events"),
       shiny::hr(),
@@ -128,11 +125,9 @@ mod_main_view_UI <- function(module_id, x_param = "day", boxheight_val = 60) { #
           "#", ns("main_plot"), ".shiny-output-error:not(.shiny-output-error-validation) {
              visibility: hidden
           }\n",
-
           "#", ns("main_plot_div"), ":has(.shiny-output-error)::after {
             content: '", CL$ERR_MSG, "';
           }",
-
           "#", ns("main_plot_div"), ":has(.shiny-output-error.shiny-output-error-validation)::after {
             content: '';
           }
@@ -189,10 +184,8 @@ mod_main_view_server <- function(module_id, initial_data, changed,
       cache <- list(date_day_range = NULL)
 
       shiny::observeEvent(changed(), {
-
         # In case the date/day ranges are not already stored in the cache
         if (is.null(cache$date_day_range)) {
-
           # Use earliest day as lower x-axis limit if not specified explicitly
           if (is.null(start_day)) {
             start_day <- min(initial_data()$day_min)
@@ -230,11 +223,10 @@ mod_main_view_server <- function(module_id, initial_data, changed,
 
       # Restore event groups after bookmarking
       shiny::onRestored(function(state) {
-
         event_choices <- names(colors_groups())
         event_selected <- if (is.null(state$input$filter_event)) {
           event_choices
-        } else{
+        } else {
           state$input$filter_event
         }
 
@@ -244,11 +236,13 @@ mod_main_view_server <- function(module_id, initial_data, changed,
       shiny::observe({
         # Exclude inputs not needed for bookmarking
         shiny::setBookmarkExclude({
-          c("plot_click",
+          c(
+            "plot_click",
             "plot_hover",
             "screen_height",
             # Get shinyjs inputs
-            names(input)[startsWith(names(input), "shinyjs")])
+            names(input)[startsWith(names(input), "shinyjs")]
+          )
         })
       })
 
@@ -277,7 +271,6 @@ mod_main_view_server <- function(module_id, initial_data, changed,
       })
 
       plot_obj <- shiny::reactive({
-
         shiny::req(
           length(time_range()) == 2, # wait until range is set completely
           time_range() != c("1800-01-01", "1900-01-01"), # wait until default was set
@@ -295,7 +288,6 @@ mod_main_view_server <- function(module_id, initial_data, changed,
 
         # Return both to avoid double rendering on input$height change
         list(plot = plot, height = input$height, filter_event = input$filter_event, time_range = time_range())
-
       })
 
       plot_obj_d <- shiny::debounce(plot_obj, ms)
@@ -303,7 +295,6 @@ mod_main_view_server <- function(module_id, initial_data, changed,
       # Create plot on the main screen
       output$main_plot <- shiny::renderPlot(
         expr = {
-
           if (length(plot_obj_d()$plot) == 1) {
             shiny::validate(shiny::need(plot_obj_d()$plot != "No_start_data", CL$VAL1))
           } else {
@@ -313,15 +304,12 @@ mod_main_view_server <- function(module_id, initial_data, changed,
           }
 
           plot_obj_d()$plot
-
         },
         height = function() {
-
           # Use height from plot_obj_d to avoid double rendering and add some space
           # for the legend (107 pt offset in general + 18 pt per legend line)
           n <- ifelse(is.character(plot_obj_d()$plot), 10, length(unique(plot_obj_d()$plot$data$subject_id)))
           plot_obj_d()$height * n + 107 + 18 * length(colors_groups())
-
         }
       )
 
@@ -351,7 +339,6 @@ mod_main_view_server <- function(module_id, initial_data, changed,
 
       # Create hover information for the main plot
       output$hover_info <- shiny::renderUI({
-
         shiny::wellPanel(
           style = tooltip()$style,
           shiny::p(
@@ -371,7 +358,6 @@ mod_main_view_server <- function(module_id, initial_data, changed,
 
       # Get unique subject identifier either from click
       subject_id <- shiny::reactive({
-
         shiny::req(input$plot_click, clicked())
 
         # Get y position of the click & find the matching subject identifier

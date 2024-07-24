@@ -19,7 +19,6 @@ prep_data <- function(data_list,
                       drug_admin = default_drug_admin(),
                       subjid_var = "USUBJID",
                       filter = NULL) {
-
   if (is.null(drug_admin)) {
     empty_drug_admin <- data.frame(
       subjects = character(),
@@ -124,11 +123,11 @@ prep_data <- function(data_list,
   date_vars <- date_vars[date_vars %in% names(initial_data)]
   day_vars <- c("start_dy_var", "end_dy_var", "start_exp_day", "end_exp_day")
   day_vars <- day_vars[day_vars %in% names(initial_data)]
-  date_min <-  lapply(initial_data[date_vars], function(x) {
+  date_min <- lapply(initial_data[date_vars], function(x) {
     if (all(is.na(x))) NA else min(x, na.rm = TRUE)
   })
   initial_data$date_min <- do.call(min, date_min[!is.na(date_min)])
-  day_min <-  lapply(initial_data[day_vars], function(x) {
+  day_min <- lapply(initial_data[day_vars], function(x) {
     if (all(is.na(x))) NA else min(x, na.rm = TRUE)
   })
   initial_data$day_min <- do.call(min, day_min[!is.na(day_min)])
@@ -145,7 +144,6 @@ prep_data <- function(data_list,
 #' @return A list of the same datasets but with an additional column set_id that serves
 #'   as row ID's.
 add_ids <- function(data_list) {
-
   data_list <- names(data_list) %>%
     purrr::set_names() %>%
     purrr::map(function(x) {
@@ -177,7 +175,6 @@ add_ids <- function(data_list) {
 #' }
 #' @keywords internal
 set_basics <- function(data_list, basic_info = default_basic_info(), subjid_var) {
-
   # Extract subject level dataset from data_list
   data <- data_list[[basic_info$data]]
 
@@ -225,7 +222,6 @@ set_basics <- function(data_list, basic_info = default_basic_info(), subjid_var)
 #'
 #' @keywords internal
 set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var) {
-
   # Mapping contains one or multiple event definitions per dataset
   per_set <- names(mapping) %>%
     purrr::map(function(set) { # Per dataset
@@ -251,8 +247,6 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
                 # Arrow flags to indicate open intervals (basic setup which is enhanced in the later processing)
                 arrow_left = .data$start_missing,
                 arrow_right = .data$end_missing
-
-
               )
           } else {
             sub_df <- sub_df %>%
@@ -328,7 +322,6 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
 #' @keywords internal
 #'
 set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_var) {
-
   col_list <- mapping[!names(mapping) %in% c("name")]
 
   cols <- c(col_list$start_var, col_list$end_var, col_list$detail_var)
@@ -340,8 +333,8 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
       exp_dose = dplyr::case_when(
         is.na(dplyr::lag(get(col_list$exp_dose))) ~ "start/equal",
         dplyr::lag(get(col_list$exp_dose)) == get(col_list$exp_dose) ~ "start/equal",
-        dplyr::lag(get(col_list$exp_dose)) < get(col_list$exp_dose)  ~ "increase",
-        dplyr::lag(get(col_list$exp_dose)) > get(col_list$exp_dose)  ~ "decrease"
+        dplyr::lag(get(col_list$exp_dose)) < get(col_list$exp_dose) ~ "increase",
+        dplyr::lag(get(col_list$exp_dose)) > get(col_list$exp_dose) ~ "decrease"
       )
     ) %>%
     dplyr::ungroup()
@@ -411,7 +404,6 @@ combine_data <- function(df_list,
                          trtend,
                          icf_date,
                          subjid_var) {
-
   # Set informed consent date as earliest event
   basic_data <- basic_info_df %>%
     dplyr::select(
@@ -452,7 +444,6 @@ combine_data <- function(df_list,
 #' @keywords internal
 
 complete_events <- function(combined_data, trt_start, trt_end) {
-
   # Check if columns exist & add them if not, 'cause they're needed below
   combined_data$end_dt_var <- if ("end_dt_var" %in% colnames(combined_data)) {
     combined_data$end_dt_var
@@ -468,7 +459,7 @@ complete_events <- function(combined_data, trt_start, trt_end) {
 
   combined_data$end_dy_var <- if ("end_dy_var" %in% colnames(combined_data)) {
     combined_data$end_dy_var
-  }else {
+  } else {
     NA_real_
   }
 
@@ -585,7 +576,6 @@ complete_events <- function(combined_data, trt_start, trt_end) {
 #' @keywords internal
 #'
 set_filter_dataset <- function(filter, data_list, mapping, subjid_var) {
-
   # Check for inconsistencies on modul definition side
   if (length(filter$ae_filter) < 3) stop("No ae_filter defined for Clinical Timelines!")
   if (!filter$ae_filter$data_name %in% names(data_list)) {
@@ -720,7 +710,7 @@ check_receiver <- function(receiver_id, module_ids) {
       message = c(
         "Clinical Timelines: You tried to point to a receiver module
               that does not exist in your module list.",
-        x = paste0("You have set '",  receiver_id, "' as receiver_id."),
+        x = paste0("You have set '", receiver_id, "' as receiver_id."),
         i = paste0(
           "Your module list contains ",
           paste(module_ids, collapse = ", "),

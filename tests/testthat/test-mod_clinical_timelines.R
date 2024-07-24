@@ -43,80 +43,76 @@ plot_click_li <- list(
 )
 
 test_that("mod_main_view_server() returns the subject ID the user clicked on" %>%
-    vdoc[["add_spec"]](specs$integration_specs$jumping),
-  {
-    shiny::testServer(
-      server_func,
-      args = list(
-        id = "test",
-        data_name = shiny::reactive("test"),
-        dataset_list = shiny::reactive(df)
-      ),
-      {
-        session$setInputs(
-          `main_view-date_range` = c("2012-08-01T00:00", "2014-01-01T01:00"),
-          `main_view-day_range` = c(12, 21),
-          `main_view-x_scale` = "date",
-          `main_view-y_sort` = "alphanum",
-          `main_view-height` = 50,
-          `main_view-filter_event` = c("Treatment Start", "Adverse Events"),
-          `main_view-plot_click` = plot_click_li
-        )
+  vdoc[["add_spec"]](specs$integration_specs$jumping), {
+  shiny::testServer(
+    server_func,
+    args = list(
+      id = "test",
+      data_name = shiny::reactive("test"),
+      dataset_list = shiny::reactive(df)
+    ),
+    {
+      session$setInputs(
+        `main_view-date_range` = c("2012-08-01T00:00", "2014-01-01T01:00"),
+        `main_view-day_range` = c(12, 21),
+        `main_view-x_scale` = "date",
+        `main_view-y_sort` = "alphanum",
+        `main_view-height` = 50,
+        `main_view-filter_event` = c("Treatment Start", "Adverse Events"),
+        `main_view-plot_click` = plot_click_li
+      )
 
-        session$flushReact()
+      session$flushReact()
 
-        expect_equal(main$subject(), "01-701-1015")
-      }
-    )
-  }
-)
+      expect_equal(main$subject(), "01-701-1015")
+    }
+  )
+})
 
 
 # Tests using mm_app
 app_dir <- "./apps/mm_app"
 
 test_that("local filters are resetted (only) after dataset switch" %>%
-    vdoc[["add_spec"]](specs$integration_specs$reset_filters),
-  {
-    app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_reset_local_filters")
+  vdoc[["add_spec"]](specs$integration_specs$reset_filters), {
+  app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_reset_local_filters")
 
-    # Expected values
-    default_filters <- c("sae" = "all", "soc" = NULL, "pt" = NULL, "rel" = "all")
-    my_filters <- c(
-      "sae" = "N",
-      "soc" = "CARDIAC DISORDERS",
-      "pt" = "ATRIOVENTRICULAR BLOCK SECOND DEGREE",
-      "rel" = "N"
-    )
+  # Expected values
+  default_filters <- c("sae" = "all", "soc" = NULL, "pt" = NULL, "rel" = "all")
+  my_filters <- c(
+    "sae" = "N",
+    "soc" = "CARDIAC DISORDERS",
+    "pt" = "ATRIOVENTRICULAR BLOCK SECOND DEGREE",
+    "rel" = "N"
+  )
 
-    # Set local filters
-    app$set_inputs(`mod-filter-serious_AE` = my_filters[["sae"]])
-    app$set_inputs(`mod-filter-soc` = my_filters[["soc"]])
-    app$set_inputs(`mod-filter-pref_term` = my_filters[["pt"]])
-    app$set_inputs(`mod-filter-drug_rel_AE` = my_filters[["rel"]])
+  # Set local filters
+  app$set_inputs(`mod-filter-serious_AE` = my_filters[["sae"]])
+  app$set_inputs(`mod-filter-soc` = my_filters[["soc"]])
+  app$set_inputs(`mod-filter-pref_term` = my_filters[["pt"]])
+  app$set_inputs(`mod-filter-drug_rel_AE` = my_filters[["rel"]])
 
-    # Dataset switch
-    actual_before <- c(
-      "sae" = app$get_value(input = "mod-filter-serious_AE"),
-      "soc" = app$get_value(input = "mod-filter-soc"),
-      "pt" = app$get_value(input = "mod-filter-pref_term"),
-      "rel" = app$get_value(input = "mod-filter-drug_rel_AE")
-    )
-    app$set_inputs(selector = "dummyData2")
-    actual_after <- c(
-      "sae" = app$get_value(input = "mod-filter-serious_AE"),
-      "soc" = app$get_value(input = "mod-filter-soc"),
-      "pt" = app$get_value(input = "mod-filter-pref_term"),
-      "rel" = app$get_value(input = "mod-filter-drug_rel_AE")
-    )
+  # Dataset switch
+  actual_before <- c(
+    "sae" = app$get_value(input = "mod-filter-serious_AE"),
+    "soc" = app$get_value(input = "mod-filter-soc"),
+    "pt" = app$get_value(input = "mod-filter-pref_term"),
+    "rel" = app$get_value(input = "mod-filter-drug_rel_AE")
+  )
+  app$set_inputs(selector = "dummyData2")
+  actual_after <- c(
+    "sae" = app$get_value(input = "mod-filter-serious_AE"),
+    "soc" = app$get_value(input = "mod-filter-soc"),
+    "pt" = app$get_value(input = "mod-filter-pref_term"),
+    "rel" = app$get_value(input = "mod-filter-drug_rel_AE")
+  )
 
-    # Tests
-    testthat::expect_equal(actual_before, my_filters)
-    testthat::expect_equal(actual_after, default_filters)
+  # Tests
+  testthat::expect_equal(actual_before, my_filters)
+  testthat::expect_equal(actual_after, default_filters)
 
-    app$stop()
-  }
-)
+  app$stop()
+})
 
 test_that(
   "the default values for plot settings are displayed as specified at app launch" %>%
@@ -143,36 +139,33 @@ test_that(
 )
 
 test_that("informative messages are visible in case a plot cannot be displayed" %>%
-    vdoc[["add_spec"]](specs$plot_specs$errors),
-  {
-    app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_reset_local_filters")
+  vdoc[["add_spec"]](specs$plot_specs$errors), {
+  app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_reset_local_filters")
 
-    # Set input
-    app$set_inputs(`mod-main_view-filter_event` = NULL)
-    app$wait_for_idle()
+  # Set input
+  app$set_inputs(`mod-main_view-filter_event` = NULL)
+  app$wait_for_idle()
 
-    # Test
-    testthat::expect_equal(app$get_value(output = "mod-main_view-main_plot")$message, CL$VAL2)
+  # Test
+  testthat::expect_equal(app$get_value(output = "mod-main_view-main_plot")$message, CL$VAL2)
 
-    # Set inputs
-    app$set_inputs(`mod-main_view-filter_event` = "Adverse Events")
-    app$set_inputs(`mod-filter-serious_AE` = "Y")
-    app$wait_for_idle()
+  # Set inputs
+  app$set_inputs(`mod-main_view-filter_event` = "Adverse Events")
+  app$set_inputs(`mod-filter-serious_AE` = "Y")
+  app$wait_for_idle()
 
-    # Test
-    testthat::expect_equal(app$get_value(output = "mod-main_view-main_plot")$message, CL$VAL3)
+  # Test
+  testthat::expect_equal(app$get_value(output = "mod-main_view-main_plot")$message, CL$VAL3)
 
-    # The following messages are not tested since shinytest2 does not
-    # support numericRangeInput from shinyWidgets:
-    # - "No data available, please adjust your time range settings."
-    # - "Please select a start value prior to the end value of your time range."
+  # The following messages are not tested since shinytest2 does not
+  # support numericRangeInput from shinyWidgets:
+  # - "No data available, please adjust your time range settings."
+  # - "Please select a start value prior to the end value of your time range."
 
-    app$stop()
-  }
-)
+  app$stop()
+})
 
 test_that("bookmarking works as intended" %>% vdoc[["add_spec"]](specs$integration_specs$bookmarking), {
-
   # Original app
   app_dir <- "./apps/bmk_app"
   app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_bookmarking")
@@ -201,28 +194,26 @@ test_that("bookmarking works as intended" %>% vdoc[["add_spec"]](specs$integrati
 })
 
 test_that("an informative error message gets displayed in case of the plot being to big" %>%
-    vdoc[["add_spec"]](specs$plot_specs$errors),
-  {
-    app_dir <- "./apps/large_app"
-    app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_error_big_plot")
-    app$wait_for_idle()
-    Sys.sleep(1) # wait for error message being replaced
+  vdoc[["add_spec"]](specs$plot_specs$errors), {
+  app_dir <- "./apps/large_app"
+  app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_error_big_plot")
+  app$wait_for_idle()
+  Sys.sleep(1) # wait for error message being replaced
 
-    # Verify that original error occurs
-    original_error <- app$get_value(output = "mod-main_view-main_plot")$message
-    original_error <- gsub("\n", "", original_error) # remove new line indicators
-    expected_error <- paste0(
-      "One or both dimensions exceed the maximum (50000px).",
-      "- Use `options(ragg.max_dim = ...)` to change the max  ",
-      "Warning: May cause the R session to crash"
-    )
-    expect_equal(original_error, expected_error)
+  # Verify that original error occurs
+  original_error <- app$get_value(output = "mod-main_view-main_plot")$message
+  original_error <- gsub("\n", "", original_error) # remove new line indicators
+  expected_error <- paste0(
+    "One or both dimensions exceed the maximum (50000px).",
+    "- Use `options(ragg.max_dim = ...)` to change the max  ",
+    "Warning: May cause the R session to crash"
+  )
+  expect_equal(original_error, expected_error)
 
-    # Check if customized error message occurs
-    actual_div <- app$get_html(selector = "#mod-main_view-main_plot_div")
-    res <- grepl(CL$ERR_MSG, actual_div)
-    expect_true(res)
+  # Check if customized error message occurs
+  actual_div <- app$get_html(selector = "#mod-main_view-main_plot_div")
+  res <- grepl(CL$ERR_MSG, actual_div)
+  expect_true(res)
 
-    app$stop()
-  }
-)
+  app$stop()
+})

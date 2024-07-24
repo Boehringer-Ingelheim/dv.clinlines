@@ -25,9 +25,7 @@ mock_local_filter_UI <- function(request) { #nolint
 #' @param input,output,session Internal parameters for shiny.
 #' @keywords internal
 mock_local_filter_server <- function(input, output, session) {
-
   initial_data <- shiny::reactive({
-
     data_list <- prep_dummy_data()
     data_list$adae <- data_list$adae %>%
       dplyr::mutate(
@@ -35,10 +33,12 @@ mock_local_filter_server <- function(input, output, session) {
         AEREL = dplyr::if_else(AEREL == "NONE", "N", "Y")
       )
     data_list <- purrr::set_names(names(data_list)) %>%
-      purrr::map(function(x) dplyr::mutate(
-        data_list[[x]],
-        set_id = paste0(seq_len(nrow(data_list[[x]])), "_", x)
-      ))
+      purrr::map(function(x) {
+        dplyr::mutate(
+          data_list[[x]],
+          set_id = paste0(seq_len(nrow(data_list[[x]])), "_", x)
+        )
+      })
 
     data <- prep_data(data_list)
 
@@ -68,7 +68,6 @@ mock_local_filter_server <- function(input, output, session) {
 
   filtered_data <- mod_local_filter_server(
     "filter",
-
     filter = list(ae_filter = list(
       data_name = "adae", soc = "AESOC", pref_term = "AEDECOD", drug_rel_AE = "AEREL", serious_AE = "AESER"
     )),

@@ -16,7 +16,6 @@
 #' @export
 #'
 set_basic_info <- function(data, trt_start, trt_end, icf_date) {
-
   return(
     list(data = data, trt_start = trt_start, trt_end = trt_end, icf_date = icf_date)
   )
@@ -55,7 +54,6 @@ set_event <- function(start_dt_var,
                       start_dy_var = NULL,
                       end_dy_var = NULL,
                       detail_var = NULL) {
-
   return(
     list(
       start_dt_var = start_dt_var,
@@ -99,7 +97,6 @@ set_drug_admin <- function(name,
                            label,
                            exp_dose,
                            exp_dose_unit) {
-
   return(
     list(
       name = name,

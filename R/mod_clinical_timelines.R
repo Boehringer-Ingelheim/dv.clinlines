@@ -28,7 +28,6 @@ mod_clinical_timelines_UI <- function(module_id, #nolint
                                       filter_list = NULL,
                                       x_param = "day",
                                       boxheight_val = 60) {
-
   # Check validity of arguments
   ac <- checkmate::makeAssertCollection()
   checkmate::assert_string(module_id, min.chars = 1, add = ac)
@@ -105,7 +104,6 @@ mod_clinical_timelines_server <- function(module_id,
                                           ms = 1000,
                                           receiver_id = NULL,
                                           afmm_param = NULL) {
-
   # Check validity of arguments
   ac <- checkmate::makeAssertCollection()
   checkmate::assert_string(module_id, min.chars = 1, add = ac)
@@ -118,7 +116,8 @@ mod_clinical_timelines_server <- function(module_id,
   lapply(mapping, function(x) {
     lapply(x, function(y) {
       checkmate::assert_subset(
-        names(unlist(y)), choices = c("start_dt_var", "end_dt_var", "start_dy_var", "end_dy_var", "detail_var")
+        names(unlist(y)),
+        choices = c("start_dt_var", "end_dt_var", "start_dy_var", "end_dy_var", "detail_var")
       )
     })
   })
@@ -132,7 +131,8 @@ mod_clinical_timelines_server <- function(module_id,
   checkmate::assert_character(unlist(filter), null.ok = TRUE, add = ac)
   lapply(filter, function(x) {
     checkmate::assert_subset(
-      names(unlist(x)), choices = c("data_name", "label", "soc", "serious_AE", "pref_term", "drug_rel_AE")
+      names(unlist(x)),
+      choices = c("data_name", "label", "soc", "serious_AE", "pref_term", "drug_rel_AE")
     )
   })
   checkmate::assert_string(subjid_var, min.chars = 1, add = ac)
@@ -145,7 +145,6 @@ mod_clinical_timelines_server <- function(module_id,
   shiny::moduleServer(
     module_id,
     function(input, output, session) {
-
       # Check validity of reactive arguments
       v_dataset_list <- shiny::reactive({
         checkmate::assert_list(dataset_list(), types = "data.frame", null.ok = TRUE, names = "named")
@@ -220,7 +219,6 @@ mod_clinical_timelines_server <- function(module_id,
       )
 
       shiny::observeEvent(main$subject(), {
-
         if (!receiver_id %in% names(afmm_param$module_names) && !is.null(receiver_id)) {
           shiny::showNotification(
             paste0("Can't find receiver module with ID ", receiver_id, "."),
@@ -434,7 +432,6 @@ mod_clinical_timelines <- function(module_id,
                                    ),
                                    ms = 1000,
                                    receiver_id = NULL) {
-
   # Check validity of arguments that won't be checked in UI/server
   ac <- checkmate::makeAssertCollection()
   checkmate::assert_list(default_plot_settings, null.ok = TRUE, add = ac)

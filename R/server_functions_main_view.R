@@ -39,7 +39,6 @@ color_lookup <- function(groups) {
 #' @keywords internal
 #'
 create_plot_data <- function(work_data, time_range, filter_event) {
-
   if (lubridate::is.timepoint(time_range)) {
     first <- "start_dt_var"
     last <- "end_dt_var"
@@ -56,7 +55,9 @@ create_plot_data <- function(work_data, time_range, filter_event) {
   work_data <- work_data %>%
     dplyr::filter(.data$group %in% filter_event)
 
-  if (nrow(work_data) == 0) return(work_data)
+  if (nrow(work_data) == 0) {
+    return(work_data)
+  }
 
   work_data <- work_data %>%
     dplyr::mutate(
@@ -85,8 +86,8 @@ create_plot_data <- function(work_data, time_range, filter_event) {
         TRUE ~ NA
       ),
       xmin_exp = dplyr::case_when(
-        .data[[first_exp]] < time_range[1] & !is.na(.data[[last_exp]])
-        & .data[[last_exp]] >= time_range[1] ~ time_range[1],
+        .data[[first_exp]] < time_range[1] & !is.na(.data[[last_exp]]) &
+          .data[[last_exp]] >= time_range[1] ~ time_range[1],
         .data[[first_exp]] >= time_range[1] & .data[[first_exp]] <= time_range[2] ~ .data[[first_exp]],
         TRUE ~ NA
       ),
@@ -136,7 +137,6 @@ create_main_plot <- function(work_data,
                              colors,
                              height,
                              subjid_var) {
-
   # Sort y aes according to user input
   if (y_sort == "alphanum") {
     sort_by <- subjid_var
@@ -240,13 +240,14 @@ create_main_plot <- function(work_data,
   # Add arrows for open intervals
   if (height >= 120) {
     main_p <- main_p +
-      ggplot2::geom_text(ggplot2::aes(
-        x = .data[["xmax"]],
-        label = ifelse(.data$arrow_right, sprintf("\u2192"), "")
-      ),
-      position = ggplot2::position_dodge2(0.9),
-      size = 5,
-      na.rm = TRUE
+      ggplot2::geom_text(
+        ggplot2::aes(
+          x = .data[["xmax"]],
+          label = ifelse(.data$arrow_right, sprintf("\u2192"), "")
+        ),
+        position = ggplot2::position_dodge2(0.9),
+        size = 5,
+        na.rm = TRUE
       ) +
       ggplot2::geom_text(
         ggplot2::aes(
@@ -257,13 +258,14 @@ create_main_plot <- function(work_data,
         size = 5,
         na.rm = TRUE
       ) +
-      ggplot2::geom_text(ggplot2::aes(
-        x = .data[["xmax_exp"]],
-        label = ifelse(.data$arrow_right, sprintf("\u2192"), "")
-      ),
-      position = ggplot2::position_nudge(y = 0.35),
-      size = 5,
-      na.rm = TRUE
+      ggplot2::geom_text(
+        ggplot2::aes(
+          x = .data[["xmax_exp"]],
+          label = ifelse(.data$arrow_right, sprintf("\u2192"), "")
+        ),
+        position = ggplot2::position_nudge(y = 0.35),
+        size = 5,
+        na.rm = TRUE
       ) +
       ggplot2::geom_text(
         ggplot2::aes(
@@ -325,7 +327,6 @@ create_main_plot <- function(work_data,
 #'
 #' @keywords internal
 create_ggdata_y <- function(p, hover) {
-
   # Use ggplot2 internal to have access to the data producing the plot
   ggdata <- ggplot2:::ggplot_build(p)
 
@@ -421,8 +422,6 @@ create_hover_info <- function(hover, ggdata_y, initial_data, color_map, x_scale,
 #' @keywords internal
 
 create_tooltip <- function(hover, y_screen_pct) {
-
-
   # Calculate cursor position as percent
   left_pct <- (hover$x - hover$domain$left) /
     (hover$domain$right - hover$domain$left)
@@ -481,7 +480,6 @@ create_tooltip <- function(hover, y_screen_pct) {
 #' @return Numeric vector of length 2.
 #' @keywords internal
 calc_x_range <- function(hover) {
-
   # Calculate pixel range
   range_x_domain <- as.numeric(hover$domain$right - hover$domain$left)
   range_x_px <- hover$range$right - hover$range$left
@@ -508,7 +506,6 @@ calc_x_range <- function(hover) {
 #' @return Character vector of event names.
 #' @keywords internal
 get_groups <- function(ggdata_y, color_map, x_range) {
-
   # Intervals
   ggdata_y_interv <- ggdata_y[[1]] %>%
     dplyr::mutate(
@@ -520,8 +517,8 @@ get_groups <- function(ggdata_y, color_map, x_range) {
       xmax = as.numeric(.data[["xmax"]])
     ) %>%
     dplyr::filter(
-      dplyr::between(.data[["xmin"]], x_range[1], x_range[2])
-      | dplyr::between(.data[["xmax"]], x_range[1], x_range[2])
+      dplyr::between(.data[["xmin"]], x_range[1], x_range[2]) |
+        dplyr::between(.data[["xmax"]], x_range[1], x_range[2])
     )
 
   # Timepoints
@@ -561,8 +558,8 @@ get_groups <- function(ggdata_y, color_map, x_range) {
       xmax = as.numeric(.data[["xmax"]])
     ) %>%
     dplyr::filter(
-      dplyr::between(.data[["xmin"]], x_range[1], x_range[2])
-      | dplyr::between(.data[["xmax"]], x_range[1], x_range[2])
+      dplyr::between(.data[["xmin"]], x_range[1], x_range[2]) |
+        dplyr::between(.data[["xmax"]], x_range[1], x_range[2])
     )
 
   groups <- unique(
@@ -590,7 +587,6 @@ get_groups <- function(ggdata_y, color_map, x_range) {
 #'
 #' @keywords internal
 filter_nearest <- function(initial_data, subject, rel_groups, x_range, x_scale, time_range) {
-
   if (x_scale == "date") {
     lower <- "start_dt_var"
     upper <- "end_dt_var"
@@ -659,7 +655,6 @@ filter_nearest <- function(initial_data, subject, rel_groups, x_range, x_scale, 
 #' @keywords internal
 #'
 collapse_cols <- function(col1, col2, col3, col4) {
-
   # Collapse col1 and col2 into one column
   step1 <- purrr::map2_chr(col1, col2, function(x, y) {
     if (is.na(x) & is.na(y)) {

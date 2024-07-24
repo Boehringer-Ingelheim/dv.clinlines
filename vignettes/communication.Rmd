@@ -53,7 +53,7 @@ module_list <- list(
       exp_dose_unit = "EXDOSU"
     ),
     receiver_id = "mod2"
-  ), 
+  ),
   # Note that the focus here lies on the sender_ids parameter, not on the set up of mod_patient_profile()
   "Patient Profiles" = dv.papo::mod_patient_profile(
     module_id = "mod2",

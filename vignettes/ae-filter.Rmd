@@ -38,10 +38,10 @@ Wrap this list with another list. The inner list must be named `ae_filter`. The 
 Find an example of the code structure below:
 ```{r}
 # To deactivate local filters
-filter = NULL
+filter <- NULL
 
 # To activate all local adverse event filters
-filter = list(
+filter <- list(
   ae_filter = list(
     data_name = "adae", # mandatory - as defined in the data list
     label = "Adverse Events", # mandatory - as defined in the mapping parameter
@@ -111,7 +111,7 @@ module_list <- list(
         label = "Adverse Events",
         soc = "AESOC",
         serious_AE = "AESER",
-        #pref_term = "AEDECOD",
+        # pref_term = "AEDECOD",
         drug_rel_AE = "AEREL"
       )
     )

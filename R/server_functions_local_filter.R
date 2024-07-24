@@ -29,7 +29,6 @@ get_filter_status <- function(all_filters, chosen_filters) {
 #' @return Character vector of PT's.
 #' @keywords internal
 set_pts <- function(status_filters, soc, prepped_data, filter) {
-
   if (status_filters[["soc"]] && !is.null(soc)) {
     pt_choices <- prepped_data %>%
       dplyr::filter(.data[[filter$soc]] %in% soc) %>%
@@ -52,7 +51,6 @@ set_pts <- function(status_filters, soc, prepped_data, filter) {
 #'
 #' @keywords internal
 filter_data <- function(data, status_filters, input_filters, filter) {
-
   # .data$set != info_ae$name ensures to also display non-AE data
   if (status_filters[["serious_AE"]]) {
     if (input_filters$serious_AE != "all") {

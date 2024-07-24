@@ -48,12 +48,14 @@ data <- shiny::reactive({
 
 changed <- shiny::reactive(1)
 filter <- list("soc", "drug_rel_AE")
-server <- function(id) mod_local_filter_server(
-  module_id = id,
-  filter = filter,
-  joined_data = data,
-  changed = changed
-)
+server <- function(id) {
+  mod_local_filter_server(
+    module_id = id,
+    filter = filter,
+    joined_data = data,
+    changed = changed
+  )
+}
 
 test_that(
   "mod_local_filter_server() returns the same data frame as received, only filtered by adverse events" %>%

@@ -8,11 +8,9 @@ plot_date <- create_plot_data(df, time_range = range_date, filter_event = unique
 plot_day <- create_plot_data(df, time_range = range_day, filter_event = "Informed Consent")
 
 test_that("create_plot_data() returns only events to plot" %>%
-    vdoc[["add_spec"]](specs$plot_specs$events),
-  {
-    expect_equal(unique(plot_day$group), "Informed Consent")
-  }
-)
+  vdoc[["add_spec"]](specs$plot_specs$events), {
+  expect_equal(unique(plot_day$group), "Informed Consent")
+})
 
 test_that(
   "create_plot_data() sets interval start values to time range start value" %>%
@@ -54,12 +52,10 @@ test_that(
 )
 
 test_that("create_plot_data() does not return rows if no event is selected" %>%
-    vdoc[["add_spec"]](specs$sidebar_specs$event_type_filter),
-  {
-    plot_date <- create_plot_data(df, time_range = range_date, filter_event = NULL)
-    expect_equal(length(plot_date$group), 0)
-  }
-)
+  vdoc[["add_spec"]](specs$sidebar_specs$event_type_filter), {
+  plot_date <- create_plot_data(df, time_range = range_date, filter_event = NULL)
+  expect_equal(length(plot_date$group), 0)
+})
 
 
 # Prepare next tests ----
@@ -335,9 +331,13 @@ test_that(
       server_func,
       args = list(
         id = "main_view",
-        initial_data = shiny::reactive({df}),
+        initial_data = shiny::reactive({
+          df
+        }),
         changed = changed,
-        colors_group = shiny::reactive({colors})
+        colors_group = shiny::reactive({
+          colors
+        })
       ),
       {
         session$setInputs(
@@ -364,9 +364,13 @@ test_that(
       server_func,
       args = list(
         id = "main_view",
-        initial_data = shiny::reactive({df}),
+        initial_data = shiny::reactive({
+          df
+        }),
         changed = changed,
-        colors_group = shiny::reactive({colors})
+        colors_group = shiny::reactive({
+          colors
+        })
       ),
       {
         session$setInputs(
@@ -386,7 +390,6 @@ test_that(
         session$flushReact()
 
         expect_snapshot_output(plot_obj(), cran = TRUE)
-
       }
     )
   }
@@ -400,9 +403,13 @@ test_that(
       server_func,
       args = list(
         id = "main_view",
-        initial_data = shiny::reactive({df}),
+        initial_data = shiny::reactive({
+          df
+        }),
         changed = changed,
-        colors_group = shiny::reactive({colors})
+        colors_group = shiny::reactive({
+          colors
+        })
       ),
       {
         session$setInputs(
@@ -435,9 +442,13 @@ test_that(
       server_func,
       args = list(
         id = "main_view",
-        initial_data = shiny::reactive({df}),
+        initial_data = shiny::reactive({
+          df
+        }),
         changed = changed,
-        colors_group = shiny::reactive({colors})
+        colors_group = shiny::reactive({
+          colors
+        })
       ),
       {
         session$setInputs(
@@ -457,7 +468,6 @@ test_that(
         session$flushReact()
 
         expect_snapshot_output(plot_obj(), cran = TRUE)
-
       }
     )
   }
@@ -474,9 +484,13 @@ test_that(
       server_func,
       args = list(
         id = "main_view",
-        initial_data = shiny::reactive({df}),
+        initial_data = shiny::reactive({
+          df
+        }),
         changed = changed,
-        colors_group = shiny::reactive({colors})
+        colors_group = shiny::reactive({
+          colors
+        })
       ),
       {
         session$setInputs(
@@ -499,9 +513,7 @@ test_that(
 
 # Tests for color_lookup() ----
 test_that("color_lookup() returns a named vector of hex colors" %>%
-    vdoc[["add_spec"]](specs$plot_specs$colors),
-  {
-    colors <- color_lookup(c("a", "b"))
-    expect_named(colors, c("a", "b"), ignore.order = TRUE)
-  }
-)
+  vdoc[["add_spec"]](specs$plot_specs$colors), {
+  colors <- color_lookup(c("a", "b"))
+  expect_named(colors, c("a", "b"), ignore.order = TRUE)
+})
