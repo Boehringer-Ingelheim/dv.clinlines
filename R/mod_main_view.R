@@ -1,4 +1,4 @@
-CL <- pack_of_constants( #nolint
+CL <- pack_of_constants( # nolint
   ERR_MSG = paste(
     "An error occurred, most likely due to the plot being too large.",
     "Please try reducing the number of subjects by adjusting the filter settings.",
@@ -30,7 +30,7 @@ CL <- pack_of_constants( #nolint
 #'
 #' @keywords internal
 #'
-mod_main_view_UI <- function(module_id, x_param = "day", boxheight_val = 60) { #nolint
+mod_main_view_UI <- function(module_id, x_param = "day", boxheight_val = 60) { # nolint
   ns <- shiny::NS(module_id)
 
   ui <- list(

@@ -24,7 +24,7 @@
 #'
 #' @seealso [mod_clinical_timelines()] and [mod_clinical_timelines_server()]
 #' @export
-mod_clinical_timelines_UI <- function(module_id, #nolint
+mod_clinical_timelines_UI <- function(module_id, # nolint
                                       filter_list = NULL,
                                       x_param = "day",
                                       boxheight_val = 60) {

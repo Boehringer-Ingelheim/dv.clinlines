@@ -4,7 +4,7 @@
 #'
 #' @return Shiny UI for the clinlines module.
 #' @keywords internal
-mock_clinical_timelines_UI <- function(id = NULL) { #nolint
+mock_clinical_timelines_UI <- function(id = NULL) { # nolint
   # If it is a character then we are using it as a module
   ns <- ifelse(is.character(id), shiny::NS(id), shiny::NS(NULL))
 

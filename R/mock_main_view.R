@@ -2,9 +2,9 @@
 #'
 #' @return Shiny UI for the main view module.
 #' @keywords internal
-mock_main_view_UI <- function() { #nolint
+mock_main_view_UI <- function() { # nolint
 
-  ui_list <- mod_main_view_UI("main_view") #nolint
+  ui_list <- mod_main_view_UI("main_view") # nolint
 
   shiny::fluidPage(
     shiny::sidebarLayout(

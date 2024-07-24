@@ -4,7 +4,7 @@
 #'
 #' @return Shiny UI for the local filters module.
 #' @keywords internal
-mock_local_filter_UI <- function(request) { #nolint
+mock_local_filter_UI <- function(request) { # nolint
   ui <- shiny::fluidPage(
     shiny::bookmarkButton(),
     mod_local_filter_UI(

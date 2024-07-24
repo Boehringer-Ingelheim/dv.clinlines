@@ -6,8 +6,8 @@ if (use_load_all) {
 }
 
 # Specify datasets
-dummyData1 <- dv.clinlines:::prep_dummy_data(20) #nolint
-dummyData2 <- dv.clinlines:::prep_dummy_data(200) #nolint
+dummyData1 <- dv.clinlines:::prep_dummy_data(20) # nolint
+dummyData2 <- dv.clinlines:::prep_dummy_data(200) # nolint
 
 # Define module
 clinlines <- dv.clinlines::mod_clinical_timelines(

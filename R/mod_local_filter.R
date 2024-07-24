@@ -8,7 +8,7 @@
 #' @return A shiny \code{uiOutput} element.
 #' @keywords internal
 #'
-mod_local_filter_UI <- function(module_id, filter_list = NULL) { #nolint
+mod_local_filter_UI <- function(module_id, filter_list = NULL) { # nolint
   ns <- shiny::NS(module_id)
 
   all_filters <- local_filters(ns)
