@@ -102,7 +102,6 @@ test_that("local filters are resetted (only) after dataset switch" %>%
     "rel" = app$get_value(input = "mod-filter-drug_rel_AE")
   )
   app$set_inputs(selector = "dummyData2")
-  app$wait_for_idle()
   actual_after <- c(
     "sae" = app$get_value(input = "mod-filter-serious_AE"),
     "soc" = app$get_value(input = "mod-filter-soc"),
