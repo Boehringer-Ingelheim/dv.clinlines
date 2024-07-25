@@ -89,6 +89,7 @@ test_that("local filters are resetted (only) after dataset switch" %>%
   # Set local filters
   app$set_inputs(`mod-filter-serious_AE` = my_filters[["sae"]])
   app$set_inputs(`mod-filter-soc` = my_filters[["soc"]])
+  app$wait_for_idle()
   app$set_inputs(`mod-filter-pref_term` = my_filters[["pt"]])
   app$set_inputs(`mod-filter-drug_rel_AE` = my_filters[["rel"]])
   app$wait_for_idle()
