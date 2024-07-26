@@ -209,7 +209,7 @@ create_main_plot <- function(work_data,
   shapes <- dplyr::case_when(
     x == "decrease" ~ 25,
     x == "increase" ~ 24,
-    x == "start/equal" ~ 23,
+    x == "start/equal" ~ 23
   )
   names(shapes) <- x
   symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
@@ -229,13 +229,17 @@ create_main_plot <- function(work_data,
       color = "black",
       position = ggplot2::position_nudge(y = 0.35),
       size = height / 20
-    ) +
-    ggplot2::scale_shape_manual(
-      name = "Dose Change:",
-      values = shapes,
-      na.translate = FALSE,
-      breaks = x
     )
+
+  if (length(shapes) > 0) {
+    main_p <- main_p +
+      ggplot2::scale_shape_manual(
+        name = "Dose Change:",
+        values = shapes,
+        na.translate = FALSE,
+        breaks = x
+      )
+  }
 
   # Add arrows for open intervals
   if (height >= 120) {
