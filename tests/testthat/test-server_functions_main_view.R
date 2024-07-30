@@ -323,8 +323,7 @@ server_func <- function(id, initial_data, changed, colors_groups, ms = 100) {
 }
 
 test_that(
-  "create_main_plot() returns a plot that displays events per subject and represent milestones
-  as bullets and periods as horizontal lines" %>%
+  "create_main_plot() returns a plot that displays events per subject and respresents milestones as bullets and periods as horizontal lines" %>%
     vdoc[["add_spec"]](c(specs$plot_specs$events, specs$plot_specs$event_types)),
   {
     shiny::testServer(
@@ -342,7 +341,8 @@ test_that(
       {
         session$setInputs(
           date_range = c("2012-08-01T00:00", "2014-01-01T01:00"),
-          day_range = c(12, 21), x_scale = "date",
+          day_range = c(12, 21),
+          x_scale = "date",
           y_sort = "alphanum",
           height = 50,
           filter_event = c("Treatment Start", "Adverse Events")

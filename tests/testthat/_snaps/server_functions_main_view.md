@@ -1,5 +1,4 @@
-# create_main_plot() returns a plot that displays events per subject and represent milestones
-  as bullets and periods as horizontal lines__spec_ids{plot_specs$events;plot_specs$event_types}
+# create_main_plot() returns a plot that displays events per subject and respresents milestones as bullets and periods as horizontal lines__spec_ids{plot_specs$events;plot_specs$event_types}
 
     $plot
     
