@@ -323,7 +323,7 @@ server_func <- function(id, initial_data, changed, colors_groups, ms = 100) {
 }
 
 test_that(
-  "create_main_plot() returns a plot that displays events per subject and respresents milestones as bullets and periods as horizontal lines" %>%
+  "create_main_plot() displays events per subject and milestones as bullets/periods as horizontal lines" %>%
     vdoc[["add_spec"]](c(specs$plot_specs$events, specs$plot_specs$event_types)),
   {
     shiny::testServer(
