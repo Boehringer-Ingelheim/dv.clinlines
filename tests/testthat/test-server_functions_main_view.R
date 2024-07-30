@@ -438,41 +438,40 @@ test_that(
   "create_main_plot() returns a plot that determines vertical space per subject according to user settings" %>%
     vdoc[["add_spec"]](specs$sidebar_specs$boxheight),
   {
-    # Test produces warnings regarding conversion failure of the arrows for open intervals.
-    # Warnings are suppressed, since this does not impact the module usage within an app.
-    suppressWarnings(
-      shiny::testServer(
-        server_func,
-        args = list(
-          id = "main_view",
-          initial_data = shiny::reactive({
-            df
-          }),
-          changed = changed,
-          colors_group = shiny::reactive({
-            colors
-          })
-        ),
-        {
-          session$setInputs(
-            date_range = c("2012-08-15T00:00", "2015-01-01T01:00"),
-            day_range = c(0, 50),
-            x_scale = "date",
-            y_sort = "alphanum",
-            height = 30,
-            filter_event = c("Treatment Start", "Adverse Events")
-          )
+    shiny::testServer(
+      server_func,
+      args = list(
+        id = "main_view",
+        initial_data = shiny::reactive({
+          df
+        }),
+        changed = changed,
+        colors_group = shiny::reactive({
+          colors
+        })
+      ),
+      {
+        session$setInputs(
+          date_range = c("2012-08-15T00:00", "2015-01-01T01:00"),
+          day_range = c(0, 50),
+          x_scale = "date",
+          y_sort = "alphanum",
+          height = 30,
+          filter_event = c("Treatment Start", "Adverse Events")
+        )
 
-          session$flushReact()
+        session$flushReact()
+        expect_snapshot_output(plot_obj(), cran = TRUE)
 
+
+        session$setInputs(height = 130)
+        session$flushReact()
+        # Test produces warnings regarding conversion failure of the arrows for open intervals.
+        # Warnings are suppressed, since they do only appear in test server, not in the module server.
+        suppressWarnings(
           expect_snapshot_output(plot_obj(), cran = TRUE)
-
-          session$setInputs(height = 130)
-          session$flushReact()
-
-          expect_snapshot_output(plot_obj(), cran = TRUE)
-        }
-      )
+        )
+      }
     )
   }
 )
