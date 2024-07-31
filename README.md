@@ -20,7 +20,7 @@ For adverse event data, supplementary local filters can be added. <br>
 {dv.manager} package and supports its bookmarking functionality. It also
 allows to enable communication with other DaVinci modules for drilling
 down to particular subjects (in this case, communication means to
-send a unique subject ID.)
+send a unique subject ID).
 
 ## Installation
 
