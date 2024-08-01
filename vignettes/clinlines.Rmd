@@ -35,9 +35,9 @@ Before anything else, you need to determine which events you would like to displ
 In our example app, we would like to display occurrences of adverse events, and the respective treatment start and end dates for each subject, as well as drug administration events. In order to do so, we need to identify the data domains that hold variables for the determined events. Besides, the module requires a mandatory subject level dataset. 
 For demonstration purposes, we will use dummy data from the {pharmaverseadam} R package:
 
-- `adam_adsl` as subject level dataset and for the optional events "Treatment Start" and "Treatment End"
-- `adam_adae` for the optional event "Adverse Events"
-- `sdtm_ex` for the optional "Drug Administration" event
+- `adsl` as subject level dataset and for the optional events "Treatment Start" and "Treatment End"
+- `adae` for the optional event "Adverse Events"
+- `adex` for the optional "Drug Administration" event
 
 
 Make sure to provide data in a named list. To load clinical data, you can use DaVinci's Data Loader package ({dv.loader}).
@@ -45,9 +45,9 @@ Make sure to provide data in a named list. To load clinical data, you can use Da
 For our example, we just put the datasets mentioned above into a named list:
 ```{r load}
 data_list <- list(
-  adsl = safetyData::adam_adsl,
-  adae = safetyData::adam_adae,
-  ex = safetyData::sdtm_ex
+  adsl = pharmaverseadam::adsl,
+  adae = pharmaverseadam::adae,
+  adex = pharmaverseadam::adex
 )
 ```
 
@@ -60,6 +60,8 @@ According to the data requirements (see `vignette("data-requirements")`), the lo
 Note that we drop adverse events that have missing start dates for simplification purposes. 
 
 ```{r preprocess}
+library(magrittr)
+
 data_list$adsl <- data_list$adsl %>%
   dplyr::mutate(
     TRTSDT = lubridate::ymd_hm(TRTSDT, truncated = 2),
@@ -74,7 +76,7 @@ data_list$adae <- data_list$adae %>%
     AEENDTC = lubridate::ymd_hm(AENDT, truncated = 2)
   )
 
-data_list$ex <- data_list$ex %>%
+data_list$adex <- data_list$adex %>%
   dplyr::mutate(
     EXSTDTC = lubridate::ymd_hm(EXSTDTC, truncated = 2),
     EXENDTC = lubridate::ymd_hm(EXENDTC, truncated = 2),
@@ -143,7 +145,7 @@ An illustrative definition of a module list (containing only a Clinical Timeline
 
 ```{r modulelist}
 module_list <- list(
-  "Clinical Timelines" = mod_clinical_timelines(
+  "Clinical Timelines" = dv.clinlines::mod_clinical_timelines(
     module_id = "mod1",
     basic_info = list(
       data = "adsl",
@@ -172,7 +174,7 @@ module_list <- list(
       )
     ),
     drug_admin = list(
-      name = "exp",
+      name = "adex",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
@@ -191,6 +193,8 @@ The example above concludes in a module that displays treatment start dates as t
 The configuration of a Clinical Timelines module is error-prone. Therefore, {dv.clinlines} offers several helper functions to generate the lists for `basic_info`, `mapping`, and `drug_admin`. These functions take the variable names as input parameters and return a list that can directly be used for the wrapper parameters. The intention is to reduce errors produced by typos or missing/wrongly named list elements. See their help pages for more detailed information on how they work.  
 For a demonstration, we defined the same module as above again. But this time, we use the helper functions instead typing the lists by our own:
 ```{r helper}
+library(dv.clinlines)
+
 module_list <- list(
   "Clinical Timelines" = mod_clinical_timelines(
     module_id = "mod1",
@@ -213,7 +217,7 @@ module_list <- list(
       )
     ),
     drug_admin = set_drug_admin(
-      name = "ex",
+      name = "adex",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
@@ -253,9 +257,9 @@ library(dv.clinlines)
 
 # Load data
 data_list <- list(
-  adsl = safetyData::adam_adsl,
-  adae = safetyData::adam_adae,
-  ex = safetyData::sdtm_ex
+  adsl = pharmaverseadam::adsl,
+  adae = pharmaverseadam::adae,
+  adex = pharmaverseadam::adex
 )
 
 # Preprocess data
@@ -273,7 +277,7 @@ data_list$adae <- data_list$adae %>%
     AEENDTC = lubridate::ymd_hm(AENDT, truncated = 2)
   )
 
-data_list$ex <- data_list$ex %>%
+data_list$adex <- data_list$adex %>%
   dplyr::mutate(
     EXSTDTC = lubridate::ymd_hm(EXSTDTC, truncated = 2),
     EXENDTC = lubridate::ymd_hm(EXENDTC, truncated = 2),
@@ -302,7 +306,7 @@ module_list <- list(
       )
     ),
     drug_admin = set_drug_admin(
-      name = "ex",
+      name = "adex",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
