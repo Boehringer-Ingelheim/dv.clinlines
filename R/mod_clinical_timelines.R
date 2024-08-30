@@ -110,7 +110,15 @@ mod_clinical_timelines_server <- function(module_id,
   checkmate::assert_multi_class(data_name, c("reactive", "shinymeta_reactive"), add = ac)
   checkmate::assert_multi_class(dataset_list, c("reactive", "shinymeta_reactive"), add = ac)
   checkmate::assert_list(basic_info, types = "character", add = ac)
-  checkmate::assert_subset(names(basic_info), choices = c("data", "trt_start", "trt_end", "icf_date"), add = ac)
+  checkmate::assert_subset(
+    names(basic_info),
+    choices = c(
+      "subject_level_dataset_name",
+      "trt_start_var",
+      "trt_end_var",
+      "icf_date_var"),
+    add = ac
+  )
   checkmate::assert_list(mapping, types = "list", add = ac)
   checkmate::assert_character(unlist(mapping), add = ac)
   lapply(mapping, function(x) {
@@ -250,8 +258,8 @@ mod_clinical_timelines_server <- function(module_id,
 #' A character string that serves as unique identifier for the module.
 #' @param basic_info `[list(character(1)+)]`
 #'
-#' A list of four elements: \code{data}, \code{trt_start},
-#'   \code{trt_end}, and \code{icf_date}. Assigns the name
+#' A list of four elements: \code{subject_level_dataset_name}, \code{trt_start_var},
+#'   \code{trt_end_var}, and \code{icf_date_var}. Assigns the name
 #'   of a subject level dataset and column names of treatment start and end, and informed
 #'   consent variables.
 #' @param mapping `[list(list(list(character(1)+)))]`
@@ -459,7 +467,7 @@ mod_clinical_timelines <- function(module_id,
         # afmm$dataset_metadata$name holds the name of the currently selected set of dataset (dv.manager)
         data_name = afmm$dataset_metadata$name,
         dataset_list = shiny::reactive({
-          afmm$filtered_dataset()[unique(c(basic_info$data, names(mapping), drug_admin$name))]
+          afmm$filtered_dataset()[unique(c(basic_info$subject_level_dataset_name, names(mapping), drug_admin$name))]
         }),
         basic_info = basic_info,
         mapping = mapping,

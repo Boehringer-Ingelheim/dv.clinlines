@@ -35,10 +35,10 @@ module_list <- list(
   "Clinical Timelines" = mod_clinical_timelines(
     module_id = "mod1",
     basic_info = set_basic_info(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subjet_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     ),
     mapping = list(
       adsl = list("Treatment Start" = set_event(start_dt_var = "TRTSDT"))
