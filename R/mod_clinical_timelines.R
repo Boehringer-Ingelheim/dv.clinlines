@@ -116,7 +116,8 @@ mod_clinical_timelines_server <- function(module_id,
       "subject_level_dataset_name",
       "trt_start_var",
       "trt_end_var",
-      "icf_date_var"),
+      "icf_date_var"
+    ),
     add = ac
   )
   checkmate::assert_list(mapping, types = "list", add = ac)

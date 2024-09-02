@@ -22,7 +22,7 @@ set_basic_info <- function(subject_level_dataset_name, trt_start_var, trt_end_va
       trt_start_var = trt_start_var,
       trt_end_var = trt_end_var,
       icf_date_var = icf_date_var
-      )
+    )
   )
 }
 
