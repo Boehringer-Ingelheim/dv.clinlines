@@ -134,10 +134,10 @@ test_that("set_basics() returns a list with fixed names", {
   basic_list <- set_basics(
     data_list = list(adsl = df),
     basic_info = list(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     ),
     subjid_var = "USUBJID"
   )

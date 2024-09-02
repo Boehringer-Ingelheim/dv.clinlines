@@ -23,8 +23,8 @@ A character string that serves as unique identifier for the module.}
 
 \item{basic_info}{\verb{[list(character(1)+)]}
 
-A list of four elements: \code{data}, \code{trt_start},
-\code{trt_end}, and \code{icf_date}. Assigns the name
+A list of four elements: \code{subject_level_dataset_name}, \code{trt_start_var},
+\code{trt_end_var}, and \code{icf_date_var}. Assigns the name
 of a subject level dataset and column names of treatment start and end, and informed
 consent variables.}
 

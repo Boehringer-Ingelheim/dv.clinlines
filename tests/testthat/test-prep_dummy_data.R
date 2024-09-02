@@ -20,7 +20,12 @@ test_that("prep_dummy_data() adds a flag for AEREL", {
 # Tests for default_basic_info() ----
 test_that("default_basic_info() returns a named list with default settings ", {
   outcome <- default_basic_info()
-  expected <- list(data = "adsl", trt_start = "TRTSDT", trt_end = "TRTEDT", icf_date = "RFICDT")
+  expected <- list(
+    subject_level_dataset_name = "adsl",
+    trt_start_var = "TRTSDT",
+    trt_end_var = "TRTEDT",
+    icf_date_var = "RFICDT"
+  )
 
   expect_equal(outcome, expected)
 })

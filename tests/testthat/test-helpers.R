@@ -1,7 +1,17 @@
 # Tests for set_basic_info() ----
 test_that("set_basic_info() returns a named list", {
-  outcome <- set_basic_info(data = "adsl", trt_start = "start", trt_end = "end", icf_date = "consent")
-  expected <- list(data = "adsl", trt_start = "start", trt_end = "end", icf_date = "consent")
+  outcome <- set_basic_info(
+    subject_level_dataset_name = "adsl",
+    trt_start_var = "start",
+    trt_end_var = "end",
+    icf_date_var = "consent"
+  )
+  expected <- list(
+    subject_level_dataset_name = "adsl",
+    trt_start_var = "start",
+    trt_end_var = "end",
+    icf_date_var = "consent"
+  )
   expect_equal(outcome, expected)
 })
 

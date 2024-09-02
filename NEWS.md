@@ -1,3 +1,7 @@
+# dv.clinlines 1.0.4
+
+* Adapt basic_info parameter to adhere module standard
+
 # dv.clinlines 1.0.3
 
 * Initial release of dv.clinlines package to GitHub.

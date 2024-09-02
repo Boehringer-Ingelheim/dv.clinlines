@@ -4,20 +4,25 @@
 \alias{set_basic_info}
 \title{Create a list to be assigned to the \code{basic_info} parameter}
 \usage{
-set_basic_info(data, trt_start, trt_end, icf_date)
+set_basic_info(
+  subject_level_dataset_name,
+  trt_start_var,
+  trt_end_var,
+  icf_date_var
+)
 }
 \arguments{
-\item{data}{Character name of the subject level analysis dataset (e.g. "adsl", "dm")
+\item{subject_level_dataset_name}{Character name of the subject level analysis dataset (e.g. "adsl", "dm")
 as it is called in the \code{data_list} parameter.}
 
-\item{trt_start}{Character name of the variable that contains treatment start dates.
-Must be present in the data frame mentioned in the \code{data} element.}
+\item{trt_start_var}{Character name of the variable that contains treatment start dates.
+Must be present in the data frame mentioned in the \code{subject_level_dataset_name} element.}
 
-\item{trt_end}{Character name of the variable that contains treatment end dates.
-Must be present in the data frame mentioned in the \code{data} element.}
+\item{trt_end_var}{Character name of the variable that contains treatment end dates.
+Must be present in the data frame mentioned in the \code{subject_level_dataset_name} element.}
 
-\item{icf_date}{Character name of the variable that contains informed consent dates.
-Must be present in the data frame mentioned in the \code{data} element.}
+\item{icf_date_var}{Character name of the variable that contains informed consent dates.
+Must be present in the data frame mentioned in the \code{subject_level_dataset_name} element.}
 }
 \value{
 A list that could directly be used as input for the \code{basic_info} parameter

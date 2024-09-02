@@ -176,21 +176,21 @@ add_ids <- function(data_list) {
 #' @keywords internal
 set_basics <- function(data_list, basic_info = default_basic_info(), subjid_var) {
   # Extract subject level dataset from data_list
-  data <- data_list[[basic_info$data]]
+  data <- data_list[[basic_info$subject_level_dataset_name]]
 
   check_names(
     data,
-    var_names = c(basic_info$trt_start, basic_info$trt_end, basic_info$icf_date),
+    var_names = c(basic_info$trt_start_var, basic_info$trt_end_var, basic_info$icf_date_var),
     subjid_var = subjid_var
   )
-  check_date_type(data, c(basic_info$trt_start, basic_info$trt_end, basic_info$icf_date))
+  check_date_type(data, c(basic_info$trt_start_var, basic_info$trt_end_var, basic_info$icf_date_var))
 
   return(
     list(
       data = dplyr::rename(data, dplyr::all_of(c(subject_id = subjid_var))),
-      trt_start = basic_info$trt_start,
-      trt_end = basic_info$trt_end,
-      icf_date = basic_info$icf_date
+      trt_start = basic_info$trt_start_var,
+      trt_end = basic_info$trt_end_var,
+      icf_date = basic_info$icf_date_var
     )
   )
 }
