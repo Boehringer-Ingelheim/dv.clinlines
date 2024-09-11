@@ -27,7 +27,7 @@ A data frame including the following columns:
 \item{\code{detail_var}: Information about drug name and dosage.}
 \item{\code{set}: Name of the dataset the data origins from.}
 \item{\code{set_id}: Row ID's of the related dataset.}
-\item{\code{exp_dose}: Indicates whether the dose of the treatment has increased,
+\item{\code{dose_var}: Indicates whether the dose of the treatment has increased,
 decreased or stayed the same compared to the last dose at the same subject.}
 \item{\code{group}: Label for the event types.}
 }
@@ -51,9 +51,9 @@ The \code{mapping} list must contain the following elements:
 \item{\code{detail_var}: Character name of the variable that contains the treatment
 information. Must exist in the dataset mentioned in the \code{name} element.}
 \item{\code{label}: Free-text character label for the drug administration event.}
-\item{\code{exp_dose}: Character name of the variable that contains the dosis level
+\item{\code{dose_var}: Character name of the variable that contains the dosis level
 information. Must exist in the dataset mentioned in the \code{name} element.}
-\item{\code{exp_dose_unit}: Character name of the variable that contains the dosis
+\item{\code{dose_unit_var}: Character name of the variable that contains the dosis
 unit. Must exist in the dataset mentioned in the \code{name} element.}
 }
 }

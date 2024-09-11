@@ -33,12 +33,12 @@ test_that("set_event() returns a named list", {
 # Tests for set_drug_admin() ----
 test_that("set_drug_admin() returns a named list", {
   outcome <- set_drug_admin(
-    name = "exp", start_var = "start date", end_var = "end date",
-    label = "some label", detail_var = "some details", exp_dose = "dose", exp_dose_unit = "unit"
+    dataset_name = "exp", start_var = "start date", end_var = "end date",
+    label = "some label", detail_var = "some details", dose_var = "dose", dose_unit_var = "unit"
   )
   expected <- list(
-    name = "exp", start_var = "start date", end_var = "end date",
-    detail_var = "some details", label = "some label", exp_dose = "dose", exp_dose_unit = "unit"
+    dataset_name = "exp", start_var = "start date", end_var = "end date",
+    detail_var = "some details", label = "some label", dose_var = "dose", dose_unit_var = "unit"
   )
   expect_equal(outcome, expected)
 })

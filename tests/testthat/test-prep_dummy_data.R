@@ -56,13 +56,13 @@ test_that("default_mapping() returns a named list with default settings", {
 test_that("default_drug_admin() returns a named list with default settings", {
   outcome <- default_drug_admin()
   expected <- list(
-    name = "exp",
+    dataset_name = "exp",
     start_var = "EXSTDTC",
     end_var = "EXENDTC",
     detail_var = "EXTRT",
     label = "Drug Administration",
-    exp_dose = "EXDOSE",
-    exp_dose_unit = "EXDOSU"
+    dose_var = "EXDOSE",
+    dose_unit_var = "EXDOSU"
   )
 
   expect_equal(outcome, expected)

@@ -62,13 +62,13 @@ bmk_server <- function(input, output, session) {
       )
     ),
     drug_admin = list(
-      name = "exp",
+      dataset_name = "exp",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
       label = "Drug Administration",
-      exp_dose = "EXDOSE",
-      exp_dose_unit = "EXDOSU"
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
     ),
     subjid_var = "USUBJID",
     filter = list(

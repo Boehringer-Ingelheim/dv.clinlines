@@ -44,13 +44,13 @@ module_list <- list(
       adsl = list("Treatment Start" = set_event(start_dt_var = "TRTSDT"))
     ),
     drug_admin = set_drug_admin(
-      name = "adex",
+      dataset_name = "adex",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
       label = "Drug Administration",
-      exp_dose = "EXDOSE",
-      exp_dose_unit = "EXDOSU"
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
     ),
     receiver_id = "mod2"
   ),

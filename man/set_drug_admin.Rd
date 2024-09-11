@@ -5,17 +5,17 @@
 \title{Create a list to be assigned to the \code{drug_admin} parameter}
 \usage{
 set_drug_admin(
-  name,
+  dataset_name,
   start_var,
   end_var,
   detail_var,
   label,
-  exp_dose,
-  exp_dose_unit
+  dose_var,
+  dose_unit_var
 )
 }
 \arguments{
-\item{name}{Character name of the data frame that holds drug administration data
+\item{dataset_name}{Character name of the data frame that holds drug administration data
 (e.g. ex domain) as it is called in the \code{data_list} parameter.}
 
 \item{start_var}{Character name of the variable that contains the start dates
@@ -31,10 +31,10 @@ information. Must exist in the dataset mentioned in the name element.}
 
 \item{label}{Free-text character label for the drug administration event.}
 
-\item{exp_dose}{Character name of the variable that contains the dosis level
+\item{dose_var}{Character name of the variable that contains the dosis level
 information. Must exist in the dataset mentioned in the name element.}
 
-\item{exp_dose_unit}{Character name of the variable that contains the dosis unit.
+\item{dose_unit_var}{Character name of the variable that contains the dosis unit.
 Must exist in the dataset mentioned in the name element.}
 }
 \value{

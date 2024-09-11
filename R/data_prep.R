@@ -33,13 +33,13 @@ prep_data <- function(data_list,
     data_list <- append(data_list, list(no_da = empty_drug_admin))
 
     drug_admin <- list(
-      name = "no_da",
+      dataset_name = "no_da",
       start_var = "start",
       end_var = "end",
       detail_var = "details",
       label = "",
-      exp_dose = "dose",
-      exp_dose_unit = "unit"
+      dose_var = "dose",
+      dose_unit_var = "unit"
     )
   }
 
@@ -299,9 +299,9 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
 #'   \item{\code{detail_var}: Character name of the variable that contains the treatment
 #'     information. Must exist in the dataset mentioned in the \code{name} element.}
 #'   \item{\code{label}: Free-text character label for the drug administration event.}
-#'   \item{\code{exp_dose}: Character name of the variable that contains the dosis level
+#'   \item{\code{dose_var}: Character name of the variable that contains the dosis level
 #'     information. Must exist in the dataset mentioned in the \code{name} element.}
-#'   \item{\code{exp_dose_unit}: Character name of the variable that contains the dosis
+#'   \item{\code{dose_unit_var}: Character name of the variable that contains the dosis
 #'     unit. Must exist in the dataset mentioned in the \code{name} element.}
 #' }
 #'
@@ -314,7 +314,7 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
 #' \item{\code{detail_var}: Information about drug name and dosage.}
 #' \item{\code{set}: Name of the dataset the data origins from.}
 #' \item{\code{set_id}: Row ID's of the related dataset.}
-#' \item{\code{exp_dose}: Indicates whether the dose of the treatment has increased,
+#' \item{\code{dose_var}: Indicates whether the dose of the treatment has increased,
 #' decreased or stayed the same compared to the last dose at the same subject.}
 #'  \item{\code{group}: Label for the event types.}
 #' }
@@ -322,19 +322,19 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
 #' @keywords internal
 #'
 set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_var) {
-  col_list <- mapping[!names(mapping) %in% c("name")]
+  col_list <- mapping[!names(mapping) %in% c("dataset_name")]
 
   cols <- c(col_list$start_var, col_list$end_var, col_list$detail_var)
-  data <- data_list[[mapping$name]]
+  data <- data_list[[mapping$dataset_name]]
 
   data <- data %>%
     dplyr::group_by(get(subjid_var)) %>%
     dplyr::mutate(
       exp_dose = dplyr::case_when(
-        is.na(dplyr::lag(get(col_list$exp_dose))) ~ "start/equal",
-        dplyr::lag(get(col_list$exp_dose)) == get(col_list$exp_dose) ~ "start/equal",
-        dplyr::lag(get(col_list$exp_dose)) < get(col_list$exp_dose) ~ "increase",
-        dplyr::lag(get(col_list$exp_dose)) > get(col_list$exp_dose) ~ "decrease"
+        is.na(dplyr::lag(get(col_list$dose_var))) ~ "start/equal",
+        dplyr::lag(get(col_list$dose_var)) == get(col_list$dose_var) ~ "start/equal",
+        dplyr::lag(get(col_list$dose_var)) < get(col_list$dose_var) ~ "increase",
+        dplyr::lag(get(col_list$dose_var)) > get(col_list$dose_var) ~ "decrease"
       )
     ) %>%
     dplyr::ungroup()
@@ -346,8 +346,8 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
     dplyr::mutate(
       detail_var = paste(
         .data[[col_list$detail_var]], "-",
-        .data[[col_list$exp_dose]],
-        .data[[col_list$exp_dose_unit]]
+        .data[[col_list$dose_var]],
+        .data[[col_list$dose_unit_var]]
       )
     ) %>%
     dplyr::select(
@@ -358,9 +358,8 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
       start_exp = tidyselect::all_of(col_list$start_var),
       end_exp = tidyselect::all_of(col_list$end_var)
     ) %>%
-    dplyr::mutate(set = mapping$name) %>%
+    dplyr::mutate(set = mapping$dataset_name) %>%
     dplyr::rename(dplyr::all_of(c(subject_id = subjid_var)))
-
 
   return(interval_df)
 }

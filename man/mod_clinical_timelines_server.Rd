@@ -97,16 +97,16 @@ communication between main view and local filter module.
 \details{
 The \code{basic_info} list must contain the following elements:
 \itemize{
-\item{\code{data}: Character name of the subject level analysis dataset
+\item{\code{subject_level_dataset_name}: Character name of the subject level analysis dataset
 (e.g. "adsl", "dm") as it is called in the datalist that is provided to the
 \pkg{modulemanager}.}
-\item{\code{trt_start}: Character name of the variable that contains
+\item{\code{trt_start_var}: Character name of the variable that contains
 treatment start dates which must be present in the dataset mentioned in the
 \code{data} element.}
-\item{\code{trt_end}: Character name of the variable that contains
+\item{\code{trt_end_var}: Character name of the variable that contains
 treatment end dates which must be present in the dataset mentioned in the
 \code{data} element.}
-\item{\code{icf_date}: Character name of the variable that contains
+\item{\code{icf_date_var}: Character name of the variable that contains
 informed consent dates which must be present in the dataset mentioned in the
 \code{data} element.}
 }
@@ -162,7 +162,7 @@ the mapping list.
 
 If not NULL, the \code{drug_admin} list must contain the following elements:
 \itemize{
-\item{\code{name}: Character name of the dataset that holds drug administration data
+\item{\code{dataset_name}: Character name of the dataset that holds drug administration data
 (e.g. ex domain), as it is called in the datalist that is provided to the
 \pkg{modulemanager}.}
 \item{\code{start_var}: Character name of the variable that contains the start dates
@@ -174,9 +174,9 @@ If not NULL, the \code{drug_admin} list must contain the following elements:
 \item{\code{detail_var}: Character name of the variable that contains the treatment
 information. Must exist in the dataset mentioned in the \code{name} element.}
 \item{\code{label}: Free-text character label for the drug administration event.}
-\item{\code{exp_dose}: Character name of the variable that contains the dosis level
+\item{\code{dose_var}: Character name of the variable that contains the dosis level
 information. Must exist in the dataset mentioned in the \code{name} element.}
-\item{\code{exp_dose_unit}: Character name of the variable that contains the dosis
+\item{\code{dose_unit_var}: Character name of the variable that contains the dosis
 unit. Must exist in the dataset mentioned in the \code{name} element.}
 }
 
