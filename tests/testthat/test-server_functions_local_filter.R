@@ -1,6 +1,6 @@
 # Tests for get_filter_status() ----
-all <- c("filter_serious_AE", "filter_soc", "filter_pref_term", "filter_drug")
-chosen <- as.list(all[1:3])
+all <- c("filter_serious_ae", "filter_soc", "filter_pref_term", "filter_drug")
+chosen <- as.list(paste0(all[1:3], "_var"))
 outcome <- get_filter_status(all_filters = all, chosen_filters = chosen)
 
 test_that(
@@ -18,7 +18,7 @@ test_that(
 # Tests for set_pts() ----
 status <- list(soc = TRUE)
 filter <- list(
-  ae_filters = list(data_name = "adae", label = "Adverse Events", soc = "AESOC", pref_term = "AEDECOD")
+  ae_filters = list(dataset_name = "adae", label = "Adverse Events", soc_var = "AESOC", pref_term_var = "AEDECOD")
 )
 data <- prep_data(add_ids(prep_dummy_data()), filter = filter)
 socs <- unique(data[["AESOC"]])
@@ -60,8 +60,8 @@ test_that(
 
 
 # Tests for filter_data() ----
-status <- list(serious_AE = FALSE, soc = FALSE, pref_term = FALSE, drug_rel_AE = FALSE)
-input <- list(serious_AE = NULL, soc = NULL, pref_term = NULL, drug_rel_AE = NULL)
+status <- list(serious_ae = FALSE, soc = FALSE, pref_term = FALSE, drug_rel_ae = FALSE)
+input <- list(serious_ae = NULL, soc = NULL, pref_term = NULL, drug_rel_ae = NULL)
 data_list <- add_ids(prep_dummy_data())
 df <- prep_data(data_list)
 
@@ -70,12 +70,12 @@ test_that(
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     # One filter
-    status$serious_AE <- TRUE
-    input$serious_AE <- "Y"
+    status$serious_ae <- TRUE
+    input$serious_ae <- "Y"
     filter <- list(ae_filter = list(
-      data_name = "adae",
+      dataset_name = "adae",
       label = "Adverse Events",
-      serious_AE = "AESER"
+      serious_ae_var = "AESER"
     ))
     df_w_ae <- prep_data(data_list, filter = filter)
 
@@ -85,18 +85,18 @@ test_that(
     expect_equal(nrow(df_one_filter), nrow(df_filter_man))
 
     # All filters
-    status$soc <- status$pref_term <- status$drug_rel_AE <- TRUE
+    status$soc <- status$pref_term <- status$drug_rel_ae <- TRUE
     input$soc <- c("cl B", "cl C")
     input$pref_term <- c("dcd B.2.2.3.1", "dcd B.1.1.1.1", "dcd C.1.1.1.3")
-    input$drug_rel_AE <- "N"
+    input$drug_rel_ae <- "N"
     filter <- list(
       ae_filter = list(
-        data_name = "adae",
+        dataset_name = "adae",
         label = "Adverse Events",
-        soc = "AESOC",
-        serious_AE = "AESER",
-        pref_term = "AEDECOD",
-        drug_rel_AE = "AEREL"
+        soc_var = "AESOC",
+        serious_ae_var = "AESER",
+        pref_term_var = "AEDECOD",
+        drug_rel_ae_var = "AEREL"
       )
     )
 
@@ -105,7 +105,7 @@ test_that(
     df_all_filters <- filter_data(df_w_ae, status, input, filter)
     df_filter_man <- df_w_ae[which(
       df_w_ae$AESER == "Y" & df_w_ae$AESOC %in% input$soc & df_w_ae$AEDECOD %in% input$pref_term &
-        df_w_ae$AEREL == input$drug_rel_AE | df_w_ae$set != "adae"
+        df_w_ae$AEREL == input$drug_rel_ae | df_w_ae$set != "adae"
     ), ]
 
     expect_equal(nrow(df_all_filters), nrow(df_filter_man))
@@ -119,16 +119,16 @@ test_that(
   {
     # No filter
     status <- list(
-      serious_AE = FALSE,
+      serious_ae = FALSE,
       soc = FALSE,
       pref_term = FALSE,
-      drug_rel_AE = FALSE
+      drug_rel_ae = FALSE
     )
     input <- list(
-      serious_AE = NULL,
+      serious_ae = NULL,
       soc = NULL,
       pref_term = NULL,
-      drug_rel_AE = NULL
+      drug_rel_ae = NULL
     )
     filter <- NULL
     df_no_filter <- filter_data(df, status, input, filter)
@@ -143,7 +143,7 @@ test_that(
   "check_filters() throws an error when a non-existing filter is specified" %>%
     vdoc[["add_spec"]](c(specs$app_creation_specs$errors_def)),
   {
-    all <- c("serious_AE", "soc", "pref_term", "drug")
+    all <- c("serious_ae", "soc", "pref_term", "drug")
     chosen <- as.list(c(all[2:3], "serios"))
 
     expect_error(check_filters(chosen, all))

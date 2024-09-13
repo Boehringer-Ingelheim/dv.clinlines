@@ -32,7 +32,7 @@ mod_clinical_timelines_UI <- function(module_id, # nolint
   ac <- checkmate::makeAssertCollection()
   checkmate::assert_string(module_id, min.chars = 1, add = ac)
   checkmate::assert_list(filter_list, types = "character", null.ok = TRUE, add = ac)
-  checkmate::assert_subset(unlist(filter_list), choices = c("soc", "serious_AE", "pref_term", "drug_rel_AE"), add = ac)
+  checkmate::assert_subset(unlist(filter_list), choices = c("soc_var", "serious_ae_var", "pref_term_var", "drug_rel_ae_var"), add = ac)
   checkmate::assert_string(x_param, null.ok = TRUE, add = ac)
   checkmate::assert_subset(x_param, choices = c("date", "day"), add = ac)
   checkmate::reportAssertions(ac)
@@ -141,7 +141,7 @@ mod_clinical_timelines_server <- function(module_id,
   lapply(filter, function(x) {
     checkmate::assert_subset(
       names(unlist(x)),
-      choices = c("data_name", "label", "soc", "serious_AE", "pref_term", "drug_rel_AE")
+      choices = c("dataset_name", "label", "soc_var", "serious_ae_var", "pref_term_var", "drug_rel_ae_var")
     )
   })
   checkmate::assert_string(subjid_var, min.chars = 1, add = ac)
@@ -394,25 +394,25 @@ mod_clinical_timelines_server <- function(module_id,
 #' If not \code{NULL}, \code{filter} defines local filters.
 #' So far, the following filters for adverse events are available:
 #' \itemize{
-#'   \item{\code{serious_AE}: Filter for serious adverse events.}
-#'   \item{\code{soc}: Filter for system organ classes.}
-#'   \item{\code{pref_term}: Filter for preferred terms.}
-#'   \item{\code{drug_rel_AE}: Filter for drug related adverse events.}
+#'   \item{\code{serious_ae_var}: Filter for serious adverse events.}
+#'   \item{\code{soc_var}: Filter for system organ classes.}
+#'   \item{\code{pref_term_var}: Filter for preferred terms.}
+#'   \item{\code{drug_rel_ae_var}: Filter for drug related adverse events.}
 #' }
 #' The \code{filter} parameter must be a list that contains yet another list for adverse
 #' events filters, that is named \code{ae_filter}, and that holds the following elements:
 #' \itemize{
-#'   \item{\code{data_name}: Character name of the adverse events dataset. Must be
+#'   \item{\code{dataset_name}: Character name of the adverse events dataset. Must be
 #'     available in in the datalist that is provided to the \pkg{modulemanager}.}
 #'   \item{\code{label}: Character value which is exactly the same as the name for the
 #'   adverse events event defined in \code{mapping}.}
-#'   \item{\code{serious_AE}: Character name of the adverse events variable that contains
+#'   \item{\code{serious_ae_var}: Character name of the adverse events variable that contains
 #'     serious adverse events flags (Y/N).}
-#'   \item{\code{soc}: Character name of the adverse events variable that contains
+#'   \item{\code{soc_var}: Character name of the adverse events variable that contains
 #'     system organ classes.}
-#'   \item{\code{pref_term}: Character name of the adverse events variable that contains
+#'   \item{\code{pref_term_var}: Character name of the adverse events variable that contains
 #'     preferred terms.}
-#'   \item{\code{drug_rel_AE}: Character name of the adverse events variable that contains
+#'   \item{\code{drug_rel_ae_var}: Character name of the adverse events variable that contains
 #'     drug related (causality) flags (Y/N).}
 #' }
 #'
@@ -447,10 +447,14 @@ mod_clinical_timelines <- function(module_id,
   checkmate::assert_subset(names(default_plot_settings), choices = c("x_param", "start_day", "boxheight_val"), add = ac)
   checkmate::reportAssertions(ac)
 
+  # if (!is.null(filter$ae_filter)) {
+  #   names(filter$ae_filter) <- gsub("_var", "", names(filter$ae_filter))
+  # }
+
   mod <- list(
     ui = function(id) {
       # Extract available adverse event filter names
-      ae_filter <- !names(filter$ae_filter) %in% c("data_name", "label")
+      ae_filter <- !names(filter$ae_filter) %in% c("dataset_name", "label")
 
       # Select requested filters
       selected <- as.list(names(filter$ae_filter[ae_filter]))

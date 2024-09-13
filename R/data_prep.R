@@ -577,26 +577,26 @@ complete_events <- function(combined_data, trt_start, trt_end) {
 set_filter_dataset <- function(filter, data_list, mapping, subjid_var) {
   # Check for inconsistencies on modul definition side
   if (length(filter$ae_filter) < 3) stop("No ae_filter defined for Clinical Timelines!")
-  if (!filter$ae_filter$data_name %in% names(data_list)) {
+  if (!filter$ae_filter$dataset_name %in% names(data_list)) {
     msg <- paste0(
       "Clinical Timelines (dv.clinlines) cannot find ",
-      filter$ae_filter$data_name,
+      filter$ae_filter$dataset_name,
       " in your data list."
     )
 
     stop(msg)
   }
 
-  only_filters <- filter$ae_filter[!names(filter$ae_filter) %in% c("data_name", "label")]
+  only_filters <- filter$ae_filter[!names(filter$ae_filter) %in% c("dataset_name", "label")]
 
-  check_names(data_list[[filter$ae_filter$data_name]],
-    unlist(only_filters), # drop data_name
+  check_names(data_list[[filter$ae_filter$dataset_name]],
+    unlist(only_filters), # drop dataset_name
     subjid_var = subjid_var
   )
 
-  ae_info <- mapping[[filter$ae_filter$data_name]][[filter$ae_filter$label]]
+  ae_info <- mapping[[filter$ae_filter$dataset_name]][[filter$ae_filter$label]]
 
-  filter_dataset <- data_list[[filter$ae_filter$data_name]] %>%
+  filter_dataset <- data_list[[filter$ae_filter$dataset_name]] %>%
     dplyr::select(
       dplyr::all_of(
         c(

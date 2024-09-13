@@ -10,7 +10,7 @@ bmk_ui <- function(id) {
 
   shiny::fluidPage(
     shiny::bookmarkButton(),
-    mod_clinical_timelines_UI(ns("mod"), list("serious_AE", "soc", "pref_term", "drug_rel_AE"))
+    mod_clinical_timelines_UI(ns("mod"), list("serious_ae", "soc", "pref_term", "drug_rel_ae"))
   )
 }
 
@@ -73,12 +73,12 @@ bmk_server <- function(input, output, session) {
     subjid_var = "USUBJID",
     filter = list(
       ae_filter = list(
-        data_name = "adae",
+        dataset_name = "adae",
         label = "Adverse Events",
-        soc = "AESOC",
-        serious_AE = "AESER",
-        pref_term = "AEDECOD",
-        drug_rel_AE = "AEREL"
+        soc_var = "AESOC",
+        serious_ae_var = "AESER",
+        pref_term_var = "AEDECOD",
+        drug_rel_ae = "AEREL"
       )
     ),
     ms = 50

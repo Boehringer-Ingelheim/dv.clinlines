@@ -70,12 +70,12 @@ mock_with_mm_app <- function() {
       subjid_var = "USUBJID",
       filter = list(
         ae_filter = list(
-          data_name = "adae",
+          dataset_name = "adae",
           label = "Adverse Events",
-          soc = "AESOC",
-          serious_AE = "AESER",
-          pref_term = "AEDECOD",
-          drug_rel_AE = "AERELFLG"
+          soc_var = "AESOC",
+          serious_ae_var = "AESER",
+          pref_term_var = "AEDECOD",
+          drug_rel_ae_var = "AERELFLG"
         )
       ),
       ms = 50,

@@ -185,25 +185,25 @@ unit. Must exist in the dataset mentioned in the \code{name} element.}
 If not \code{NULL}, \code{filter} defines local filters.
 So far, the following filters for adverse events are available:
 \itemize{
-\item{\code{serious_AE}: Filter for serious adverse events.}
-\item{\code{soc}: Filter for system organ classes.}
-\item{\code{pref_term}: Filter for preferred terms.}
-\item{\code{drug_rel_AE}: Filter for drug related adverse events.}
+\item{\code{serious_ae_var}: Filter for serious adverse events.}
+\item{\code{soc_var}: Filter for system organ classes.}
+\item{\code{pref_term_var}: Filter for preferred terms.}
+\item{\code{drug_rel_ae_var}: Filter for drug related adverse events.}
 }
 The \code{filter} parameter must be a list that contains yet another list for adverse
 events filters, that is named \code{ae_filter}, and that holds the following elements:
 \itemize{
-\item{\code{data_name}: Character name of the adverse events dataset. Must be
+\item{\code{dataset_name}: Character name of the adverse events dataset. Must be
 available in in the datalist that is provided to the \pkg{modulemanager}.}
 \item{\code{label}: Character value which is exactly the same as the name for the
 adverse events event defined in \code{mapping}.}
-\item{\code{serious_AE}: Character name of the adverse events variable that contains
+\item{\code{serious_ae_var}: Character name of the adverse events variable that contains
 serious adverse events flags (Y/N).}
-\item{\code{soc}: Character name of the adverse events variable that contains
+\item{\code{soc_var}: Character name of the adverse events variable that contains
 system organ classes.}
-\item{\code{pref_term}: Character name of the adverse events variable that contains
+\item{\code{pref_term_var}: Character name of the adverse events variable that contains
 preferred terms.}
-\item{\code{drug_rel_AE}: Character name of the adverse events variable that contains
+\item{\code{drug_rel_ae_var}: Character name of the adverse events variable that contains
 drug related (causality) flags (Y/N).}
 }
 }

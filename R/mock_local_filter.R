@@ -9,7 +9,7 @@ mock_local_filter_UI <- function(request) { # nolint
     shiny::bookmarkButton(),
     mod_local_filter_UI(
       "filter",
-      list("soc", "pref_term", "drug_rel_AE", "serious_AE")
+      list("soc", "pref_term", "drug_rel_ae", "serious_ae")
     ),
     shiny::tableOutput("table")
   )
@@ -69,7 +69,7 @@ mock_local_filter_server <- function(input, output, session) {
   filtered_data <- mod_local_filter_server(
     "filter",
     filter = list(ae_filter = list(
-      data_name = "adae", soc = "AESOC", pref_term = "AEDECOD", drug_rel_AE = "AEREL", serious_AE = "AESER"
+      dataset_name = "adae", soc = "AESOC", pref_term = "AEDECOD", drug_rel_ae = "AEREL", serious_ae = "AESER"
     )),
     joined_data = initial_data,
     changed = shiny::reactive(1)
