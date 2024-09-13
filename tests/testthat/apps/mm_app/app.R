@@ -46,7 +46,7 @@ clinlines <- dv.clinlines::mod_clinical_timelines(
     )
   ),
   drug_admin = list(
-    datset_name = "exp",
+    dataset_name = "exp",
     start_var = "EXSTDTC",
     end_var = "EXENDTC",
     detail_var = "EXTRT",
@@ -57,7 +57,7 @@ clinlines <- dv.clinlines::mod_clinical_timelines(
   subjid_var = "USUBJID",
   filter = list(
     ae_filter = list(
-      datase_name = "adae",
+      dataset_name = "adae",
       label = "Adverse Events",
       soc_var = "AESOC",
       serious_ae_var = "AESER",

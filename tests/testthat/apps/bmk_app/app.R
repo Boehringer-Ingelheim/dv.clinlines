@@ -78,7 +78,7 @@ bmk_server <- function(input, output, session) {
         soc_var = "AESOC",
         serious_ae_var = "AESER",
         pref_term_var = "AEDECOD",
-        drug_rel_ae = "AEREL"
+        drug_rel_ae_var = "AEREL"
       )
     ),
     ms = 50
