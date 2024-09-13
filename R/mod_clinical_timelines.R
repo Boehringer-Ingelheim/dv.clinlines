@@ -32,7 +32,11 @@ mod_clinical_timelines_UI <- function(module_id, # nolint
   ac <- checkmate::makeAssertCollection()
   checkmate::assert_string(module_id, min.chars = 1, add = ac)
   checkmate::assert_list(filter_list, types = "character", null.ok = TRUE, add = ac)
-  checkmate::assert_subset(unlist(filter_list), choices = c("soc_var", "serious_ae_var", "pref_term_var", "drug_rel_ae_var"), add = ac)
+  checkmate::assert_subset(
+    unlist(filter_list),
+    choices = c("soc_var", "serious_ae_var", "pref_term_var", "drug_rel_ae_var"),
+    add = ac
+  )
   checkmate::assert_string(x_param, null.ok = TRUE, add = ac)
   checkmate::assert_subset(x_param, choices = c("date", "day"), add = ac)
   checkmate::reportAssertions(ac)
@@ -447,10 +451,6 @@ mod_clinical_timelines <- function(module_id,
   checkmate::assert_subset(names(default_plot_settings), choices = c("x_param", "start_day", "boxheight_val"), add = ac)
   checkmate::reportAssertions(ac)
 
-  # if (!is.null(filter$ae_filter)) {
-  #   names(filter$ae_filter) <- gsub("_var", "", names(filter$ae_filter))
-  # }
-
   mod <- list(
     ui = function(id) {
       # Extract available adverse event filter names
@@ -472,7 +472,8 @@ mod_clinical_timelines <- function(module_id,
         # afmm$dataset_metadata$name holds the name of the currently selected set of dataset (dv.manager)
         data_name = afmm$dataset_metadata$name,
         dataset_list = shiny::reactive({
-          afmm$filtered_dataset()[unique(c(basic_info$subject_level_dataset_name, names(mapping), drug_admin$dataset_name))]
+          needed_datasets <- unique(c(basic_info$subject_level_dataset_name, names(mapping), drug_admin$dataset_name))
+          afmm$filtered_dataset()[needed_datasets]
         }),
         basic_info = basic_info,
         mapping = mapping,

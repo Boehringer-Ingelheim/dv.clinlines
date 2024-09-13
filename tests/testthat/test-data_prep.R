@@ -114,7 +114,14 @@ test_that(
   {
     prepped_w_filter <- prep_data(
       data_list = data_list,
-      filter = list(ae_filter = list(dataset_name = "adae", label = "Adverse Events", soc_var = "AESOC", serious_ae_var = "AESER"))
+      filter = list(
+        ae_filter = list(
+          dataset_name = "adae",
+          label = "Adverse Events",
+          soc_var = "AESOC",
+          serious_ae_var = "AESER"
+        )
+      )
     )
 
     expected <- data_list$adae %>%
