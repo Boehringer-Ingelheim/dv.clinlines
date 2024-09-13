@@ -10,7 +10,7 @@ bmk_ui <- function(id) {
 
   shiny::fluidPage(
     shiny::bookmarkButton(),
-    mod_clinical_timelines_UI(ns("mod"), list("serious_ae", "soc", "pref_term", "drug_rel_ae"))
+    mod_clinical_timelines_UI(ns("mod"), list("serious_ae_var", "soc_var", "pref_term_var", "drug_rel_ae_var"))
   )
 }
 
