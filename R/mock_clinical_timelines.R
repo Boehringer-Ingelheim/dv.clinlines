@@ -13,7 +13,7 @@ mock_clinical_timelines_UI <- function(id = NULL) { # nolint
     shiny::tags$h1("BI Clinical Timelines", class = "mod-title"),
     mod_clinical_timelines_UI(
       ns("clin_tl"),
-      list("serious_ae", "soc", "pref_term", "drug_rel_ae")
+      list("serious_ae_var", "soc_var", "pref_term_var", "drug_rel_ae_var")
     )
   )
 
@@ -84,7 +84,7 @@ mock_clinical_timelines_server <- function(input, output, session) {
         soc_var = "AESOC",
         serious_ae_var = "AESER",
         pref_term_var = "AEDECOD",
-        drug_rel__var = "AEREL"
+        drug_rel_ae_var = "AEREL"
       )
     ),
     ms = 50
