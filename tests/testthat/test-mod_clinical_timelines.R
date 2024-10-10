@@ -102,6 +102,7 @@ test_that("local filters are resetted (only) after dataset switch" %>%
     "rel" = app$get_value(input = "mod-filter-drug_rel_ae")
   )
   app$set_inputs(selector = "dummyData2")
+  app$wait_for_idle(duration = 3000, timeout = 15000) # cope with slow update under GH actions
   actual_after <- c(
     "sae" = app$get_value(input = "mod-filter-serious_ae"),
     "soc" = app$get_value(input = "mod-filter-soc"),

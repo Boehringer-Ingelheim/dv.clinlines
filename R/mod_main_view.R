@@ -348,19 +348,11 @@ mod_main_view_server <- function(module_id, initial_data, changed,
         )
       })
 
-      # tell if there was a click on the main plot
-      clicked <- shiny::reactiveVal(FALSE)
-
-      shiny::observeEvent(input$plot_click, {
-        clicked(TRUE)
-      })
-
-
-      # Get unique subject identifier either from click
+      # Get unique subject identifier from click
       subject_id <- shiny::reactive({
-        shiny::req(input$plot_click, clicked())
+        shiny::req(input$plot_click)
 
-        # Get y position of the click & find the matching subject identifier
+        # Get y position of the click and find the matching subject identifier
         position <- round(input$plot_click$y)
         subject <- input$plot_click$domain$discrete_limits$y[[position]]
         subject
