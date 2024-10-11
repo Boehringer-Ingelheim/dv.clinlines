@@ -358,6 +358,22 @@ mod_main_view_server <- function(module_id, initial_data, changed,
         subject
       })
 
+      testing <- isTRUE(getOption("shiny.testmode"))
+      if (testing) {
+        subject_id_orig <- subject_id
+
+        trigger <- shiny::reactiveVal(0)
+        shiny::observeEvent(input[["debug_select_subject"]], trigger(trigger() + 1))
+        subject_id <- shiny::reactive({
+          res <- NULL
+          if (trigger()) {
+            res <- shiny::isolate(input[["debug_select_subject"]])
+          } else {
+            res <- subject_id_orig()
+          }
+          return(res)
+        })
+      }
 
       # For exchange with receiver module
       return(
