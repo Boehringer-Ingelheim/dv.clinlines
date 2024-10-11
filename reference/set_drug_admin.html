@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dv.clinlines</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,19 +60,19 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">set_drug_admin</span><span class="op">(</span></span>
-<span>  <span class="va">name</span>,</span>
+<span>  <span class="va">dataset_name</span>,</span>
 <span>  <span class="va">start_var</span>,</span>
 <span>  <span class="va">end_var</span>,</span>
 <span>  <span class="va">detail_var</span>,</span>
 <span>  <span class="va">label</span>,</span>
-<span>  <span class="va">exp_dose</span>,</span>
-<span>  <span class="va">exp_dose_unit</span></span>
+<span>  <span class="va">dose_var</span>,</span>
+<span>  <span class="va">dose_unit_var</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>name</dt>
+    <dl><dt>dataset_name</dt>
 <dd><p>Character name of the data frame that holds drug administration data
 (e.g. ex domain) as it is called in the <code>data_list</code> parameter.</p></dd>
 
@@ -98,12 +98,12 @@ information. Must exist in the dataset mentioned in the name element.</p></dd>
 <dd><p>Free-text character label for the drug administration event.</p></dd>
 
 
-<dt>exp_dose</dt>
+<dt>dose_var</dt>
 <dd><p>Character name of the variable that contains the dosis level
 information. Must exist in the dataset mentioned in the name element.</p></dd>
 
 
-<dt>exp_dose_unit</dt>
+<dt>dose_unit_var</dt>
 <dd><p>Character name of the variable that contains the dosis unit.
 Must exist in the dataset mentioned in the name element.</p></dd>
 

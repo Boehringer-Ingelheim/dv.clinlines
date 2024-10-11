@@ -12,7 +12,7 @@ one data frame that can be used to plot the clinical timelines without local fil
     
     <a class="navbar-brand me-2" href="../index.html">dv.clinlines</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,8 +81,8 @@ and further datasets with event specific data. Usually obtained from module mana
 
 <dt>basic_info</dt>
 <dd><p><code>[list(character(1)+)]</code></p>
-<p>A list of four elements: <code>data</code>, <code>trt_start</code>,
-<code>trt_end</code>, and <code>icf_date</code>. Assigns the name
+<p>A list of four elements: <code>subject_level_dataset_name</code>, <code>trt_start_var</code>,
+<code>trt_end_var</code>, and <code>icf_date_var</code>. Assigns the name
 of a subject level dataset and column names of treatment start and end, and informed
 consent variables.</p></dd>
 
@@ -122,16 +122,16 @@ timelines.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The <code>basic_info</code> list must contain the following elements:</p><ul><li><p><code>data</code>: Character name of the subject level analysis dataset
+    <p>The <code>basic_info</code> list must contain the following elements:</p><ul><li><p><code>subject_level_dataset_name</code>: Character name of the subject level analysis dataset
 (e.g. "adsl", "dm") as it is called in the datalist that is provided to the
 <span class="pkg">modulemanager</span>.</p></li>
-<li><p><code>trt_start</code>: Character name of the variable that contains
+<li><p><code>trt_start_var</code>: Character name of the variable that contains
 treatment start dates which must be present in the dataset mentioned in the
 <code>data</code> element.</p></li>
-<li><p><code>trt_end</code>: Character name of the variable that contains
+<li><p><code>trt_end_var</code>: Character name of the variable that contains
 treatment end dates which must be present in the dataset mentioned in the
 <code>data</code> element.</p></li>
-<li><p><code>icf_date</code>: Character name of the variable that contains
+<li><p><code>icf_date_var</code>: Character name of the variable that contains
 informed consent dates which must be present in the dataset mentioned in the
 <code>data</code> element.</p></li>
 </ul><p><br></p>
@@ -165,7 +165,7 @@ It is possible to define multiple events for one dataset, and multiple datasets 
 the mapping list.</p>
 <p><code>mapping = list(</code><br><code>  </code><code>&lt;data name&gt; = list</code>(<br><code>  </code><code>  </code><code>&lt;event label&gt; = list</code>(<br><code>  </code><code>  </code><code>  </code><code>start_dt_var = &lt;variable name&gt;,</code><br><code>  </code><code>  </code><code>  </code><code>end_dt_var = &lt;variable name or NULL&gt;,</code><br><code>  </code><code>  </code><code>  </code><code>start_dy_var = &lt;variable name or NULL&gt;,</code><br><code>  </code><code>  </code><code>  </code><code>end_dy_var = &lt;variable name or NULL&gt;,</code><br><code>  </code><code>  </code><code>  </code><code>detail_var = &lt;variable name or NULL&gt;</code><br><code>  </code><code>  </code><code>)</code><br><code>  </code><code>)</code><br><code>)</code></p>
 <p><br></p>
-<p>If not NULL, the <code>drug_admin</code> list must contain the following elements:</p><ul><li><p><code>name</code>: Character name of the dataset that holds drug administration data
+<p>If not NULL, the <code>drug_admin</code> list must contain the following elements:</p><ul><li><p><code>dataset_name</code>: Character name of the dataset that holds drug administration data
 (e.g. ex domain), as it is called in the datalist that is provided to the
 <span class="pkg">modulemanager</span>.</p></li>
 <li><p><code>start_var</code>: Character name of the variable that contains the start dates
@@ -177,28 +177,28 @@ the mapping list.</p>
 <li><p><code>detail_var</code>: Character name of the variable that contains the treatment
 information. Must exist in the dataset mentioned in the <code>name</code> element.</p></li>
 <li><p><code>label</code>: Free-text character label for the drug administration event.</p></li>
-<li><p><code>exp_dose</code>: Character name of the variable that contains the dosis level
+<li><p><code>dose_var</code>: Character name of the variable that contains the dosis level
 information. Must exist in the dataset mentioned in the <code>name</code> element.</p></li>
-<li><p><code>exp_dose_unit</code>: Character name of the variable that contains the dosis
+<li><p><code>dose_unit_var</code>: Character name of the variable that contains the dosis
 unit. Must exist in the dataset mentioned in the <code>name</code> element.</p></li>
 </ul><p><br></p>
 <p>If not <code>NULL</code>, <code>filter</code> defines local filters.
-So far, the following filters for adverse events are available:</p><ul><li><p><code>serious_AE</code>: Filter for serious adverse events.</p></li>
-<li><p><code>soc</code>: Filter for system organ classes.</p></li>
-<li><p><code>pref_term</code>: Filter for preferred terms.</p></li>
-<li><p><code>drug_rel_AE</code>: Filter for drug related adverse events.</p></li>
+So far, the following filters for adverse events are available:</p><ul><li><p><code>serious_ae_var</code>: Filter for serious adverse events.</p></li>
+<li><p><code>soc_var</code>: Filter for system organ classes.</p></li>
+<li><p><code>pref_term_var</code>: Filter for preferred terms.</p></li>
+<li><p><code>drug_rel_ae_var</code>: Filter for drug related adverse events.</p></li>
 </ul><p>The <code>filter</code> parameter must be a list that contains yet another list for adverse
-events filters, that is named <code>ae_filter</code>, and that holds the following elements:</p><ul><li><p><code>data_name</code>: Character name of the adverse events dataset. Must be
+events filters, that is named <code>ae_filter</code>, and that holds the following elements:</p><ul><li><p><code>dataset_name</code>: Character name of the adverse events dataset. Must be
 available in in the datalist that is provided to the <span class="pkg">modulemanager</span>.</p></li>
 <li><p><code>label</code>: Character value which is exactly the same as the name for the
 adverse events event defined in <code>mapping</code>.</p></li>
-<li><p><code>serious_AE</code>: Character name of the adverse events variable that contains
+<li><p><code>serious_ae_var</code>: Character name of the adverse events variable that contains
 serious adverse events flags (Y/N).</p></li>
-<li><p><code>soc</code>: Character name of the adverse events variable that contains
+<li><p><code>soc_var</code>: Character name of the adverse events variable that contains
 system organ classes.</p></li>
-<li><p><code>pref_term</code>: Character name of the adverse events variable that contains
+<li><p><code>pref_term_var</code>: Character name of the adverse events variable that contains
 preferred terms.</p></li>
-<li><p><code>drug_rel_AE</code>: Character name of the adverse events variable that contains
+<li><p><code>drug_rel_ae_var</code>: Character name of the adverse events variable that contains
 drug related (causality) flags (Y/N).</p></li>
 </ul></div>
 

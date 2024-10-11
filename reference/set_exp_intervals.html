@@ -12,7 +12,7 @@ to a consistent structure."><!-- mathjax --><script src="https://cdnjs.cloudflar
     
     <a class="navbar-brand me-2" href="../index.html">dv.clinlines</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,7 +93,7 @@ all datasets (default is USUBJID). Must be a single value.</p></dd>
 <li><p><code>detail_var</code>: Information about drug name and dosage.</p></li>
 <li><p><code>set</code>: Name of the dataset the data origins from.</p></li>
 <li><p><code>set_id</code>: Row ID's of the related dataset.</p></li>
-<li><p><code>exp_dose</code>: Indicates whether the dose of the treatment has increased,
+<li><p><code>dose_var</code>: Indicates whether the dose of the treatment has increased,
 decreased or stayed the same compared to the last dose at the same subject.</p></li>
 <li><p><code>group</code>: Label for the event types.</p></li>
 </ul></div>
@@ -111,9 +111,9 @@ decreased or stayed the same compared to the last dose at the same subject.</p><
 <li><p><code>detail_var</code>: Character name of the variable that contains the treatment
 information. Must exist in the dataset mentioned in the <code>name</code> element.</p></li>
 <li><p><code>label</code>: Free-text character label for the drug administration event.</p></li>
-<li><p><code>exp_dose</code>: Character name of the variable that contains the dosis level
+<li><p><code>dose_var</code>: Character name of the variable that contains the dosis level
 information. Must exist in the dataset mentioned in the <code>name</code> element.</p></li>
-<li><p><code>exp_dose_unit</code>: Character name of the variable that contains the dosis
+<li><p><code>dose_unit_var</code>: Character name of the variable that contains the dosis
 unit. Must exist in the dataset mentioned in the <code>name</code> element.</p></li>
 </ul></div>
 

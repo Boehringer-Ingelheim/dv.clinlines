@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dv.clinlines</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,29 +59,34 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">set_basic_info</span><span class="op">(</span><span class="va">data</span>, <span class="va">trt_start</span>, <span class="va">trt_end</span>, <span class="va">icf_date</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">set_basic_info</span><span class="op">(</span></span>
+<span>  <span class="va">subject_level_dataset_name</span>,</span>
+<span>  <span class="va">trt_start_var</span>,</span>
+<span>  <span class="va">trt_end_var</span>,</span>
+<span>  <span class="va">icf_date_var</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>data</dt>
+    <dl><dt>subject_level_dataset_name</dt>
 <dd><p>Character name of the subject level analysis dataset (e.g. "adsl", "dm")
 as it is called in the <code>data_list</code> parameter.</p></dd>
 
 
-<dt>trt_start</dt>
+<dt>trt_start_var</dt>
 <dd><p>Character name of the variable that contains treatment start dates.
-Must be present in the data frame mentioned in the <code>data</code> element.</p></dd>
+Must be present in the data frame mentioned in the <code>subject_level_dataset_name</code> element.</p></dd>
 
 
-<dt>trt_end</dt>
+<dt>trt_end_var</dt>
 <dd><p>Character name of the variable that contains treatment end dates.
-Must be present in the data frame mentioned in the <code>data</code> element.</p></dd>
+Must be present in the data frame mentioned in the <code>subject_level_dataset_name</code> element.</p></dd>
 
 
-<dt>icf_date</dt>
+<dt>icf_date_var</dt>
 <dd><p>Character name of the variable that contains informed consent dates.
-Must be present in the data frame mentioned in the <code>data</code> element.</p></dd>
+Must be present in the data frame mentioned in the <code>subject_level_dataset_name</code> element.</p></dd>
 
 </dl></div>
     <div class="section level2">

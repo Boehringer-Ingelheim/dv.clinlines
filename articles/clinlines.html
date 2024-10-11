@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dv.clinlines</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,13 +154,13 @@ If not already done, install {dv.manager} following the instructions in its pack
 <p><code>basic_info</code>: Assigns the name of a subject level dataset and variable names of treatment start and end, and informed consent variables. It must contain the following elements:</p>
 <ul>
 <li>
-<code>data</code>: Character name of the subject level analysis dataset (e.g. “adsl”, “dm”) as it is called in the data list that is provided to the modulemanager.</li>
+<code>subject_level_dataset_name</code>: Character name of the subject level analysis dataset (e.g. “adsl”, “dm”) as it is called in the data list that is provided to the modulemanager.</li>
 <li>
-<code>trt_start</code>: Character name of the variable that contains treatment start dates which must be present in the dataset mentioned in the <code>data</code> element.</li>
+<code>trt_start_var</code>: Character name of the variable that contains treatment start dates which must be present in the dataset mentioned in the <code>data</code> element.</li>
 <li>
-<code>trt_end</code>: Character name of the variable that contains treatment end dates which must be present in the dataset mentioned in the <code>data</code> element.</li>
+<code>trt_end_var</code>: Character name of the variable that contains treatment end dates which must be present in the dataset mentioned in the <code>data</code> element.</li>
 <li>
-<code>icf_date</code>: Character name of the variable that contains informed consent dates which must be present in the dataset mentioned in the <code>data</code> element.</li>
+<code>icf_date_var</code>: Character name of the variable that contains informed consent dates which must be present in the dataset mentioned in the <code>data</code> element.</li>
 </ul>
 </li>
 <li>
@@ -176,13 +176,13 @@ If not already done, install {dv.manager} following the instructions in its pack
 <li>
 <p><code>drug_admin</code>: A list of named character strings that describes which variables to use to display drug administration events. If not NULL, it must contain the following elements:</p>
 <ul>
-<li><p><code>name</code>: Character name of the dataset that holds drug administration data (e.g. ex domain), as it is called in the datalist that is provided to the modulemanager.</p></li>
+<li><p><code>dataset_name</code>: Character name of the dataset that holds drug administration data (e.g. ex domain), as it is called in the datalist that is provided to the modulemanager.</p></li>
 <li><p><code>start_var</code>: Character name of the variable that contains the start dates (e.g. exposure start dates) which must be present in the dataset mentioned in the name element.</p></li>
 <li><p><code>end_var</code>: Character name of the variable that contains the end dates (e.g. exposure end dates) which must be present in the dataset mentioned in the name element.</p></li>
 <li><p><code>detail_var</code>: Character name of the variable that contains the treatment information. Must exist in the dataset mentioned in the name element.</p></li>
 <li><p><code>label</code>: Free-text character label for the drug administration event.</p></li>
-<li><p><code>exp_dose</code>: Character name of the variable that contains the dosis level information. Must exist in the dataset mentioned in the name element.</p></li>
-<li><p><code>exp_dose_unit</code>: Character name of the variable that contains the dosis unit. Must exist in the dataset mentioned in the name element.</p></li>
+<li><p><code>dose_var</code>: Character name of the variable that contains the dosis level information. Must exist in the dataset mentioned in the name element.</p></li>
+<li><p><code>dose_unit_var</code>: Character name of the variable that contains the dosis unit. Must exist in the dataset mentioned in the name element.</p></li>
 </ul>
 </li>
 </ul>
@@ -199,10 +199,10 @@ If not already done, install {dv.manager} following the instructions in its pack
 <span>  <span class="st">"Clinical Timelines"</span> <span class="op">=</span> <span class="fu">dv.clinlines</span><span class="fu">::</span><span class="fu"><a href="../reference/mod_clinical_timelines.html">mod_clinical_timelines</a></span><span class="op">(</span></span>
 <span>    module_id <span class="op">=</span> <span class="st">"mod1"</span>,</span>
 <span>    basic_info <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      data <span class="op">=</span> <span class="st">"adsl"</span>,</span>
-<span>      trt_start <span class="op">=</span> <span class="st">"TRTSDT"</span>,</span>
-<span>      trt_end <span class="op">=</span> <span class="st">"TRTEDT"</span>,</span>
-<span>      icf_date <span class="op">=</span> <span class="st">"RFICDT"</span></span>
+<span>      subject_level_dataset_name <span class="op">=</span> <span class="st">"adsl"</span>,</span>
+<span>      trt_start_var <span class="op">=</span> <span class="st">"TRTSDT"</span>,</span>
+<span>      trt_end_var <span class="op">=</span> <span class="st">"TRTEDT"</span>,</span>
+<span>      icf_date_var <span class="op">=</span> <span class="st">"RFICDT"</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>      adsl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -225,13 +225,13 @@ If not already done, install {dv.manager} following the instructions in its pack
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    drug_admin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"adex"</span>,</span>
+<span>      dataset_name <span class="op">=</span> <span class="st">"adex"</span>,</span>
 <span>      start_var <span class="op">=</span> <span class="st">"EXSTDTC"</span>,</span>
 <span>      end_var <span class="op">=</span> <span class="st">"EXENDTC"</span>,</span>
 <span>      detail_var <span class="op">=</span> <span class="st">"EXTRT"</span>,</span>
 <span>      label <span class="op">=</span> <span class="st">"Drug Administration"</span>,</span>
-<span>      exp_dose <span class="op">=</span> <span class="st">"EXDOSE"</span>,</span>
-<span>      exp_dose_unit <span class="op">=</span> <span class="st">"EXDOSU"</span></span>
+<span>      dose_var <span class="op">=</span> <span class="st">"EXDOSE"</span>,</span>
+<span>      dose_unit_var <span class="op">=</span> <span class="st">"EXDOSU"</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -249,10 +249,10 @@ For a demonstration, we defined the same module as above again. But this time, w
 <span>  <span class="st">"Clinical Timelines"</span> <span class="op">=</span> <span class="fu"><a href="../reference/mod_clinical_timelines.html">mod_clinical_timelines</a></span><span class="op">(</span></span>
 <span>    module_id <span class="op">=</span> <span class="st">"mod1"</span>,</span>
 <span>    basic_info <span class="op">=</span> <span class="fu"><a href="../reference/set_basic_info.html">set_basic_info</a></span><span class="op">(</span></span>
-<span>      data <span class="op">=</span> <span class="st">"adsl"</span>,</span>
-<span>      trt_start <span class="op">=</span> <span class="st">"TRTSDT"</span>,</span>
-<span>      trt_end <span class="op">=</span> <span class="st">"TRTEDT"</span>,</span>
-<span>      icf_date <span class="op">=</span> <span class="st">"RFICDT"</span></span>
+<span>      subject_level_dataset_name <span class="op">=</span> <span class="st">"adsl"</span>,</span>
+<span>      trt_start_var <span class="op">=</span> <span class="st">"TRTSDT"</span>,</span>
+<span>      trt_end_var <span class="op">=</span> <span class="st">"TRTEDT"</span>,</span>
+<span>      icf_date_var <span class="op">=</span> <span class="st">"RFICDT"</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>      adsl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -267,13 +267,13 @@ For a demonstration, we defined the same module as above again. But this time, w
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    drug_admin <span class="op">=</span> <span class="fu"><a href="../reference/set_drug_admin.html">set_drug_admin</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"adex"</span>,</span>
+<span>      dataset_name <span class="op">=</span> <span class="st">"adex"</span>,</span>
 <span>      start_var <span class="op">=</span> <span class="st">"EXSTDTC"</span>,</span>
 <span>      end_var <span class="op">=</span> <span class="st">"EXENDTC"</span>,</span>
 <span>      detail_var <span class="op">=</span> <span class="st">"EXTRT"</span>,</span>
 <span>      label <span class="op">=</span> <span class="st">"Drug Administration"</span>,</span>
-<span>      exp_dose <span class="op">=</span> <span class="st">"EXDOSE"</span>,</span>
-<span>      exp_dose_unit <span class="op">=</span> <span class="st">"EXDOSU"</span></span>
+<span>      dose_var <span class="op">=</span> <span class="st">"EXDOSE"</span>,</span>
+<span>      dose_unit_var <span class="op">=</span> <span class="st">"EXDOSU"</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -333,10 +333,10 @@ For a demonstration, we defined the same module as above again. But this time, w
 <span>  <span class="st">"Clinical Timelines"</span> <span class="op">=</span> <span class="fu"><a href="../reference/mod_clinical_timelines.html">mod_clinical_timelines</a></span><span class="op">(</span></span>
 <span>    module_id <span class="op">=</span> <span class="st">"mod1"</span>,</span>
 <span>    basic_info <span class="op">=</span> <span class="fu"><a href="../reference/set_basic_info.html">set_basic_info</a></span><span class="op">(</span></span>
-<span>      data <span class="op">=</span> <span class="st">"adsl"</span>,</span>
-<span>      trt_start <span class="op">=</span> <span class="st">"TRTSDT"</span>,</span>
-<span>      trt_end <span class="op">=</span> <span class="st">"TRTEDT"</span>,</span>
-<span>      icf_date <span class="op">=</span> <span class="st">"RFICDT"</span></span>
+<span>      subject_level_dataset_name <span class="op">=</span> <span class="st">"adsl"</span>,</span>
+<span>      trt_start_var <span class="op">=</span> <span class="st">"TRTSDT"</span>,</span>
+<span>      trt_end_var <span class="op">=</span> <span class="st">"TRTEDT"</span>,</span>
+<span>      icf_date_var <span class="op">=</span> <span class="st">"RFICDT"</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>      adsl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -351,13 +351,13 @@ For a demonstration, we defined the same module as above again. But this time, w
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    drug_admin <span class="op">=</span> <span class="fu"><a href="../reference/set_drug_admin.html">set_drug_admin</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"adex"</span>,</span>
+<span>      dataset_name <span class="op">=</span> <span class="st">"adex"</span>,</span>
 <span>      start_var <span class="op">=</span> <span class="st">"EXSTDTC"</span>,</span>
 <span>      end_var <span class="op">=</span> <span class="st">"EXENDTC"</span>,</span>
 <span>      detail_var <span class="op">=</span> <span class="st">"EXTRT"</span>,</span>
 <span>      label <span class="op">=</span> <span class="st">"Drug Administration"</span>,</span>
-<span>      exp_dose <span class="op">=</span> <span class="st">"EXDOSE"</span>,</span>
-<span>      exp_dose_unit <span class="op">=</span> <span class="st">"EXDOSU"</span></span>
+<span>      dose_var <span class="op">=</span> <span class="st">"EXDOSE"</span>,</span>
+<span>      dose_unit_var <span class="op">=</span> <span class="st">"EXDOSU"</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>

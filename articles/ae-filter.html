@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dv.clinlines</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,28 +83,28 @@
 <p>{dv.clinlines} offers optional local filters for adverse event data which will be added to the bottom of the sidebar. The following filters are available:</p>
 <ul>
 <li>
-<code>serious_AE</code>: Offers the possibility to filter adverse events to show only serious/non-serious adverse events.</li>
+<code>serious_ae_var</code>: Offers the possibility to filter adverse events to show only serious/non-serious adverse events.</li>
 <li>
-<code>soc</code>: Offers the possibility to filter adverse events by System Organ Class.</li>
+<code>soc_var</code>: Offers the possibility to filter adverse events by System Organ Class.</li>
 <li>
-<code>pref_term</code>: Offers the possibility to filter adverse events by Preferred Term.</li>
+<code>pref_term_var</code>: Offers the possibility to filter adverse events by Preferred Term.</li>
 <li>
-<code>drug_rel_AE</code>: Offers the possibility to filter adverse events to show only drug related/non drug related adverse events.</li>
+<code>drug_rel_ae_var</code>: Offers the possibility to filter adverse events to show only drug related/non drug related adverse events.</li>
 </ul>
 <p>Activate local filters by adding their names through a list to the <code>filter</code> parameter of the <code><a href="../reference/mod_clinical_timelines.html">mod_clinical_timelines()</a></code> call. Use <code>NULL</code> (the default) to turn all filters down. To specify one or multiple local adverse event filters, you need to provide a list with the following elements:</p>
 <ul>
 <li>
-<code>data_name</code>: Character name of the adverse events dataset of your loaded data list. Must be a single value. (Mandatory.)</li>
+<code>dataset_name</code>: Character name of the adverse events dataset of your loaded data list. Must be a single value. (Mandatory.)</li>
 <li>
 <code>label</code>: Character value which is exactly the same as the name for the adverse events event defined in the <code>mapping</code> parameter of <code><a href="../reference/mod_clinical_timelines.html">mod_clinical_timelines()</a></code>.</li>
 <li>
-<code>serious_AE</code>: Character name of the variable that holds Y/N flags for serious adverse events. Must be a single value.</li>
+<code>serious_ae_var</code>: Character name of the variable that holds Y/N flags for serious adverse events. Must be a single value.</li>
 <li>
-<code>soc</code>: Character name of the variable that holds system organ classes. Must be a single value.</li>
+<code>soc_var</code>: Character name of the variable that holds system organ classes. Must be a single value.</li>
 <li>
-<code>pref_term</code>: Character name of the variable that holds preferred terms. Must be a single value.</li>
+<code>pref_term_var</code>: Character name of the variable that holds preferred terms. Must be a single value.</li>
 <li>
-<code>drug_rel_AE</code>: Character name of the variable that holds Y/N flags for causality. Must be a single value.</li>
+<code>drug_rel_ae_var</code>: Character name of the variable that holds Y/N flags for causality. Must be a single value.</li>
 </ul>
 <p>Wrap this list with another list. The inner list must be named <code>ae_filter</code>. The outer list should be assigned to the <code>filter</code> parameter of <code><a href="../reference/mod_clinical_timelines.html">mod_clinical_timelines()</a></code>.</p>
 <p>Find an example of the code structure below:</p>
@@ -115,12 +115,12 @@
 <span><span class="co"># To activate all local adverse event filters</span></span>
 <span><span class="va">filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  ae_filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    data_name <span class="op">=</span> <span class="st">"adae"</span>, <span class="co"># mandatory - as defined in the data list</span></span>
+<span>    dataset_name <span class="op">=</span> <span class="st">"adae"</span>, <span class="co"># mandatory - as defined in the data list</span></span>
 <span>    label <span class="op">=</span> <span class="st">"Adverse Events"</span>, <span class="co"># mandatory - as defined in the mapping parameter</span></span>
-<span>    soc <span class="op">=</span> <span class="st">"AESOC"</span>,</span>
-<span>    serious_AE <span class="op">=</span> <span class="st">"AESER"</span>,</span>
-<span>    pref_term <span class="op">=</span> <span class="st">"AEDECOD"</span>,</span>
-<span>    drug_rel_AE <span class="op">=</span> <span class="st">"AEREL"</span></span>
+<span>    soc_var <span class="op">=</span> <span class="st">"AESOC"</span>,</span>
+<span>    serious_ae_var <span class="op">=</span> <span class="st">"AESER"</span>,</span>
+<span>    pref_term_var <span class="op">=</span> <span class="st">"AEDECOD"</span>,</span>
+<span>    drug_rel_ae_var <span class="op">=</span> <span class="st">"AEREL"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>For multiple filters, filtering will be performed using AND condition. <br><br> The code below shows a module list containing a Clinical Timelines module with only three local adverse event filters:</p>
@@ -129,10 +129,10 @@
 <span>  <span class="st">"Clinical Timelines"</span> <span class="op">=</span> <span class="fu"><a href="../reference/mod_clinical_timelines.html">mod_clinical_timelines</a></span><span class="op">(</span></span>
 <span>    module_id <span class="op">=</span> <span class="st">"mod1"</span>,</span>
 <span>    basic_info <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      data <span class="op">=</span> <span class="st">"adsl"</span>,</span>
-<span>      trt_start <span class="op">=</span> <span class="st">"TRTSDT"</span>,</span>
-<span>      trt_end <span class="op">=</span> <span class="st">"TRTEDT"</span>,</span>
-<span>      icf_date <span class="op">=</span> <span class="st">"RFICDT"</span></span>
+<span>      subject_level_dataset_name <span class="op">=</span> <span class="st">"adsl"</span>,</span>
+<span>      trt_start_var <span class="op">=</span> <span class="st">"TRTSDT"</span>,</span>
+<span>      trt_end_var <span class="op">=</span> <span class="st">"TRTEDT"</span>,</span>
+<span>      icf_date_var <span class="op">=</span> <span class="st">"RFICDT"</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    mapping <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>      adsl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -162,22 +162,22 @@
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    drug_admin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"exp"</span>,</span>
+<span>      dataset_name <span class="op">=</span> <span class="st">"exp"</span>,</span>
 <span>      start_var <span class="op">=</span> <span class="st">"EXSTDTC"</span>,</span>
 <span>      end_var <span class="op">=</span> <span class="st">"EXENDTC"</span>,</span>
 <span>      detail_var <span class="op">=</span> <span class="st">"EXTRT"</span>,</span>
 <span>      label <span class="op">=</span> <span class="st">"Drug Administration"</span>,</span>
-<span>      exp_dose <span class="op">=</span> <span class="st">"EXDOSE"</span>,</span>
-<span>      exp_dose_unit <span class="op">=</span> <span class="st">"EXDOSU"</span></span>
+<span>      dose_var <span class="op">=</span> <span class="st">"EXDOSE"</span>,</span>
+<span>      dose_unit_var <span class="op">=</span> <span class="st">"EXDOSU"</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>      ae_filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>        data_name <span class="op">=</span> <span class="st">"adae"</span>,</span>
+<span>        dataset_name <span class="op">=</span> <span class="st">"adae"</span>,</span>
 <span>        label <span class="op">=</span> <span class="st">"Adverse Events"</span>,</span>
-<span>        soc <span class="op">=</span> <span class="st">"AESOC"</span>,</span>
-<span>        serious_AE <span class="op">=</span> <span class="st">"AESER"</span>,</span>
-<span>        drug_rel_AE <span class="op">=</span> <span class="st">"AEREL"</span></span>
-<span>        <span class="co"># Note: The pref_term filter is not specified in this example.</span></span>
+<span>        soc_var <span class="op">=</span> <span class="st">"AESOC"</span>,</span>
+<span>        serious_ae_var <span class="op">=</span> <span class="st">"AESER"</span>,</span>
+<span>        drug_rel_ae_var <span class="op">=</span> <span class="st">"AEREL"</span></span>
+<span>        <span class="co"># Note: The pref_term_var filter is not specified in this example.</span></span>
 <span>      <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
