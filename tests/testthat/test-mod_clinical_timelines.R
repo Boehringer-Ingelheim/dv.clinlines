@@ -87,26 +87,27 @@ test_that("local filters are resetted (only) after dataset switch" %>%
   )
 
   # Set local filters
-  app$set_inputs(`mod-filter-serious_AE` = my_filters[["sae"]])
+  app$set_inputs(`mod-filter-serious_ae` = my_filters[["sae"]])
   app$set_inputs(`mod-filter-soc` = my_filters[["soc"]])
   app$wait_for_idle()
   app$set_inputs(`mod-filter-pref_term` = my_filters[["pt"]])
-  app$set_inputs(`mod-filter-drug_rel_AE` = my_filters[["rel"]])
+  app$set_inputs(`mod-filter-drug_rel_ae` = my_filters[["rel"]])
   app$wait_for_idle()
 
   # Dataset switch
   actual_before <- c(
-    "sae" = app$get_value(input = "mod-filter-serious_AE"),
+    "sae" = app$get_value(input = "mod-filter-serious_ae"),
     "soc" = app$get_value(input = "mod-filter-soc"),
     "pt" = app$get_value(input = "mod-filter-pref_term"),
-    "rel" = app$get_value(input = "mod-filter-drug_rel_AE")
+    "rel" = app$get_value(input = "mod-filter-drug_rel_ae")
   )
   app$set_inputs(selector = "dummyData2")
+  app$wait_for_idle(duration = 3000, timeout = 15000) # cope with slow update under GH actions
   actual_after <- c(
-    "sae" = app$get_value(input = "mod-filter-serious_AE"),
+    "sae" = app$get_value(input = "mod-filter-serious_ae"),
     "soc" = app$get_value(input = "mod-filter-soc"),
     "pt" = app$get_value(input = "mod-filter-pref_term"),
-    "rel" = app$get_value(input = "mod-filter-drug_rel_AE")
+    "rel" = app$get_value(input = "mod-filter-drug_rel_ae")
   )
 
   # Tests
@@ -153,7 +154,7 @@ test_that("informative messages are visible in case a plot cannot be displayed" 
 
   # Set inputs
   app$set_inputs(`mod-main_view-filter_event` = "Adverse Events")
-  app$set_inputs(`mod-filter-serious_AE` = "Y")
+  app$set_inputs(`mod-filter-serious_ae` = "Y")
   app$wait_for_idle()
 
   # Test
@@ -174,10 +175,10 @@ test_that("bookmarking works as intended" %>% vdoc[["add_spec"]](specs$integrati
   app$set_inputs(`mod-main_view-x_scale` = "date")
   app$set_inputs(`mod-main_view-day_range` = c(0, 190))
   app$set_inputs(`mod-main_view-filter_event` = "Adverse Events")
-  app$set_inputs(`mod-filter-serious_AE` = "N")
+  app$set_inputs(`mod-filter-serious_ae` = "N")
   app$set_inputs(`mod-filter-soc` = "CARDIAC DISORDERS")
   app$set_inputs(`mod-filter-pref_term` = "ATRIOVENTRICULAR BLOCK SECOND DEGREE")
-  app$set_inputs(`mod-filter-drug_rel_AE` = "Y")
+  app$set_inputs(`mod-filter-drug_rel_ae` = "Y")
   app$wait_for_idle()
 
   # Bookmarked app

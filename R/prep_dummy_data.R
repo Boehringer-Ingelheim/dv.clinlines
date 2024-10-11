@@ -76,10 +76,10 @@ prep_dummy_data <- function(n = 200) {
 default_basic_info <- function() {
   return(
     set_basic_info(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     )
   )
 }
@@ -134,13 +134,13 @@ default_mapping <- function() {
 default_drug_admin <- function() {
   return(
     list(
-      name = "exp",
+      dataset_name = "exp",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
       label = "Drug Administration",
-      exp_dose = "EXDOSE",
-      exp_dose_unit = "EXDOSU"
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
     )
   )
 }

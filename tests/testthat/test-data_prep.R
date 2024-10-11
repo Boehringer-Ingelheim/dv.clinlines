@@ -51,10 +51,10 @@ test_that(
       data_list = data_list,
       filter = list(
         ae_filter = list(
-          data_name = "adae",
+          dataset_name = "adae",
           label = "Adverse Events",
-          soc = "AESOC",
-          serious_AE = "AESER"
+          soc_var = "AESOC",
+          serious_ae_var = "AESER"
         )
       )
     )
@@ -114,7 +114,14 @@ test_that(
   {
     prepped_w_filter <- prep_data(
       data_list = data_list,
-      filter = list(ae_filter = list(data_name = "adae", label = "Adverse Events", soc = "AESOC", serious_AE = "AESER"))
+      filter = list(
+        ae_filter = list(
+          dataset_name = "adae",
+          label = "Adverse Events",
+          soc_var = "AESOC",
+          serious_ae_var = "AESER"
+        )
+      )
     )
 
     expected <- data_list$adae %>%
@@ -134,10 +141,10 @@ test_that("set_basics() returns a list with fixed names", {
   basic_list <- set_basics(
     data_list = list(adsl = df),
     basic_info = list(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     ),
     subjid_var = "USUBJID"
   )
@@ -276,12 +283,12 @@ test_that(
     filter_data <- set_filter_dataset(
       filter = list(
         ae_filter = list(
-          data_name = "adae",
+          dataset_name = "adae",
           label = "Adverse Events",
-          soc = "AESOC",
-          serious_AE = "AESER",
-          pref_term = "AEDECOD",
-          drug_rel_AE = "AEREL"
+          soc_var = "AESOC",
+          serious_ae_var = "AESER",
+          pref_term_var = "AEDECOD",
+          drug_rel_ae_var = "AEREL"
         )
       ),
       data_list = data_list,
@@ -343,7 +350,7 @@ test_that(
   {
     expect_error(
       set_filter_dataset(
-        filter = list(ae_filter = list(data_name = "adae")),
+        filter = list(ae_filter = list(dataset_name = "adae")),
         data_list = data_list,
         mapping = default_mapping(),
         subjid_var = "USUBJID"
@@ -352,7 +359,7 @@ test_that(
 
     expect_error(
       set_filter_dataset(
-        filter = list(ae_filter = list(data_name = "xyz", soc = "AESOC", label = "Adverse Events")),
+        filter = list(ae_filter = list(dataset_name = "xyz", soc_var = "AESOC", label = "Adverse Events")),
         data_list = data_list,
         mapping = default_mapping(),
         subjid_var = "USUBJID"

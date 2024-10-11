@@ -2,22 +2,27 @@
 #'
 #' Helper function to support configuration of a Clinical Timelines module.
 #'
-#' @param data Character name of the subject level analysis dataset (e.g. "adsl", "dm")
+#' @param subject_level_dataset_name Character name of the subject level analysis dataset (e.g. "adsl", "dm")
 #'   as it is called in the \code{data_list} parameter.
-#' @param trt_start Character name of the variable that contains treatment start dates.
-#'   Must be present in the data frame mentioned in the \code{data} element.
-#' @param trt_end Character name of the variable that contains treatment end dates.
-#'   Must be present in the data frame mentioned in the \code{data} element.
-#' @param icf_date Character name of the variable that contains informed consent dates.
-#'   Must be present in the data frame mentioned in the \code{data} element.
+#' @param trt_start_var Character name of the variable that contains treatment start dates.
+#'   Must be present in the data frame mentioned in the \code{subject_level_dataset_name} element.
+#' @param trt_end_var Character name of the variable that contains treatment end dates.
+#'   Must be present in the data frame mentioned in the \code{subject_level_dataset_name} element.
+#' @param icf_date_var Character name of the variable that contains informed consent dates.
+#'   Must be present in the data frame mentioned in the \code{subject_level_dataset_name} element.
 #'
 #' @return A list that could directly be used as input for the \code{basic_info} parameter
 #'   of \code{mod_clinical_timelines()} and \code{mod_clinical_timelines_server()}.
 #' @export
 #'
-set_basic_info <- function(data, trt_start, trt_end, icf_date) {
+set_basic_info <- function(subject_level_dataset_name, trt_start_var, trt_end_var, icf_date_var) {
   return(
-    list(data = data, trt_start = trt_start, trt_end = trt_end, icf_date = icf_date)
+    list(
+      subject_level_dataset_name = subject_level_dataset_name,
+      trt_start_var = trt_start_var,
+      trt_end_var = trt_end_var,
+      icf_date_var = icf_date_var
+    )
   )
 }
 
@@ -70,7 +75,7 @@ set_event <- function(start_dt_var,
 #'
 #' Helper function to support configuration of a Clinical Timelines module.
 #'
-#' @param name Character name of the data frame that holds drug administration data
+#' @param dataset_name Character name of the data frame that holds drug administration data
 #'   (e.g. ex domain) as it is called in the \code{data_list} parameter.
 #' @param start_var Character name of the variable that contains the start dates
 #'   (e.g. exposure start dates). Must be present in the data frame mentioned in the name
@@ -81,31 +86,31 @@ set_event <- function(start_dt_var,
 #' @param detail_var Character name of the variable that contains the treatment
 #' information. Must exist in the dataset mentioned in the name element.
 #' @param label Free-text character label for the drug administration event.
-#' @param exp_dose Character name of the variable that contains the dosis level
+#' @param dose_var Character name of the variable that contains the dosis level
 #' information. Must exist in the dataset mentioned in the name element.
-#' @param exp_dose_unit Character name of the variable that contains the dosis unit.
+#' @param dose_unit_var Character name of the variable that contains the dosis unit.
 #' Must exist in the dataset mentioned in the name element.
 #'
 #' @return A list that could directly be used as input for the \code{drug_admin} parameter
 #'   of \code{mod_clinical_timelines()} and \code{mod_clinical_timelines_server()}.
 #' @export
 #'
-set_drug_admin <- function(name,
+set_drug_admin <- function(dataset_name,
                            start_var,
                            end_var,
                            detail_var,
                            label,
-                           exp_dose,
-                           exp_dose_unit) {
+                           dose_var,
+                           dose_unit_var) {
   return(
     list(
-      name = name,
+      dataset_name = dataset_name,
       start_var = start_var,
       end_var = end_var,
       detail_var = detail_var,
       label = label,
-      exp_dose = exp_dose,
-      exp_dose_unit = exp_dose_unit
+      dose_var = dose_var,
+      dose_unit_var = dose_unit_var
     )
   )
 }

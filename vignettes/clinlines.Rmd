@@ -97,10 +97,10 @@ Mandatory parameters are: <!-- maybe include example code for each parameter-->
 
 -   `basic_info`: Assigns the name of a subject level dataset and variable names of treatment start and end, and informed consent variables. It must contain the following elements:
 
-    -   `data`: Character name of the subject level analysis dataset (e.g. "adsl", "dm") as it is called in the data list that is provided to the modulemanager.
-    -   `trt_start`:  Character name of the variable that contains treatment start dates which must be present in the dataset mentioned in the `data` element.
-    -   `trt_end`: Character name of the variable that contains treatment end dates which must be present in the dataset mentioned in the `data` element.
-    -   `icf_date`: Character name of the variable that contains informed consent dates which must be present in the dataset mentioned in the `data` element.
+    -   `subject_level_dataset_name`: Character name of the subject level analysis dataset (e.g. "adsl", "dm") as it is called in the data list that is provided to the modulemanager.
+    -   `trt_start_var`:  Character name of the variable that contains treatment start dates which must be present in the dataset mentioned in the `data` element.
+    -   `trt_end_var`: Character name of the variable that contains treatment end dates which must be present in the dataset mentioned in the `data` element.
+    -   `icf_date_var`: Character name of the variable that contains informed consent dates which must be present in the dataset mentioned in the `data` element.
     
 -   `mapping`: A list of lists. It serves as instruction on which event to take from which data domain / dataset, and further from which variables to take the start and end values, etc., that will be plotted as clinical timelines. The lists needs to follow a strict hierarchy. It must contain one entry per dataset/domain that serves as basis for the events. These entries need to be named according to the names of the data list that is provided to the Module Manager. The entries by oneself must again be lists. 
 These second level lists contain the variable names that are needed to plot the events, gathered in yet another lists, which are named according to the labels that shall be assigned to each event, and that contain the following elements each.  It is possible to define multiple events for one dataset, and multiple datasets in the mapping list.
@@ -116,7 +116,7 @@ These second level lists contain the variable names that are needed to plot the 
     -   `detail_var`: Character name of the variable that contains further descriptive information that shall be displayed for the event. Can be set to NULL for no further information.
     
 - `drug_admin`: A list of named character strings that describes which variables to use to display drug administration events. If not NULL, it must contain the following elements:
-    - `name`: Character name of the dataset that holds drug administration data (e.g. ex domain), as it is called in the datalist that is provided to the modulemanager.
+    - `dataset_name`: Character name of the dataset that holds drug administration data (e.g. ex domain), as it is called in the datalist that is provided to the modulemanager.
 
     - `start_var`: Character name of the variable that contains the start dates (e.g. exposure start dates) which must be present in the dataset mentioned in the name element.
 
@@ -126,9 +126,9 @@ These second level lists contain the variable names that are needed to plot the 
 
     - `label`: Free-text character label for the drug administration event.
 
-    - `exp_dose`: Character name of the variable that contains the dosis level information. Must exist in the dataset mentioned in the name element.
+    - `dose_var`: Character name of the variable that contains the dosis level information. Must exist in the dataset mentioned in the name element.
 
-    - `exp_dose_unit`: Character name of the variable that contains the dosis unit. Must exist in the dataset mentioned in the name element.
+    - `dose_unit_var`: Character name of the variable that contains the dosis unit. Must exist in the dataset mentioned in the name element.
 
 
 Optional parameters of `mod_clinical_timelines()` are:
@@ -148,10 +148,10 @@ module_list <- list(
   "Clinical Timelines" = dv.clinlines::mod_clinical_timelines(
     module_id = "mod1",
     basic_info = list(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     ),
     mapping = list(
       adsl = list(
@@ -174,13 +174,13 @@ module_list <- list(
       )
     ),
     drug_admin = list(
-      name = "adex",
+      dataset_name = "adex",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
       label = "Drug Administration",
-      exp_dose = "EXDOSE",
-      exp_dose_unit = "EXDOSU"
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
     )
   )
 )
@@ -199,10 +199,10 @@ module_list <- list(
   "Clinical Timelines" = mod_clinical_timelines(
     module_id = "mod1",
     basic_info = set_basic_info(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     ),
     mapping = list(
       adsl = list(
@@ -217,13 +217,13 @@ module_list <- list(
       )
     ),
     drug_admin = set_drug_admin(
-      name = "adex",
+      dataset_name = "adex",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
       label = "Drug Administration",
-      exp_dose = "EXDOSE",
-      exp_dose_unit = "EXDOSU"
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
     )
   )
 )
@@ -288,10 +288,10 @@ module_list <- list(
   "Clinical Timelines" = mod_clinical_timelines(
     module_id = "mod1",
     basic_info = set_basic_info(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     ),
     mapping = list(
       adsl = list(
@@ -306,13 +306,13 @@ module_list <- list(
       )
     ),
     drug_admin = set_drug_admin(
-      name = "adex",
+      dataset_name = "adex",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
       label = "Drug Administration",
-      exp_dose = "EXDOSE",
-      exp_dose_unit = "EXDOSU"
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
     )
   )
 )

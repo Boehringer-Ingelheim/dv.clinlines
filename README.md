@@ -56,10 +56,10 @@ module_list <- list(
   "Clinical Timelines" = dv.clinlines::mod_clinical_timelines(
     module_id = "mod1",
     basic_info = list(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     ),
     mapping = list(
       adsl = list(
@@ -89,13 +89,13 @@ module_list <- list(
       )
     ),
     drug_admin = list(
-      name = "exp",
+      dataset_name = "exp",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
       label = "Drug Administration",
-      exp_dose = "EXDOSE",
-      exp_dose_unit = "EXDOSU"
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
     )
   )
 )

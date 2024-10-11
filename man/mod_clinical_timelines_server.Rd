@@ -37,8 +37,8 @@ manager.}
 
 \item{basic_info}{\verb{[list(character(1)+)]}
 
-A list of four elements: \code{data}, \code{trt_start},
-\code{trt_end}, and \code{icf_date}. Assigns the name
+A list of four elements: \code{subject_level_dataset_name}, \code{trt_start_var},
+\code{trt_end_var}, and \code{icf_date_var}. Assigns the name
 of a subject level dataset and column names of treatment start and end, and informed
 consent variables.}
 
@@ -97,16 +97,16 @@ communication between main view and local filter module.
 \details{
 The \code{basic_info} list must contain the following elements:
 \itemize{
-\item{\code{data}: Character name of the subject level analysis dataset
+\item{\code{subject_level_dataset_name}: Character name of the subject level analysis dataset
 (e.g. "adsl", "dm") as it is called in the datalist that is provided to the
 \pkg{modulemanager}.}
-\item{\code{trt_start}: Character name of the variable that contains
+\item{\code{trt_start_var}: Character name of the variable that contains
 treatment start dates which must be present in the dataset mentioned in the
 \code{data} element.}
-\item{\code{trt_end}: Character name of the variable that contains
+\item{\code{trt_end_var}: Character name of the variable that contains
 treatment end dates which must be present in the dataset mentioned in the
 \code{data} element.}
-\item{\code{icf_date}: Character name of the variable that contains
+\item{\code{icf_date_var}: Character name of the variable that contains
 informed consent dates which must be present in the dataset mentioned in the
 \code{data} element.}
 }
@@ -162,7 +162,7 @@ the mapping list.
 
 If not NULL, the \code{drug_admin} list must contain the following elements:
 \itemize{
-\item{\code{name}: Character name of the dataset that holds drug administration data
+\item{\code{dataset_name}: Character name of the dataset that holds drug administration data
 (e.g. ex domain), as it is called in the datalist that is provided to the
 \pkg{modulemanager}.}
 \item{\code{start_var}: Character name of the variable that contains the start dates
@@ -174,9 +174,9 @@ If not NULL, the \code{drug_admin} list must contain the following elements:
 \item{\code{detail_var}: Character name of the variable that contains the treatment
 information. Must exist in the dataset mentioned in the \code{name} element.}
 \item{\code{label}: Free-text character label for the drug administration event.}
-\item{\code{exp_dose}: Character name of the variable that contains the dosis level
+\item{\code{dose_var}: Character name of the variable that contains the dosis level
 information. Must exist in the dataset mentioned in the \code{name} element.}
-\item{\code{exp_dose_unit}: Character name of the variable that contains the dosis
+\item{\code{dose_unit_var}: Character name of the variable that contains the dosis
 unit. Must exist in the dataset mentioned in the \code{name} element.}
 }
 
@@ -185,25 +185,25 @@ unit. Must exist in the dataset mentioned in the \code{name} element.}
 If not \code{NULL}, \code{filter} defines local filters.
 So far, the following filters for adverse events are available:
 \itemize{
-\item{\code{serious_AE}: Filter for serious adverse events.}
-\item{\code{soc}: Filter for system organ classes.}
-\item{\code{pref_term}: Filter for preferred terms.}
-\item{\code{drug_rel_AE}: Filter for drug related adverse events.}
+\item{\code{serious_ae_var}: Filter for serious adverse events.}
+\item{\code{soc_var}: Filter for system organ classes.}
+\item{\code{pref_term_var}: Filter for preferred terms.}
+\item{\code{drug_rel_ae_var}: Filter for drug related adverse events.}
 }
 The \code{filter} parameter must be a list that contains yet another list for adverse
 events filters, that is named \code{ae_filter}, and that holds the following elements:
 \itemize{
-\item{\code{data_name}: Character name of the adverse events dataset. Must be
+\item{\code{dataset_name}: Character name of the adverse events dataset. Must be
 available in in the datalist that is provided to the \pkg{modulemanager}.}
 \item{\code{label}: Character value which is exactly the same as the name for the
 adverse events event defined in \code{mapping}.}
-\item{\code{serious_AE}: Character name of the adverse events variable that contains
+\item{\code{serious_ae_var}: Character name of the adverse events variable that contains
 serious adverse events flags (Y/N).}
-\item{\code{soc}: Character name of the adverse events variable that contains
+\item{\code{soc_var}: Character name of the adverse events variable that contains
 system organ classes.}
-\item{\code{pref_term}: Character name of the adverse events variable that contains
+\item{\code{pref_term_var}: Character name of the adverse events variable that contains
 preferred terms.}
-\item{\code{drug_rel_AE}: Character name of the adverse events variable that contains
+\item{\code{drug_rel_ae_var}: Character name of the adverse events variable that contains
 drug related (causality) flags (Y/N).}
 }
 }

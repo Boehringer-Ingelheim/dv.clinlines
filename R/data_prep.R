@@ -33,13 +33,13 @@ prep_data <- function(data_list,
     data_list <- append(data_list, list(no_da = empty_drug_admin))
 
     drug_admin <- list(
-      name = "no_da",
+      dataset_name = "no_da",
       start_var = "start",
       end_var = "end",
       detail_var = "details",
       label = "",
-      exp_dose = "dose",
-      exp_dose_unit = "unit"
+      dose_var = "dose",
+      dose_unit_var = "unit"
     )
   }
 
@@ -176,21 +176,21 @@ add_ids <- function(data_list) {
 #' @keywords internal
 set_basics <- function(data_list, basic_info = default_basic_info(), subjid_var) {
   # Extract subject level dataset from data_list
-  data <- data_list[[basic_info$data]]
+  data <- data_list[[basic_info$subject_level_dataset_name]]
 
   check_names(
     data,
-    var_names = c(basic_info$trt_start, basic_info$trt_end, basic_info$icf_date),
+    var_names = c(basic_info$trt_start_var, basic_info$trt_end_var, basic_info$icf_date_var),
     subjid_var = subjid_var
   )
-  check_date_type(data, c(basic_info$trt_start, basic_info$trt_end, basic_info$icf_date))
+  check_date_type(data, c(basic_info$trt_start_var, basic_info$trt_end_var, basic_info$icf_date_var))
 
   return(
     list(
       data = dplyr::rename(data, dplyr::all_of(c(subject_id = subjid_var))),
-      trt_start = basic_info$trt_start,
-      trt_end = basic_info$trt_end,
-      icf_date = basic_info$icf_date
+      trt_start = basic_info$trt_start_var,
+      trt_end = basic_info$trt_end_var,
+      icf_date = basic_info$icf_date_var
     )
   )
 }
@@ -299,9 +299,9 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
 #'   \item{\code{detail_var}: Character name of the variable that contains the treatment
 #'     information. Must exist in the dataset mentioned in the \code{name} element.}
 #'   \item{\code{label}: Free-text character label for the drug administration event.}
-#'   \item{\code{exp_dose}: Character name of the variable that contains the dosis level
+#'   \item{\code{dose_var}: Character name of the variable that contains the dosis level
 #'     information. Must exist in the dataset mentioned in the \code{name} element.}
-#'   \item{\code{exp_dose_unit}: Character name of the variable that contains the dosis
+#'   \item{\code{dose_unit_var}: Character name of the variable that contains the dosis
 #'     unit. Must exist in the dataset mentioned in the \code{name} element.}
 #' }
 #'
@@ -314,7 +314,7 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
 #' \item{\code{detail_var}: Information about drug name and dosage.}
 #' \item{\code{set}: Name of the dataset the data origins from.}
 #' \item{\code{set_id}: Row ID's of the related dataset.}
-#' \item{\code{exp_dose}: Indicates whether the dose of the treatment has increased,
+#' \item{\code{dose_var}: Indicates whether the dose of the treatment has increased,
 #' decreased or stayed the same compared to the last dose at the same subject.}
 #'  \item{\code{group}: Label for the event types.}
 #' }
@@ -322,19 +322,19 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
 #' @keywords internal
 #'
 set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_var) {
-  col_list <- mapping[!names(mapping) %in% c("name")]
+  col_list <- mapping[!names(mapping) %in% c("dataset_name")]
 
   cols <- c(col_list$start_var, col_list$end_var, col_list$detail_var)
-  data <- data_list[[mapping$name]]
+  data <- data_list[[mapping$dataset_name]]
 
   data <- data %>%
     dplyr::group_by(get(subjid_var)) %>%
     dplyr::mutate(
       exp_dose = dplyr::case_when(
-        is.na(dplyr::lag(get(col_list$exp_dose))) ~ "start/equal",
-        dplyr::lag(get(col_list$exp_dose)) == get(col_list$exp_dose) ~ "start/equal",
-        dplyr::lag(get(col_list$exp_dose)) < get(col_list$exp_dose) ~ "increase",
-        dplyr::lag(get(col_list$exp_dose)) > get(col_list$exp_dose) ~ "decrease"
+        is.na(dplyr::lag(get(col_list$dose_var))) ~ "start/equal",
+        dplyr::lag(get(col_list$dose_var)) == get(col_list$dose_var) ~ "start/equal",
+        dplyr::lag(get(col_list$dose_var)) < get(col_list$dose_var) ~ "increase",
+        dplyr::lag(get(col_list$dose_var)) > get(col_list$dose_var) ~ "decrease"
       )
     ) %>%
     dplyr::ungroup()
@@ -346,8 +346,8 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
     dplyr::mutate(
       detail_var = paste(
         .data[[col_list$detail_var]], "-",
-        .data[[col_list$exp_dose]],
-        .data[[col_list$exp_dose_unit]]
+        .data[[col_list$dose_var]],
+        .data[[col_list$dose_unit_var]]
       )
     ) %>%
     dplyr::select(
@@ -358,9 +358,8 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
       start_exp = tidyselect::all_of(col_list$start_var),
       end_exp = tidyselect::all_of(col_list$end_var)
     ) %>%
-    dplyr::mutate(set = mapping$name) %>%
+    dplyr::mutate(set = mapping$dataset_name) %>%
     dplyr::rename(dplyr::all_of(c(subject_id = subjid_var)))
-
 
   return(interval_df)
 }
@@ -578,26 +577,26 @@ complete_events <- function(combined_data, trt_start, trt_end) {
 set_filter_dataset <- function(filter, data_list, mapping, subjid_var) {
   # Check for inconsistencies on modul definition side
   if (length(filter$ae_filter) < 3) stop("No ae_filter defined for Clinical Timelines!")
-  if (!filter$ae_filter$data_name %in% names(data_list)) {
+  if (!filter$ae_filter$dataset_name %in% names(data_list)) {
     msg <- paste0(
       "Clinical Timelines (dv.clinlines) cannot find ",
-      filter$ae_filter$data_name,
+      filter$ae_filter$dataset_name,
       " in your data list."
     )
 
     stop(msg)
   }
 
-  only_filters <- filter$ae_filter[!names(filter$ae_filter) %in% c("data_name", "label")]
+  only_filters <- filter$ae_filter[!names(filter$ae_filter) %in% c("dataset_name", "label")]
 
-  check_names(data_list[[filter$ae_filter$data_name]],
-    unlist(only_filters), # drop data_name
+  check_names(data_list[[filter$ae_filter$dataset_name]],
+    unlist(only_filters), # drop dataset_name
     subjid_var = subjid_var
   )
 
-  ae_info <- mapping[[filter$ae_filter$data_name]][[filter$ae_filter$label]]
+  ae_info <- mapping[[filter$ae_filter$dataset_name]][[filter$ae_filter$label]]
 
-  filter_dataset <- data_list[[filter$ae_filter$data_name]] %>%
+  filter_dataset <- data_list[[filter$ae_filter$dataset_name]] %>%
     dplyr::select(
       dplyr::all_of(
         c(

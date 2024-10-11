@@ -7,8 +7,8 @@
 #'
 local_filters <- function(ns) {
   ui_list <- list(
-    serious_AE = shiny::radioButtons(
-      ns("serious_AE"),
+    serious_ae = shiny::radioButtons(
+      ns("serious_ae"),
       label = "Serious Adverse Events?",
       choices = c("Yes" = "Y", "No" = "N", "All" = "all"),
       selected = "all"
@@ -27,8 +27,8 @@ local_filters <- function(ns) {
       multiple = TRUE,
       options = list(placeholder = "All PT's selected")
     ),
-    drug_rel_AE = shiny::radioButtons(
-      ns("drug_rel_AE"),
+    drug_rel_ae = shiny::radioButtons(
+      ns("drug_rel_ae"),
       label = "Drug related Adverse Events?",
       choices = c("Yes" = "Y", "No" = "N", "All" = "all"),
       selected = "all"

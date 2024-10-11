@@ -18,19 +18,19 @@ knitr::opts_chunk$set(
 
 {dv.clinlines} offers optional local filters for adverse event data which will be added to the bottom of the sidebar. The following filters are available:
 
--   `serious_AE`: Offers the possibility to filter adverse events to show only serious/non-serious adverse events.
--   `soc`: Offers the possibility to filter adverse events by System Organ Class.
--   `pref_term`: Offers the possibility to filter adverse events by Preferred Term.
--   `drug_rel_AE`: Offers the possibility to filter adverse events to show only drug related/non drug related adverse events.
+-   `serious_ae_var`: Offers the possibility to filter adverse events to show only serious/non-serious adverse events.
+-   `soc_var`: Offers the possibility to filter adverse events by System Organ Class.
+-   `pref_term_var`: Offers the possibility to filter adverse events by Preferred Term.
+-   `drug_rel_ae_var`: Offers the possibility to filter adverse events to show only drug related/non drug related adverse events.
 
 Activate local filters by adding their names through a list to the `filter` parameter of the `mod_clinical_timelines()` call. Use `NULL` (the default) to turn all filters down. To specify one or multiple local adverse event filters, you need to provide a list with the following elements:
 
--   `data_name`: Character name of the adverse events dataset of your loaded data list. Must be a single value. (Mandatory.)
+-   `dataset_name`: Character name of the adverse events dataset of your loaded data list. Must be a single value. (Mandatory.)
 -   `label`: Character value which is exactly the same as the name for the adverse events event defined in the `mapping` parameter of `mod_clinical_timelines()`.
--   `serious_AE`: Character name of the variable that holds Y/N flags for serious adverse events. Must be a single value.
--   `soc`: Character name of the variable that holds system organ classes. Must be a single value.
--   `pref_term`: Character name of the variable that holds preferred terms. Must be a single value.
--    `drug_rel_AE`: Character name of the variable that holds Y/N flags for causality. Must be a single value.
+-   `serious_ae_var`: Character name of the variable that holds Y/N flags for serious adverse events. Must be a single value.
+-   `soc_var`: Character name of the variable that holds system organ classes. Must be a single value.
+-   `pref_term_var`: Character name of the variable that holds preferred terms. Must be a single value.
+-    `drug_rel_ae_var`: Character name of the variable that holds Y/N flags for causality. Must be a single value.
 
 Wrap this list with another list. The inner list must be named `ae_filter`. The outer list should be assigned to the `filter` parameter of `mod_clinical_timelines()`. 
 
@@ -43,12 +43,12 @@ filter <- NULL
 # To activate all local adverse event filters
 filter <- list(
   ae_filter = list(
-    data_name = "adae", # mandatory - as defined in the data list
+    dataset_name = "adae", # mandatory - as defined in the data list
     label = "Adverse Events", # mandatory - as defined in the mapping parameter
-    soc = "AESOC",
-    serious_AE = "AESER",
-    pref_term = "AEDECOD",
-    drug_rel_AE = "AEREL"
+    soc_var = "AESOC",
+    serious_ae_var = "AESER",
+    pref_term_var = "AEDECOD",
+    drug_rel_ae_var = "AEREL"
   )
 )
 ```
@@ -64,10 +64,10 @@ module_list <- list(
   "Clinical Timelines" = mod_clinical_timelines(
     module_id = "mod1",
     basic_info = list(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     ),
     mapping = list(
       adsl = list(
@@ -97,22 +97,22 @@ module_list <- list(
       )
     ),
     drug_admin = list(
-      name = "exp",
+      dataset_name = "exp",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
       label = "Drug Administration",
-      exp_dose = "EXDOSE",
-      exp_dose_unit = "EXDOSU"
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
     ),
     filter = list(
       ae_filter = list(
-        data_name = "adae",
+        dataset_name = "adae",
         label = "Adverse Events",
-        soc = "AESOC",
-        serious_AE = "AESER",
-        drug_rel_AE = "AEREL"
-        # Note: The pref_term filter is not specified in this example.
+        soc_var = "AESOC",
+        serious_ae_var = "AESER",
+        drug_rel_ae_var = "AEREL"
+        # Note: The pref_term_var filter is not specified in this example.
       )
     )
   )

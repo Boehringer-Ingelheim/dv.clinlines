@@ -21,7 +21,7 @@ mod_local_filter_UI <- function(module_id, filter_list = NULL) { # nolint
 
   ui <- shiny::conditionalPanel(
     condition = cond,
-    all_filters[which(names(all_filters) %in% filter_list)],
+    all_filters[which(paste0(names(all_filters), "_var") %in% filter_list)],
     ns = ns
   )
 
@@ -53,7 +53,7 @@ mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
         restored = FALSE,
         pt_input = NULL
       )
-      only_filters <- filter$ae_filter[!names(filter$ae_filter) %in% c("data_name", "label")]
+      only_filters <- filter$ae_filter[!names(filter$ae_filter) %in% c("dataset_name", "label")]
       # No need for reactivity as this never changes during a session
       status_filters <- get_filter_status(
         names(local_filters(session$ns)),
@@ -87,11 +87,11 @@ mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
           selected_rel <- "all"
         }
 
-        shiny::updateRadioButtons(session, "serious_AE", selected = selected_sae)
-        shiny::updateRadioButtons(session, "drug_rel_AE", selected = selected_rel)
+        shiny::updateRadioButtons(session, "serious_ae", selected = selected_sae)
+        shiny::updateRadioButtons(session, "drug_rel_ae", selected = selected_rel)
 
         if (status_filters[["soc"]]) {
-          choices <- sort(unique(joined_data()[[filter$ae_filter$soc]]))
+          choices <- sort(unique(joined_data()[[filter$ae_filter$soc_var]]))
 
           shiny::updateSelectizeInput(
             inputId = "soc",
@@ -134,7 +134,7 @@ mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
       )
 
 
-      # Choices need to be saved explicitely
+      # Choices need to be saved explicitly
       shiny::onBookmark(function(state) {
         state$values$soc_choices <- cache$soc_choices
         state$values$pt_choices <- cache$pt_choices
@@ -146,8 +146,8 @@ mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
         cache$soc_choices <<- state$values$soc_choices
         cache$pt_choices <<- state$values$pt_choices
         cache$pt_input <<- state$input$pref_term
-        cache$sae_choice <<- state$input$serious_AE
-        cache$rel_choice <<- state$input$drug_rel_AE
+        cache$sae_choice <<- state$input$serious_ae
+        cache$rel_choice <<- state$input$drug_rel_ae
       })
 
 
@@ -169,22 +169,22 @@ mod_local_filter_server <- function(module_id, filter, joined_data, changed) {
 
 
       filtered_data <- shiny::reactive({
-        if (status_filters[["serious_AE"]]) {
-          shiny::req(input$serious_AE)
+        if (status_filters[["serious_ae"]]) {
+          shiny::req(input$serious_ae)
         }
 
-        if (status_filters[["drug_rel_AE"]]) {
-          shiny::req(input$drug_rel_AE)
+        if (status_filters[["drug_rel_ae"]]) {
+          shiny::req(input$drug_rel_ae)
         }
 
         filter_data(
           data = joined_data(),
           status_filters = status_filters,
           input_filters = list(
-            serious_AE = input$serious_AE,
+            serious_ae = input$serious_ae,
             soc = input$soc,
             pref_term = input$pref_term,
-            drug_rel_AE = input$drug_rel_AE
+            drug_rel_ae = input$drug_rel_ae
           ),
           filter = filter
         )

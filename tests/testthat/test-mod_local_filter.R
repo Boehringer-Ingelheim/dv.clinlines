@@ -1,6 +1,6 @@
 # Tests for mod_local_filter_UI() ----
 test_that("mod_local_filter_UI() returns a shiny.tag list", {
-  filter_list <- list("soc", "pref_term", "drug_rel_AE", "serious_AE")
+  filter_list <- list("soc", "pref_term", "drug_rel_ae", "serious_ae")
   ui <- mod_local_filter_UI("filter_tests", filter_list = filter_list)
 
   expect_equal(class(ui), "shiny.tag")
@@ -12,11 +12,11 @@ test_that(
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     # two filters
-    filter_list <- list("soc", "pref_term")
+    filter_list <- list("soc_var", "pref_term_var")
     ui <- mod_local_filter_UI("filter_tests", filter_list = filter_list)
 
     expect_equal(length(ui$children[[1]]), length(filter_list))
-    expect_named(ui$children[[1]], as.character(filter_list), ignore.order = TRUE)
+    expect_named(ui$children[[1]], gsub("_var", "", as.character(filter_list)), ignore.order = TRUE)
 
     # no filters
     filter_list <- NULL
@@ -47,7 +47,7 @@ data <- shiny::reactive({
 })
 
 changed <- shiny::reactive(1)
-filter <- list("soc", "drug_rel_AE")
+filter <- list("soc", "drug_rel_ae")
 server <- function(id) {
   mod_local_filter_server(
     module_id = id,
@@ -62,7 +62,7 @@ test_that(
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     shiny::testServer(server, {
-      session$setInputs(soc = "GASTROINTESTINAL DISORDERS", drug_rel_AE = "NONE")
+      session$setInputs(soc = "GASTROINTESTINAL DISORDERS", drug_rel_ae = "NONE")
       outcome <- session$returned()
 
       expect_equal(colnames(outcome), colnames(joined_data()))

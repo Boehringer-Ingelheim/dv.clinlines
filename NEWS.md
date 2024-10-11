@@ -1,3 +1,7 @@
+# dv.clinlines 1.0.4
+
+* Adapt basic_info, filter, and drug_admin parameter to adhere module standard
+
 # dv.clinlines 1.0.3
 
 * Initial release of dv.clinlines package to GitHub.

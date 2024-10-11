@@ -10,7 +10,7 @@ bmk_ui <- function(id) {
 
   shiny::fluidPage(
     shiny::bookmarkButton(),
-    mod_clinical_timelines_UI(ns("mod"), list("serious_AE", "soc", "pref_term", "drug_rel_AE"))
+    mod_clinical_timelines_UI(ns("mod"), list("serious_ae_var", "soc_var", "pref_term_var", "drug_rel_ae_var"))
   )
 }
 
@@ -29,10 +29,10 @@ bmk_server <- function(input, output, session) {
     data_name = shiny::reactive("dummyData"),
     data_list,
     basic_info = list(
-      data = "adsl",
-      trt_start = "TRTSDT",
-      trt_end = "TRTEDT",
-      icf_date = "RFICDT"
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
     ),
     mapping = list(
       adsl = list(
@@ -62,23 +62,23 @@ bmk_server <- function(input, output, session) {
       )
     ),
     drug_admin = list(
-      name = "exp",
+      dataset_name = "exp",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
       label = "Drug Administration",
-      exp_dose = "EXDOSE",
-      exp_dose_unit = "EXDOSU"
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
     ),
     subjid_var = "USUBJID",
     filter = list(
       ae_filter = list(
-        data_name = "adae",
+        dataset_name = "adae",
         label = "Adverse Events",
-        soc = "AESOC",
-        serious_AE = "AESER",
-        pref_term = "AEDECOD",
-        drug_rel_AE = "AEREL"
+        soc_var = "AESOC",
+        serious_ae_var = "AESER",
+        pref_term_var = "AEDECOD",
+        drug_rel_ae_var = "AEREL"
       )
     ),
     ms = 50
