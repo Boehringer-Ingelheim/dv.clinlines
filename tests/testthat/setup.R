@@ -16,7 +16,8 @@ specs <- vdoc[["specs"]]
 #'
 #' @param mod Parameterized instance of the module to test. Should produce valid output and not trigger a `shiny::req`.
 #' @param data Data matching the previous parameterization.
-#' @param trigger_input_id Fully namespaced input ID that, when set to a subject ID value, should make the module send `dv.papo` a message.
+#' @param trigger_input_id Fully namespaced input ID that, when set to a subject ID value,
+#'                         should make the module send `dv.papo` a message.
 test_communication_with_papo <- function(mod, data, trigger_input_id) {
   datasets <- shiny::reactive(data)
 
@@ -68,6 +69,7 @@ test_communication_with_papo <- function(mod, data, trigger_input_id) {
     subject_ids <- c("A", "A", "B")
     for (i in seq_along(subject_ids)) {
       trigger_subject_selection(subject_ids[[i]])
+      app$wait_for_idle()
 
       exports <- app$get_values()[["export"]]
       # Module outputs selection once
