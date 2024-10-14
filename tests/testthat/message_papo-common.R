@@ -1,4 +1,4 @@
-# YT#VH33e387131d296de57ba6b9be8368c156#VH00000000000000000000000000000000#
+# YT#VH5dd69916e41809c4f840a95f8558a4f8#VH00000000000000000000000000000000#
 # This is a test template for modules that select a subject ID and send it to dv.papo.
 
 # This portion of the test template defines the expected protocol for sending a message to dv.papo and is shared across
@@ -33,20 +33,7 @@ test_harness <- local({
     return(ret_value)
   }
 
-  app <- shiny::shinyApp(
-    ui = app_ui,
-    server = function(input, output, session) {
-      ret_value <- app_server(input, output, session)
-
-      ret_value_update_count <- shiny::reactiveVal(0)
-      shiny::observeEvent(ret_value[["subj_id"]](), ret_value_update_count(ret_value_update_count() + 1))
-
-      shiny::exportTestValues(
-        ret_value = try(ret_value[["subj_id"]]()), # try because of https://github.com/rstudio/shiny/issues/3768
-        update_count = ret_value_update_count()
-      )
-    }
-  )
+  app <- shiny::shinyApp(ui = app_ui, server = app_server)
 
   test_that("module adheres to send_subject_id_to_papo protocol", {
     app <- shinytest2::AppDriver$new(app, name = "test_send_subject_id_to_papo_protocol")
