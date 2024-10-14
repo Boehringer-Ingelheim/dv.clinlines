@@ -1,7 +1,3 @@
-# This is a test template for modules that select a subject ID and send it to dv.papo.
-
-# In order to fit it to your module, it needs three pieces of information:
-# 1) An instance of the module you want to test, parameterized to produce valid output and not trigger a `shiny::req`.
 mod <- mod_clinical_timelines(
   module_id = "mod",
   basic_info = list(
@@ -39,11 +35,6 @@ mod <- mod_clinical_timelines(
   ms = 50,
   default_plot_settings = list(x_param = "day", start_day = -5, boxheight_val = 60)
 )
-
-# 2) Data matching the previous parameterization.
 data <- dv.clinlines:::prep_dummy_data()
-
-# 3) Fully namespaced input ID that, when set to a subject ID value, should make the module send dv.papo a message.
 trigger_input_id <- "mod-main_view-debug_select_subject"
-
-source("message_papo-common.R", local = TRUE)
+test_communication_with_papo(mod, data, trigger_input_id)
