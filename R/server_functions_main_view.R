@@ -214,10 +214,22 @@ create_main_plot <- function(work_data,
   names(shapes) <- x
   symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
 
+  symbol_colors <- tibble::tibble(group = work_data$group) %>%
+    dplyr::mutate(
+      group = dplyr::case_when(
+        group == "PLACEBO" ~ symbol_color["PLACEBO"],
+        group == "XANOMELINE" ~ symbol_color["XANOMELINE"],
+        group == "another drug" ~ symbol_color["another drug"],
+        .default = NA
+      )
+    )
+  symbol_colors <- symbol_colors[[1]]
+
   # Add drug administration events
   main_p <- main_p +
     ggplot2::geom_linerange(
-      ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]]),
+      ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
+      color = symbol_colors,
       position = ggplot2::position_nudge(y = 0.35),
       linewidth = 2 / 140 * height,
       na.rm = TRUE
@@ -225,7 +237,7 @@ create_main_plot <- function(work_data,
     ggplot2::geom_point(
       ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
       na.rm = TRUE,
-      fill = ifelse(length(symbol_color) > 0, symbol_color, "black"),
+      fill = symbol_colors, #ifelse(length(symbol_color) > 0, symbol_color, "black"),
       color = "black",
       position = ggplot2::position_nudge(y = 0.35),
       size = height / 20
