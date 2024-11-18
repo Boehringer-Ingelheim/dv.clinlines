@@ -44,10 +44,10 @@ prep_dummy_data <- function(n = 200) {
   exp_info <- pharmaverseadam::adex %>%
     dplyr::distinct(USUBJID, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC, .keep_all = TRUE)
 
-  exp_info <- rbind(exp_info[1,], exp_info)
-  exp_info[1, "EXTRT"] <- "another drug"
-  exp_info[1, "EXSTDTC"] <- "2013-12-01"
-  exp_info[1, "EXENDTC"] <- "2013-12-30"
+  # exp_info <- rbind(exp_info[1,], exp_info)
+  # exp_info[1, "EXTRT"] <- "another drug"
+  # exp_info[1, "EXSTDTC"] <- "2013-12-01"
+  # exp_info[1, "EXENDTC"] <- "2013-12-30"
 
   exp_info <- exp_info %>%
     dplyr::mutate(

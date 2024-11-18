@@ -328,7 +328,7 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
   data <- data_list[[mapping$dataset_name]]
 
   data <- data %>%
-    dplyr::group_by(get(subjid_var), "EXTRT") %>%
+    dplyr::group_by(get(subjid_var), col_list$detail_var ) %>% #EXTRT
     dplyr::mutate(
       exp_dose = dplyr::case_when(
         is.na(dplyr::lag(get(col_list$dose_var))) ~ "start/equal",
@@ -351,9 +351,9 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
       )
     ) %>%
     dplyr::select(
-      tidyselect::all_of(c(subjid_var, cols[1:2], "set_id", "exp_dose", "detail_var", "EXTRT"))
+      tidyselect::all_of(c(subjid_var, cols[1:2], "set_id", "exp_dose", "detail_var", col_list$detail_var)) #"EXTRT"
     ) %>%
-    dplyr::mutate(group = EXTRT) %>%
+    dplyr::mutate(group = dplyr::if_else(!is.na(.data[[col_list$detail_var]]), paste("Drug Administration:", .data[[col_list$detail_var]]), NA)) %>% #EXTRT
     #tibble::add_column(group = rep(col_list$label)) %>%
     dplyr::rename(
       start_exp = tidyselect::all_of(col_list$start_var),

@@ -192,14 +192,16 @@ create_main_plot <- function(work_data,
       position = ggplot2::position_dodge2(0.9),
       size = 2 / 140 * height,
       shape = 15, # square
-      na.rm = TRUE
+      na.rm = TRUE#,
+      #show.legend = FALSE
     ) +
     # Draw timepoints
     ggplot2::geom_point(
       ggplot2::aes(x = .data[["timepoints"]]),
       position = ggplot2::position_jitter(height = 0.1, width = 0),
       size = height / 20,
-      na.rm = TRUE
+      na.rm = TRUE#,
+      #show.legend = FALSE
     ) +
     x_scale
 
@@ -214,17 +216,46 @@ create_main_plot <- function(work_data,
   names(shapes) <- x
   symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
 
-  symbol_colors <- tibble::tibble(group = work_data$group) %>%
-    dplyr::mutate(
-      group = dplyr::case_when(
-        group == "PLACEBO" ~ symbol_color["PLACEBO"],
-        group == "XANOMELINE" ~ symbol_color["XANOMELINE"],
-        group == "another drug" ~ symbol_color["another drug"],
-        .default = NA
-      )
-    )
-  symbol_colors <- symbol_colors[[1]]
+  trt_per_subject <- work_data |>
+    dplyr::filter(startsWith(.data[["group"]], "Drug Administration:")) |>
+    dplyr::group_by(subject_id) |>
+    dplyr::distinct(group) |>
+    dplyr::count()
 
+  if (any(trt_per_subject$n > 1)) {
+    position <- 0.5 - (length(symbol_color) + 1)*0.1
+    for (x in seq_along(symbol_color)) {
+      data <- main_p$data |>
+        dplyr::filter(
+          .data[["group"]] == names(symbol_color)[x]
+        )
+      pos <- position + 0.1*x
+      main_p <- main_p +
+        ggplot2::geom_linerange(
+          data = data,
+          ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
+          color = symbol_color[x],
+          position = ggplot2::position_nudge(y = pos),#0.35),
+          linewidth = 2 / 140 * height,
+          na.rm = TRUE
+        )+
+        ggplot2::geom_point(
+          data = data,
+          ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
+          na.rm = TRUE,
+          fill = symbol_color[x], #ifelse(length(symbol_color) > 0, symbol_color, "black"),
+          color = "black",
+          position = ggplot2::position_nudge(y = pos),#0.35),
+          size = height / 20
+        )
+    }
+  } else {
+
+
+
+  symbol_colors <- sapply(work_data$group, function(x) {
+    ifelse(x %in% names(symbol_color), symbol_color[[x]], NA)
+  }, USE.NAMES = FALSE)
   # Add drug administration events
   main_p <- main_p +
     ggplot2::geom_linerange(
@@ -242,6 +273,7 @@ create_main_plot <- function(work_data,
       position = ggplot2::position_nudge(y = 0.35),
       size = height / 20
     )
+  }
 
   if (length(shapes) > 0) {
     main_p <- main_p +
@@ -249,7 +281,7 @@ create_main_plot <- function(work_data,
         name = "Dose Change:",
         values = shapes,
         na.translate = FALSE,
-        breaks = x
+        breaks = x,
       )
   }
 
@@ -366,10 +398,38 @@ create_ggdata_y <- function(p, hover) {
     dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
     dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
 
-  # Drug_admin is always layer 4
-  interval_exp_data <- ggdata$data[[4]] %>%
-    dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
-    dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+
+
+  if (length(ggdata$data) > 4) {
+    df_list <- lapply(4:length(ggdata$data), function(x) {
+      dataset_names <- names(ggdata$data[[x]])
+      if ("y" %in% dataset_names && !("shape" %in% dataset_names)) {
+        ret_data <- ggdata$data[[x]] %>%
+          dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+          dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+
+        if (nrow(ret_data) > 0) {
+          ret_data
+        } else {
+          NULL
+        }
+      }
+    })
+
+    if (length(purrr::compact(df_list)) > 0) {
+      interval_exp_data <- purrr::compact(df_list)[[1]]
+    } else {
+      interval_exp_data <- ggdata$data[[4]] %>%
+        dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+        dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+    }
+
+  } else {
+    # Drug_admin is always layer 4
+    interval_exp_data <- ggdata$data[[4]] %>%
+      dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+      dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+  }
 
   return(list(interval_data, timepoint_data, interval_point_data, interval_exp_data))
 }
