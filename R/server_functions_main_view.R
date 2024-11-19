@@ -191,17 +191,15 @@ create_main_plot <- function(work_data,
       ggplot2::aes(x = .data[["interval_points"]]),
       position = ggplot2::position_dodge2(0.9),
       size = 2 / 140 * height,
-      shape = 15, # square
-      na.rm = TRUE#,
-      #show.legend = FALSE
+      shape = 15,
+      na.rm = TRUE
     ) +
     # Draw timepoints
     ggplot2::geom_point(
       ggplot2::aes(x = .data[["timepoints"]]),
       position = ggplot2::position_jitter(height = 0.1, width = 0),
       size = height / 20,
-      na.rm = TRUE#,
-      #show.legend = FALSE
+      na.rm = TRUE
     ) +
     x_scale
 
@@ -223,19 +221,22 @@ create_main_plot <- function(work_data,
     dplyr::count()
 
   if (any(trt_per_subject$n > 1)) {
-    position <- 0.5 - (length(symbol_color) + 1)*0.1
-    for (x in seq_along(symbol_color)) {
+    position <- 0.5 - (length(symbol_color) + 1) * 0.1
+    for (i in seq_along(symbol_color)) {
       data <- main_p$data |>
         dplyr::filter(
-          .data[["group"]] == names(symbol_color)[x]
+          .data[["group"]] == names(symbol_color)[i]
         )
-      pos <- position + 0.1*x
+      # Transform symbol_color[i] into a vector to fix legend
+      # (ggplot2 doing ggplot2 things...)
+      symbol_colors <- rep(symbol_color[i], nrow(data))
+      pos <- position + 0.1 * i
       main_p <- main_p +
         ggplot2::geom_linerange(
           data = data,
           ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
-          color = symbol_color[x],
-          position = ggplot2::position_nudge(y = pos),#0.35),
+          color = symbol_colors,
+          position = ggplot2::position_nudge(y = pos),
           linewidth = 2 / 140 * height,
           na.rm = TRUE
         )+
@@ -243,36 +244,33 @@ create_main_plot <- function(work_data,
           data = data,
           ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
           na.rm = TRUE,
-          fill = symbol_color[x], #ifelse(length(symbol_color) > 0, symbol_color, "black"),
+          fill = symbol_colors,
           color = "black",
-          position = ggplot2::position_nudge(y = pos),#0.35),
-          size = height / 20
+          position = ggplot2::position_nudge(y = pos)
         )
     }
   } else {
+    symbol_colors <- sapply(work_data$group, function(x) {
+      ifelse(x %in% names(symbol_color), symbol_color[[x]], NA)
+    }, USE.NAMES = FALSE)
 
-
-
-  symbol_colors <- sapply(work_data$group, function(x) {
-    ifelse(x %in% names(symbol_color), symbol_color[[x]], NA)
-  }, USE.NAMES = FALSE)
-  # Add drug administration events
-  main_p <- main_p +
-    ggplot2::geom_linerange(
-      ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
-      color = symbol_colors,
-      position = ggplot2::position_nudge(y = 0.35),
-      linewidth = 2 / 140 * height,
-      na.rm = TRUE
-    ) +
-    ggplot2::geom_point(
-      ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
-      na.rm = TRUE,
-      fill = symbol_colors, #ifelse(length(symbol_color) > 0, symbol_color, "black"),
-      color = "black",
-      position = ggplot2::position_nudge(y = 0.35),
-      size = height / 20
-    )
+    # Add drug administration events
+    main_p <- main_p +
+      ggplot2::geom_linerange(
+        ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
+        color = symbol_colors,
+        position = ggplot2::position_nudge(y = 0.35),
+        linewidth = 2 / 140 * height,
+        na.rm = TRUE
+      ) +
+      ggplot2::geom_point(
+        ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
+        na.rm = TRUE,
+        fill = symbol_colors,
+        color = "black",
+        position = ggplot2::position_nudge(y = 0.35),
+        size = height / 20
+      )
   }
 
   if (length(shapes) > 0) {
@@ -281,7 +279,7 @@ create_main_plot <- function(work_data,
         name = "Dose Change:",
         values = shapes,
         na.translate = FALSE,
-        breaks = x,
+        breaks = x
       )
   }
 

@@ -328,7 +328,7 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
   data <- data_list[[mapping$dataset_name]]
 
   data <- data %>%
-    dplyr::group_by(get(subjid_var), col_list$detail_var ) %>% #EXTRT
+    dplyr::group_by(get(subjid_var), get(col_list$detail_var)) %>% #EXTRT
     dplyr::mutate(
       exp_dose = dplyr::case_when(
         is.na(dplyr::lag(get(col_list$dose_var))) ~ "start/equal",
