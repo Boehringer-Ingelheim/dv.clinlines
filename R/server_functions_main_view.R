@@ -246,7 +246,8 @@ create_main_plot <- function(work_data,
           na.rm = TRUE,
           fill = symbol_colors,
           color = "black",
-          position = ggplot2::position_nudge(y = pos)
+          position = ggplot2::position_nudge(y = pos),
+          size = height / 20
         )
     }
   } else {
