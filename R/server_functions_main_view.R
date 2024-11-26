@@ -1,3 +1,15 @@
+check_valid_color <- function(color_palette) {
+
+  hex_colors <- color_palette[grepl('^#', color_palette)]
+  no_colors <- hex_colors[!grepl("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", hex_colors)]
+  other_colors <- color_palette[!grepl('^#', color_palette)]
+  no_colors <- c(no_colors, other_colors[!other_colors %in% colors()])
+
+  if (length(no_colors) > 0) {
+    stop(paste("Invalid color(s) in color_palette:", paste(no_colors, collapse = ", ")))
+  }
+}
+
 #' Create color lookup table
 #'
 #' \code{color_lookup} returns a named vector of hex colors.
@@ -9,12 +21,20 @@
 #' @return A named vector of hexcode colors.
 #' @keywords internal
 #'
-color_lookup <- function(groups) {
-  colors_groups <- scales::hue_pal()(length(groups))
+color_lookup <- function(groups, color_palette) {
 
-  # Avoid that neighbor intervals get similar colors
-  set.seed(20220202)
-  names(colors_groups) <- sample(groups)
+  if (is.null(color_palette)) {
+    colors_groups <- scales::hue_pal()(length(groups))
+
+    # Avoid that neighbor intervals get similar colors
+    set.seed(20220202)
+    names(colors_groups) <- sample(groups)
+  } else {
+    missing_groups <- groups[!groups %in% names(color_palette)]
+    grey_vec <- rep("grey", length(missing_groups))
+    names(grey_vec) <- missing_groups
+    colors_groups <- c(color_palette, grey_vec)
+  }
 
   return(colors_groups)
 }

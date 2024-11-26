@@ -105,6 +105,7 @@ mod_clinical_timelines_server <- function(module_id,
                                           filter = NULL,
                                           subjid_var = "USUBJID",
                                           start_day = NULL,
+                                          color_palette = NULL,
                                           ms = 1000,
                                           receiver_id = NULL,
                                           afmm_param = NULL) {
@@ -154,6 +155,7 @@ mod_clinical_timelines_server <- function(module_id,
   checkmate::assert_string(receiver_id, min.chars = 1, null.ok = TRUE, add = ac)
   checkmate::assert_list(afmm_param, null.ok = TRUE, add = ac)
   checkmate::reportAssertions(ac)
+  check_valid_color(color_palette)
 
   shiny::moduleServer(
     module_id,
@@ -201,7 +203,9 @@ mod_clinical_timelines_server <- function(module_id,
 
       # Set a fixed color for each group
       colors_groups <- shiny::reactive({
-        if (nrow(pre_data()) > 0) color_lookup(unique(pre_data()$group))
+        if (nrow(pre_data()) > 0) {
+          color_lookup(unique(pre_data()$group), color_palette)
+        }
       })
 
       # Add adverse event data that are relevant for filtering
@@ -443,6 +447,7 @@ mod_clinical_timelines <- function(module_id,
                                      start_day = NULL,
                                      boxheight_val = 60
                                    ),
+                                   color_palette = NULL,
                                    ms = 1000,
                                    receiver_id = NULL) {
   # Check validity of arguments that won't be checked in UI/server
@@ -481,6 +486,7 @@ mod_clinical_timelines <- function(module_id,
         filter = filter,
         subjid_var = subjid_var,
         start_day = default_plot_settings$start_day,
+        color_palette = color_palette,
         ms = ms,
         receiver_id = receiver_id,
         afmm_param = list(utils = afmm$utils, module_names = afmm$module_names)

@@ -83,7 +83,15 @@ mock_with_mm_app <- function() {
         x_param = "day",
         start_day = -5,
         boxheight_val = 60
-      )
+      )#,
+      # color_palette = list(
+      #   "Treatment End" = "blue",
+      #   "Treatment Start" = "red",
+      #   "Drug Administration: PLACEBO" = "yellow",
+      #   "Drug Administration: XANOMELINE" = "green",
+      #   "Informed Consent" = "black",
+      #   "Adverse Events" = "brown"
+      # )
     )
   )
 
