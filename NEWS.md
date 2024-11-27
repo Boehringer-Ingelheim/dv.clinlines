@@ -1,3 +1,8 @@
+# dv.clinlines 1.0.5
+
+* Display drug administration information in different colors, depending on the treatment name.
+* Allowing for customized color palettes.
+
 # dv.clinlines 1.0.4
 
 * Adapt basic_info, filter, and drug_admin parameter to adhere module standard

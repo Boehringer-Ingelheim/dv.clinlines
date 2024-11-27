@@ -515,8 +515,23 @@ test_that(
 
 
 # Tests for color_lookup() ----
-test_that("color_lookup() returns a named vector of hex colors" %>%
+test_that("color_lookup() returns a named vector of hex colors as default colors" %>%
   vdoc[["add_spec"]](specs$plot_specs$colors), {
   colors <- color_lookup(c("a", "b"), NULL)
   expect_named(colors, c("a", "b"), ignore.order = TRUE)
+})
+
+test_that("color_lookup() returns a customized color palette as is" %>%
+  vdoc[["add_spec"]](specs$plot_specs$customizable_colors), {
+  color_palette <- c("a" = "blue", "b" = "red")
+  colors <- color_lookup(c("a", "b"), color_palette)
+  expect_equal(colors, color_palette)
+})
+
+test_that("color_lookup() adds grey for missing events in customized color palette" %>%
+  vdoc[["add_spec"]](specs$plot_specs$customizable_colors), {
+  color_palette <- c("a" = "blue")
+  colors <- color_lookup(c("a", "b"), color_palette)
+  expected <- c("a" = "blue", b = "grey")
+  expect_equal(colors, expected)
 })
