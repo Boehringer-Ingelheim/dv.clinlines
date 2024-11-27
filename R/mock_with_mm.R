@@ -84,7 +84,7 @@ mock_with_mm_app <- function() {
         start_day = -5,
         boxheight_val = 60
       )#,
-      # color_palette = list(
+      # color_palette = c(
       #   "Treatment End" = "blue",
       #   "Treatment Start" = "red",
       #   "Drug Administration: PLACEBO" = "yellow",

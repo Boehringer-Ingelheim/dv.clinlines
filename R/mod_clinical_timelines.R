@@ -154,6 +154,8 @@ mod_clinical_timelines_server <- function(module_id,
   checkmate::assert_numeric(ms, len = 1, add = ac)
   checkmate::assert_string(receiver_id, min.chars = 1, null.ok = TRUE, add = ac)
   checkmate::assert_list(afmm_param, null.ok = TRUE, add = ac)
+  checkmate::assert_character(color_palette, add = ac)
+  checkmate::assert_character(names(color_palette), unique = TRUE, add = ac)
   checkmate::reportAssertions(ac)
   check_valid_color(color_palette)
 
@@ -298,7 +300,11 @@ mod_clinical_timelines_server <- function(module_id,
 #' (defaults to NULL, using the day of the earliest event to be displayed),
 #' \code{boxheight_val} contains a value between 30 and 150 defining the initial height of
 #' the individual timeline plot boxes at app launch (defaults to 60).
+#' @param color_palette `[character(1+) | NULL]`
 #'
+#' A named vector that specifies the colors for drawing events or intervals.
+#' Each name in the vector should correspond to an entry in the legend.
+#' If \code{NULL} (default), the default color palette is used.
 #' @param ms `[numeric(1)]`
 #'
 #' Single numeric value indicating how many milliseconds to wait before the plot

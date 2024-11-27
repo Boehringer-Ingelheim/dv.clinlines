@@ -1,7 +1,17 @@
+#' Check if colors are valid
+#'
+#' Executes an error action in case of wrong color definitions.
+#'
+#' @param color_palette Vector containing strings that are meant to specify
+#' a color, either as 6-digit hex color starting with the # symbol, or as
+#' R color string like received when executing `colors()`.
+#'
+#' @keywords internal
+#'
 check_valid_color <- function(color_palette) {
 
   hex_colors <- color_palette[grepl('^#', color_palette)]
-  no_colors <- hex_colors[!grepl("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$", hex_colors)]
+  no_colors <- hex_colors[!grepl("^#([A-Fa-f0-9]{6})$", hex_colors)]
   other_colors <- color_palette[!grepl('^#', color_palette)]
   no_colors <- c(no_colors, other_colors[!other_colors %in% colors()])
 
@@ -9,6 +19,7 @@ check_valid_color <- function(color_palette) {
     stop(paste("Invalid color(s) in color_palette:", paste(no_colors, collapse = ", ")))
   }
 }
+
 
 #' Create color lookup table
 #'
