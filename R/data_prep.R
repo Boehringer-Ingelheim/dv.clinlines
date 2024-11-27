@@ -36,7 +36,7 @@ prep_data <- function(data_list,
 
     drug_admin <- list(
       dataset_name = "no_da",
-      trt_var = "character",
+      trt_var = "treatment",
       start_var = "start",
       end_var = "end",
       detail_var = "details",
@@ -344,23 +344,22 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
       )
     ) %>%
     dplyr::ungroup()
-
   interval_df <- data %>%
     dplyr::mutate(
       detail_var = paste(
         .data[[col_list$detail_var]], "-",
         .data[[col_list$dose_var]],
         .data[[col_list$dose_unit_var]]
-      )
-      # trt_var = .data[[col_list$trt_var]]
+      ),
+      trt_var = .data[[col_list$trt_var]]
     ) %>%
     dplyr::select(
-      tidyselect::all_of(c(subjid_var, cols[1:2], "set_id", "exp_dose", "detail_var", col_list$trt_var))
+      tidyselect::all_of(c(subjid_var, cols[1:2], "set_id", "exp_dose", "detail_var", "trt_var"))
     ) %>%
     dplyr::mutate(
       group = dplyr::if_else(
-        !is.na(.data[[col_list$detail_var]]),
-        paste("Drug Administration:",  .data[[col_list$trt_var]]),
+        !is.na(.data[["trt_var"]]),
+        paste("Drug Administration:", .data[["trt_var"]]),
         NA
       )
     ) %>%

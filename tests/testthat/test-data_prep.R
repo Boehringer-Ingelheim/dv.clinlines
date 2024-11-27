@@ -61,7 +61,7 @@ test_that(
     expected <- c(
       "subject_id", "set_id", "group", "set", "start_dt_var", "end_dt_var", "detail_var",
       "TRTSDT", "TRTEDT", "arrow_right", "earliest", "start_dy_var", "end_dy_var",
-      "resetted", "start_exp", "end_exp", "start_exp_day", "end_exp_day",
+      "resetted", "trt_var", "start_exp", "end_exp", "start_exp_day", "end_exp_day",
       "exp_dose", "start_missing", "end_missing", "arrow_left", "date_min", "day_min"
     )
     expected_w_filter <- c(expected, "AESER", "AESOC", "AEDECOD", "AESTDTC", "AEENDTC")
@@ -160,7 +160,17 @@ test_that("set_exo_intervals() returns a data.frame with fixed column names", {
   df_exp <- set_exp_intervals(data_list, subjid_var = "USUBJID")
 
   expect_true("data.frame" %in% class(df_exp))
-  expect_named(df_exp, c("subject_id", "start_exp", "end_exp", "set_id", "exp_dose", "detail_var", "group", "set"))
+  expect_named(df_exp, c(
+      "subject_id",
+      "start_exp",
+      "end_exp",
+      "set_id",
+      "exp_dose",
+      "detail_var",
+      "trt_var",
+      "group",
+      "set"
+  ))
 })
 
 
@@ -199,7 +209,7 @@ test_that("set_events_intern() adds flags for arrows and missing values", {
 # Tests for combine_data() ----
 test_that("combine_data() names output columns correctly", {
   expected <- c(
-    "subject_id", "group", "start_dt_var", "end_dt_var", "detail_var",
+    "subject_id", "group", "trt_var", "start_dt_var", "end_dt_var", "detail_var",
     "TRTSDT", "TRTEDT", "earliest", "set", "set_id", "start_exp", "end_exp",
     "exp_dose", "arrow_right", "start_missing", "end_missing", "arrow_left"
   )
@@ -221,7 +231,7 @@ test_that("complete_events() returns date columns as type date", {
 
 test_that("complete_events() names output columns correctly", {
   expected <- c(
-    "subject_id", "group", "start_dt_var", "end_dt_var", "detail_var",
+    "subject_id", "group", "trt_var", "start_dt_var", "end_dt_var", "detail_var",
     "TRTSDT", "TRTEDT", "earliest", "set", "set_id", "arrow_right",
     "start_dy_var", "end_dy_var", "start_exp", "end_exp", "resetted",
     "start_exp_day", "end_exp_day", "exp_dose", "start_missing", "end_missing", "arrow_left"

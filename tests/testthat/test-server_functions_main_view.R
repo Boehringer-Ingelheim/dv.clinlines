@@ -97,7 +97,7 @@ df <- prep_data(
   )
 )
 
-colors <- color_lookup(unique(df$group))
+colors <- color_lookup(unique(df$group), NULL)
 time_range <- lubridate::ymd_hm(c("2012-08-05 12:00", "2022-01-03 12:35"))
 p_df <- create_plot_data(df, time_range, unique(df$group))
 p <- create_main_plot(p_df, "earliest", time_range, colors, 50, "subject_id")
@@ -312,7 +312,7 @@ test_that("create_main_plot() returns a plot object for plottable settings", {
 ## create data for testServer tests
 df <- prep_data(add_ids(prep_dummy_data(n = 2)))
 ## create color vector for testServer tests
-colors <- color_lookup(c("Treatment Start", "Adverse Events"))
+colors <- color_lookup(c("Treatment Start", "Adverse Events"), NULL)
 ## set changed to an arbitrary value
 changed <- shiny::reactive(1)
 ## create function to be used for testServer tests
@@ -481,7 +481,7 @@ test_that(
     vdoc[["add_spec"]](specs$plot_specs$drug_admin_event),
   {
     df <- prep_data(add_ids(prep_dummy_data(n = 3)))
-    colors <- color_lookup(c("Drug Administration", "Treatment Start"))
+    colors <- color_lookup(c("Drug Administration", "Treatment Start"), NULL)
 
     shiny::testServer(
       server_func,
@@ -517,6 +517,6 @@ test_that(
 # Tests for color_lookup() ----
 test_that("color_lookup() returns a named vector of hex colors" %>%
   vdoc[["add_spec"]](specs$plot_specs$colors), {
-  colors <- color_lookup(c("a", "b"))
+  colors <- color_lookup(c("a", "b"), NULL)
   expect_named(colors, c("a", "b"), ignore.order = TRUE)
 })
