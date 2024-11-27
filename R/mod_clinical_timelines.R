@@ -138,7 +138,13 @@ mod_clinical_timelines_server <- function(module_id,
   checkmate::assert_list(drug_admin, types = "character", null.ok = TRUE, add = ac)
   checkmate::assert_subset(
     names(drug_admin),
-    choices = c("dataset_name", "start_var", "end_var", "detail_var", "label", "dose_var", "dose_unit_var"),
+    choices = c(
+      "dataset_name",
+      "trt_var",
+      "start_var", "end_var",
+      "detail_var", "label",
+      "dose_var", "dose_unit_var"
+    ),
     add = ac
   )
   checkmate::assert_list(filter, types = "list", null.ok = TRUE, add = ac)
@@ -154,8 +160,8 @@ mod_clinical_timelines_server <- function(module_id,
   checkmate::assert_numeric(ms, len = 1, add = ac)
   checkmate::assert_string(receiver_id, min.chars = 1, null.ok = TRUE, add = ac)
   checkmate::assert_list(afmm_param, null.ok = TRUE, add = ac)
-  checkmate::assert_character(color_palette, add = ac)
-  checkmate::assert_character(names(color_palette), unique = TRUE, add = ac)
+  checkmate::assert_character(color_palette, null.ok = TRUE, add = ac)
+  checkmate::assert_character(names(color_palette), null.ok = TRUE, unique = TRUE, add = ac)
   checkmate::reportAssertions(ac)
   check_valid_color(color_palette)
 
@@ -387,19 +393,22 @@ mod_clinical_timelines_server <- function(module_id,
 #'   \item{\code{dataset_name}: Character name of the dataset that holds drug administration data
 #'     (e.g. ex domain), as it is called in the datalist that is provided to the
 #'     \pkg{modulemanager}.}
+#'   \item{\code{trt_var}: Character name of the variable that contains the
+#'     treatment name which must be present in the dataset mentioned in the
+#'     \code{dataset_name} element.}
 #'   \item{\code{start_var}: Character name of the variable that contains the start dates
 #'     (e.g. exposure start dates) which must be present in the dataset mentioned in the
-#'     \code{name} element.}
+#'     \code{dataset_name} element.}
 #'   \item{\code{end_var}: Character name of the variable that contains the end dates
 #'     (e.g. exposure end dates) which must be present in the dataset mentioned in the
-#'     \code{name} element.}
+#'     \code{dataset_name} element.}
 #'   \item{\code{detail_var}: Character name of the variable that contains the treatment
-#'     information. Must exist in the dataset mentioned in the \code{name} element.}
+#'     information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
 #'   \item{\code{label}: Free-text character label for the drug administration event.}
 #'   \item{\code{dose_var}: Character name of the variable that contains the dosis level
-#'     information. Must exist in the dataset mentioned in the \code{name} element.}
+#'     information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
 #'   \item{\code{dose_unit_var}: Character name of the variable that contains the dosis
-#'     unit. Must exist in the dataset mentioned in the \code{name} element.}
+#'     unit. Must exist in the dataset mentioned in the \code{dataset_name} element.}
 #' }
 #'
 #' \cr

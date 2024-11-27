@@ -19,9 +19,11 @@ prep_data <- function(data_list,
                       drug_admin = default_drug_admin(),
                       subjid_var = "USUBJID",
                       filter = NULL) {
+
   if (is.null(drug_admin)) {
     empty_drug_admin <- data.frame(
       subjects = character(),
+      treatment = character(),
       start = lubridate::ymd_hm(),
       end = lubridate::ymd_hm(),
       details = character(),
@@ -34,6 +36,7 @@ prep_data <- function(data_list,
 
     drug_admin <- list(
       dataset_name = "no_da",
+      trt_var = "character",
       start_var = "start",
       end_var = "end",
       detail_var = "details",
@@ -324,11 +327,14 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
 set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_var) {
   col_list <- mapping[!names(mapping) %in% c("dataset_name")]
 
-  cols <- c(col_list$start_var, col_list$end_var, col_list$detail_var)
+  cols <- c(col_list$start_var, col_list$end_var, col_list$detail_var, col_list$trt_var)
   data <- data_list[[mapping$dataset_name]]
 
+  check_names(data, cols, subjid_var)
+  check_date_type(data, c(col_list$start_var, col_list$end_var))
+
   data <- data %>%
-    dplyr::group_by(get(subjid_var), get(col_list$detail_var)) %>% #EXTRT
+    dplyr::group_by(get(subjid_var), get(col_list$trt_var)) %>%
     dplyr::mutate(
       exp_dose = dplyr::case_when(
         is.na(dplyr::lag(get(col_list$dose_var))) ~ "start/equal",
@@ -339,9 +345,6 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
     ) %>%
     dplyr::ungroup()
 
-  check_names(data, cols, subjid_var)
-  check_date_type(data, c(col_list$start_var, col_list$end_var))
-
   interval_df <- data %>%
     dplyr::mutate(
       detail_var = paste(
@@ -349,12 +352,18 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
         .data[[col_list$dose_var]],
         .data[[col_list$dose_unit_var]]
       )
+      # trt_var = .data[[col_list$trt_var]]
     ) %>%
     dplyr::select(
-      tidyselect::all_of(c(subjid_var, cols[1:2], "set_id", "exp_dose", "detail_var", col_list$detail_var)) #"EXTRT"
+      tidyselect::all_of(c(subjid_var, cols[1:2], "set_id", "exp_dose", "detail_var", col_list$trt_var))
     ) %>%
-    dplyr::mutate(group = dplyr::if_else(!is.na(.data[[col_list$detail_var]]), paste("Drug Administration:", .data[[col_list$detail_var]]), NA)) %>% #EXTRT
-    #tibble::add_column(group = rep(col_list$label)) %>%
+    dplyr::mutate(
+      group = dplyr::if_else(
+        !is.na(.data[[col_list$detail_var]]),
+        paste("Drug Administration:",  .data[[col_list$trt_var]]),
+        NA
+      )
+    ) %>%
     dplyr::rename(
       start_exp = tidyselect::all_of(col_list$start_var),
       end_exp = tidyselect::all_of(col_list$end_var)

@@ -117,16 +117,18 @@ These second level lists contain the variable names that are needed to plot the 
     
 - `drug_admin`: A list of named character strings that describes which variables to use to display drug administration events. If not NULL, it must contain the following elements:
     - `dataset_name`: Character name of the dataset that holds drug administration data (e.g. ex domain), as it is called in the datalist that is provided to the modulemanager.
+    
+    - `trt_var`: Character name of the variable that contains the treatment name which must be present in the dataset mentioned in the `dataset_name` element.
 
-    - `start_var`: Character name of the variable that contains the start dates (e.g. exposure start dates) which must be present in the dataset mentioned in the name element.
+    - `start_var`: Character name of the variable that contains the start dates (e.g. exposure start dates) which must be present in the dataset mentioned in the `dataset_name` element.
 
-    - `end_var`: Character name of the variable that contains the end dates (e.g. exposure end dates) which must be present in the dataset mentioned in the name element.
+    - `end_var`: Character name of the variable that contains the end dates (e.g. exposure end dates) which must be present in the dataset mentioned in the `dataset_name` element.
 
-    - `detail_var`: Character name of the variable that contains the treatment information. Must exist in the dataset mentioned in the name element.
+    - `detail_var`: Character name of the variable that contains the treatment information. Must exist in the dataset mentioned in the `dataset_name` element.
 
     - `label`: Free-text character label for the drug administration event.
 
-    - `dose_var`: Character name of the variable that contains the dosis level information. Must exist in the dataset mentioned in the name element.
+    - `dose_var`: Character name of the variable that contains the dosis level information. Must exist in the dataset mentioned in the `dataset_name` element.
 
     - `dose_unit_var`: Character name of the variable that contains the dosis unit. Must exist in the dataset mentioned in the name element.
 
@@ -218,6 +220,7 @@ module_list <- list(
     ),
     drug_admin = set_drug_admin(
       dataset_name = "adex",
+      trt_var = "EXTRT",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
@@ -307,6 +310,7 @@ module_list <- list(
     ),
     drug_admin = set_drug_admin(
       dataset_name = "adex",
+      trt_var = "EXTRT",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",

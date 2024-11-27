@@ -60,6 +60,7 @@ mock_with_mm_app <- function() {
       ),
       drug_admin = list(
         dataset_name = "exp",
+        trt_var = "EXTRT",
         start_var = "EXSTDTC",
         end_var = "EXENDTC",
         detail_var = "EXTRT",

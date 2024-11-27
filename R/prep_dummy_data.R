@@ -143,6 +143,7 @@ default_drug_admin <- function() {
   return(
     list(
       dataset_name = "exp",
+      trt_var = "EXTRT",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
