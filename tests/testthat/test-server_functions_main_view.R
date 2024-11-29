@@ -514,6 +514,21 @@ test_that(
 )
 
 
+# Tests for check_valid_color() ----
+test_that("check_valid_color() detects invalid colors", {
+  color_palette <- c(
+    "#1afe56", # hex color with 6 numbers/letters: valid
+    "#AAFFBB", # hex color with 6 letters: valid
+    "#225577", # hex color with 6 numbers: valid
+    "#1e",     # hex color with only 2 numbers/letters: invalid
+    "#lmnopq", # hex color with 6 invalid letters: invalid
+    "blue",    # R color: valid
+    "no_color" # no R color: invalid
+  )
+  expect_error(check_valid_color(color_palette), "^.*#1e, #lmnopq, no_color.*$")
+})
+
+
 # Tests for color_lookup() ----
 test_that("color_lookup() returns a named vector of hex colors as default colors" %>%
   vdoc[["add_spec"]](specs$plot_specs$colors), {
