@@ -30,7 +30,7 @@ mod_clinical_timelines_UI <- function(module_id, # nolint
                                       boxheight_val = 60) {
   # Check validity of arguments
   ac <- checkmate::makeAssertCollection()
-  checkmate::assert_string(module_id, min.chars = 1, add = ac)
+  checkmate::assert_string(module_id, min.chars = 0, add = ac) # Discuss min.chars = 1,
   checkmate::assert_list(filter_list, types = "character", null.ok = TRUE, add = ac)
   checkmate::assert_subset(
     unlist(filter_list),
@@ -110,7 +110,7 @@ mod_clinical_timelines_server <- function(module_id,
                                           afmm_param = NULL) {
   # Check validity of arguments
   ac <- checkmate::makeAssertCollection()
-  checkmate::assert_string(module_id, min.chars = 1, add = ac)
+  checkmate::assert_string(module_id, min.chars = 0, add = ac) # Discuss min.chars = 1,
   checkmate::assert_multi_class(data_name, c("reactive", "shinymeta_reactive"), add = ac)
   checkmate::assert_multi_class(dataset_list, c("reactive", "shinymeta_reactive"), add = ac)
   checkmate::assert_list(basic_info, types = "character", add = ac)
@@ -491,3 +491,73 @@ mod_clinical_timelines <- function(module_id,
 
   return(mod)
 }
+
+# clinical timelines module interface description ----
+# TODO: Fill in
+mod_clinical_timelines_API_docs <- list(
+  "Clinical Timelines",
+  module_id = "",
+  basic_info = list(
+    "",
+    subject_level_dataset_name = "",
+    trt_start_var = "",
+    trt_end_var = "",
+    icf_date_var = ""
+  ),
+  mapping = list(""),
+  drug_admin = list(""),
+  filter = list(""),
+  subjid_var = "",
+  default_plot_settings = list(""),
+  ms = list(""),
+  receiver_id = ""
+)
+
+mod_clinical_timelines_API_spec <- TC$group(
+  module_id = TC$mod_ID(),
+  basic_info = TC$group(
+    subject_level_dataset_name = TC$dataset_name() |> TC$flag("subject_level_dataset_name"),
+    trt_start_var = TC$col("subject_level_dataset_name", TC$or(TC$date(), TC$datetime())),
+    trt_end_var = TC$col("subject_level_dataset_name", TC$or(TC$date(), TC$datetime())),
+    icf_date_var = TC$col("subject_level_dataset_name", TC$or(TC$date(), TC$datetime()))
+  ) |> TC$flag('ignore'),
+  mapping = TC$group() |> TC$flag('ignore'),
+  drug_admin = TC$group() |> TC$flag('ignore'),
+  filter = TC$group() |> TC$flag('ignore'),
+  subjid_var = TC$character() |> TC$flag("optional", "ignore"), # TODO: TC$col("subject_level_dataset_name", TC$or(TC$factor(), TC$character())) |> TC$flag("subjid_var"),
+  default_plot_settings = TC$group() |> TC$flag('ignore'),
+  ms = TC$group() |> TC$flag('ignore'),
+  receiver_id = TC$character() |> TC$flag("optional", "ignore")
+) |> TC$attach_docs(mod_clinical_timelines_API_docs)
+
+dataset_info_clinical_timelines <- function(basic_info, mapping, filter, ...) {
+  # TODO: Should we do something with the `filter` parameter ?
+  subject_level <- basic_info[["subject_level_dataset_name"]]
+  all <- unique(c(subject_level, names(mapping)))
+  return(list(all = all, subject_level = subject_level))
+}
+
+check_mod_clinical_timelines <- function(
+  afmm, datasets, module_id, basic_info, mapping, drug_admin, filter, subjid_var, default_plot_settings, ms, receiver_id
+) {
+  warn <- CM$container()
+  err <- CM$container()
+
+  # TODO: Replace this function with a generic one that performs the checks based on mod_clinical_timelines_API_spec.
+  # Something along the lines of OK <- CM$check_API(mod_clinical_timelines_API_spec, args = match.call(), warn, err)
+
+  OK <- check_mod_clinical_timelines_auto(
+    afmm, datasets,
+    module_id, basic_info, mapping, drug_admin, filter, subjid_var, default_plot_settings, ms, receiver_id,
+    warn, err
+  )
+
+  # Checks that API spec does not (yet?) capture # TODO:
+
+  res <- list(warnings = warn[["messages"]], errors = err[["messages"]])
+  return(res)
+}
+
+mod_clinical_timelines <- CM$module(
+  mod_clinical_timelines, check_mod_clinical_timelines, dataset_info_clinical_timelines
+)

@@ -12,6 +12,8 @@ vdoc <- local({
 specs <- vdoc[["specs"]]
 #  validation (F)
 
+# YT#VH19ec235e56cdd18f129215603abf0ca6#VH00000000000000000000000000000000#
+
 #' Test harness for communication with `dv.papo`.
 #'
 #' @param mod Parameterized instance of the module to test. Should produce valid output and not trigger a `shiny::req`.
@@ -22,10 +24,12 @@ test_communication_with_papo <- function(mod, data, trigger_input_id) {
   datasets <- shiny::reactive(data)
 
   afmm <- list(
+    data = list(DS = data),
     unfiltered_dataset = datasets,
     filtered_dataset = datasets,
     module_output = function() list(),
-    utils = list(switch2 = function(id) NULL),
+    module_names = list(papo = "Papo"),
+    utils = list(switch2mod = function(id) NULL),
     dataset_metadata = list(name = shiny::reactive("dummy_dataset_name"))
   )
 
@@ -48,7 +52,7 @@ test_communication_with_papo <- function(mod, data, trigger_input_id) {
 
   app <- shiny::shinyApp(ui = app_ui, server = app_server)
 
-  test_that("module adheres to send_subject_id_to_papo protocol", {
+  testthat::test_that("module adheres to send_subject_id_to_papo protocol", {
     app <- shinytest2::AppDriver$new(app, name = "test_send_subject_id_to_papo_protocol")
 
     app$wait_for_idle()
