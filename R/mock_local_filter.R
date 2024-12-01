@@ -30,7 +30,7 @@ mock_local_filter_server <- function(input, output, session) {
     data_list$adae <- data_list$adae %>%
       dplyr::mutate(
         # Note: conversion below is only for mock purpose and changes the data
-        AEREL = dplyr::if_else(AEREL == "NONE", "N", "Y")
+        AEREL = dplyr::if_else(.data[["AEREL"]] == "NONE", "N", "Y")
       )
     data_list <- purrr::set_names(names(data_list)) %>%
       purrr::map(function(x) {

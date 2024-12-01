@@ -326,7 +326,7 @@ mod_main_view_server <- function(module_id, initial_data, changed,
         # (which is produced by a ggplot2 internal function)
         ggdata_y <- create_ggdata_y(plot_obj()$plot, input$plot_hover)
 
-        hover_info <- create_hover_info(
+        hover_info <- create_hover_info(   # nolint
           input$plot_hover,
           ggdata_y,
           initial_data(),

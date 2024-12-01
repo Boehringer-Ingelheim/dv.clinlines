@@ -40,10 +40,10 @@ color_lookup <- function(groups) {
 #'
 create_plot_data <- function(work_data, time_range, filter_event) {
   if (lubridate::is.timepoint(time_range)) {
-    first <- "start_dt_var"
-    last <- "end_dt_var"
-    first_exp <- "start_exp"
-    last_exp <- "end_exp"
+    first <- "start_dt_var"   # nolint
+    last <- "end_dt_var"      # nolint
+    first_exp <- "start_exp"  # nolint
+    last_exp <- "end_exp"     # nolint
   } else {
     first <- "start_dy_var"
     last <- "end_dy_var"
@@ -429,7 +429,7 @@ create_tooltip <- function(hover, y_screen_pct) {
   # Calculate cursor position as percent
   left_pct <- (hover$x - hover$domain$left) /
     (hover$domain$right - hover$domain$left)
-  top_pct <- (hover$domain$top - hover$y) /
+  top_pct <- (hover$domain$top - hover$y) /             # nolint
     (hover$domain$top - hover$domain$bottom)
 
   # Distance from left and top side of the picture in pixels

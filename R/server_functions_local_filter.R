@@ -31,7 +31,7 @@ get_filter_status <- function(all_filters, chosen_filters) {
 #' @keywords internal
 set_pts <- function(status_filters, soc, prepped_data, filter) {
   if (status_filters[["soc"]] && !is.null(soc)) {
-    pt_choices <- prepped_data %>%
+    pt_choices <- prepped_data %>%                                # nolint
       dplyr::filter(.data[[filter$soc_var]] %in% soc) %>%
       dplyr::select(tidyselect::all_of(filter$pref_term_var)) %>%
       dplyr::distinct() %>%

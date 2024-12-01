@@ -520,13 +520,13 @@ mod_clinical_timelines_API_spec <- TC$group(
     trt_start_var = TC$col("subject_level_dataset_name", TC$or(TC$date(), TC$datetime())),
     trt_end_var = TC$col("subject_level_dataset_name", TC$or(TC$date(), TC$datetime())),
     icf_date_var = TC$col("subject_level_dataset_name", TC$or(TC$date(), TC$datetime()))
-  ) |> TC$flag('ignore'),
-  mapping = TC$group() |> TC$flag('ignore'),
-  drug_admin = TC$group() |> TC$flag('ignore'),
-  filter = TC$group() |> TC$flag('ignore'),
-  subjid_var = TC$character() |> TC$flag("optional", "ignore"), # TODO: TC$col("subject_level_dataset_name", TC$or(TC$factor(), TC$character())) |> TC$flag("subjid_var"),
-  default_plot_settings = TC$group() |> TC$flag('ignore'),
-  ms = TC$group() |> TC$flag('ignore'),
+  ) |> TC$flag("ignore"),
+  mapping = TC$group() |> TC$flag("ignore"),
+  drug_admin = TC$group() |> TC$flag("ignore"),
+  filter = TC$group() |> TC$flag("ignore"),
+  subjid_var = TC$character() |> TC$flag("optional", "ignore"), # TODO: Maybe TC$col("subject_level_dataset_name", TC$or(TC$factor(), TC$character())) |> TC$flag("subjid_var"),
+  default_plot_settings = TC$group() |> TC$flag("ignore"),
+  ms = TC$group() |> TC$flag("ignore"),
   receiver_id = TC$character() |> TC$flag("optional", "ignore")
 ) |> TC$attach_docs(mod_clinical_timelines_API_docs)
 
@@ -538,15 +538,14 @@ dataset_info_clinical_timelines <- function(basic_info, mapping, filter, ...) {
 }
 
 check_mod_clinical_timelines <- function(
-  afmm, datasets, module_id, basic_info, mapping, drug_admin, filter, subjid_var, default_plot_settings, ms, receiver_id
-) {
+    afmm, datasets, module_id, basic_info, mapping, drug_admin, filter, subjid_var, default_plot_settings, ms, receiver_id) {
   warn <- CM$container()
   err <- CM$container()
 
   # TODO: Replace this function with a generic one that performs the checks based on mod_clinical_timelines_API_spec.
   # Something along the lines of OK <- CM$check_API(mod_clinical_timelines_API_spec, args = match.call(), warn, err)
 
-  OK <- check_mod_clinical_timelines_auto(
+  OK <- check_mod_clinical_timelines_auto( # nolint
     afmm, datasets,
     module_id, basic_info, mapping, drug_admin, filter, subjid_var, default_plot_settings, ms, receiver_id,
     warn, err
