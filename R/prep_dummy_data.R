@@ -65,7 +65,7 @@ prep_dummy_data <- function(n = 200) {
       subject_id = .data$USUBJID
     )
 
-  return(list(adsl = adsl_info, adae = adae_info, adcm = adcm_info, exp = exp_info, exp2 = exp_empty))
+  return(list(adsl = adsl_info, adae = adae_info, adcm = adcm_info, exp = exp_info))#, exp2 = exp_empty))
 }
 
 

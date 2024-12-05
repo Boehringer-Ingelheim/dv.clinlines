@@ -658,7 +658,7 @@ get_groups <- function(ggdata_y, color_map, x_range) {
     dplyr::mutate(
       # Assign event names based on the color
       event = purrr::map_chr(
-        .data[["colour"]], ~ names(color_map[which(color_map == .x)])
+        .data[["colour"]], ~ ifelse(.x != "<NA>", names(color_map[which(color_map == .x)]), NA)
       ),
       xmin = as.numeric(.data[["xmin"]]), # to silence dplyr warning
       xmax = as.numeric(.data[["xmax"]])
