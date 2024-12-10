@@ -1,7 +1,9 @@
 # dv.clinlines 1.0.5
 
 * Display drug administration information in different colors, depending on the treatment name.
-* Allowing for customized color palettes.
+* Allow for customized color palettes.
+* Use dv.manager's switch2mod() instead of deprecated switch2() function.
+* Export mock app.
 
 # dv.clinlines 1.0.4
 
