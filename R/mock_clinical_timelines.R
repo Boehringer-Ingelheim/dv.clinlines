@@ -69,6 +69,7 @@ mock_clinical_timelines_server <- function(input, output, session) {
     ),
     drug_admin = list(
       dataset_name = "exp",
+      trt_var = "EXTRT",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
@@ -87,6 +88,7 @@ mock_clinical_timelines_server <- function(input, output, session) {
         drug_rel_ae_var = "AEREL"
       )
     ),
+    start_day = -5,
     ms = 50
   )
 }
@@ -98,6 +100,7 @@ mock_clinical_timelines_server <- function(input, output, session) {
 #' \code{mock_clinical_timelines_app()} runs the \pkg{dv.clinlines} module
 #' with dummy data. Local adverse event filters included.
 #'
+#' @export
 mock_clinical_timelines_app <- function() {
   shiny::shinyApp(
     ui = mock_clinical_timelines_UI,

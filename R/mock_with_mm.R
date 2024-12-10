@@ -4,8 +4,6 @@
 #' module manager surface. Displays data from the \pkg{pharmaverseadam} package.
 #'
 #' @export
-#' @keywords internal
-#'
 mock_with_mm_app <- function() {
   # Specifiy dataset list for modulemanager
   dataset_list <- list(
@@ -90,8 +88,8 @@ mock_with_mm_app <- function() {
       #   "Treatment Start" = "red",
       #   "Drug Administration: PLACEBO" = "yellow",
       #   "Drug Administration: XANOMELINE" = "green",
-      #   "Informed Consent" = "black",
-      #   "Adverse Events" = "brown"
+      #   "Informed Consent" = "purple",
+      #   "Adverse Events" = "orange"
       # )
     )
   )
