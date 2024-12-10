@@ -481,7 +481,10 @@ test_that(
     vdoc[["add_spec"]](specs$plot_specs$drug_admin_event),
   {
     df <- prep_data(add_ids(prep_dummy_data(n = 3)))
-    colors <- color_lookup(c("Drug Administration", "Treatment Start"), NULL)
+    colors <- color_lookup(
+      c(paste("Drug Administration:", c("PLACEBO", "XANOMELINE")), "Treatment Start"),
+      NULL
+    )
 
     shiny::testServer(
       server_func,
@@ -502,7 +505,10 @@ test_that(
           x_scale = "date",
           y_sort = "alphanum",
           height = 50,
-          filter_event = c("Treatment Start", "Drug Administration")
+          filter_event = c(
+            "Treatment Start",
+            paste("Drug Administration:", c("PLACEBO", "XANOMELINE"))
+          )
         )
 
         session$flushReact()

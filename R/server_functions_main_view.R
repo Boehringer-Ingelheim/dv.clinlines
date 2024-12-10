@@ -234,85 +234,87 @@ create_main_plot <- function(work_data,
     ) +
     x_scale
 
+  # Only if Drug Administration is defined
+  if (!all(is.na(work_data$trt_var))) {
+    x <- sort(unique(stats::na.omit(work_data$exp_dose)))
 
-  x <- sort(unique(stats::na.omit(work_data$exp_dose)))
+    shapes <- dplyr::case_when(
+      x == "decrease" ~ 25,
+      x == "increase" ~ 24,
+      x == "start/equal" ~ 23
+    )
+    names(shapes) <- x
+    symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
 
-  shapes <- dplyr::case_when(
-    x == "decrease" ~ 25,
-    x == "increase" ~ 24,
-    x == "start/equal" ~ 23
-  )
-  names(shapes) <- x
-  symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
+    trt_per_subject <- work_data |>
+      dplyr::filter(startsWith(.data[["group"]], "Drug Administration:")) |>
+      dplyr::group_by(subject_id) |>
+      dplyr::distinct(group) |>
+      dplyr::count()
 
-  trt_per_subject <- work_data |>
-    dplyr::filter(startsWith(.data[["group"]], "Drug Administration:")) |>
-    dplyr::group_by(subject_id) |>
-    dplyr::distinct(group) |>
-    dplyr::count()
+    if (any(trt_per_subject$n > 1)) {
+      position <- 0.5 - (length(symbol_color) + 1) * 0.1
+      for (i in seq_along(symbol_color)) {
+        data <- main_p$data |>
+          dplyr::filter(
+            .data[["group"]] == names(symbol_color)[i]
+          )
+        # Transform symbol_color[i] into a vector to fix legend
+        # (ggplot2 doing ggplot2 things...)
+        symbol_colors <- rep(symbol_color[i], nrow(data))
+        pos <- position + 0.1 * i
+        main_p <- main_p +
+          ggplot2::geom_linerange(
+            data = data,
+            ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
+            color = symbol_colors,
+            position = ggplot2::position_nudge(y = pos),
+            linewidth = 2 / 140 * height,
+            na.rm = TRUE
+          ) +
+          ggplot2::geom_point(
+            data = data,
+            ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
+            na.rm = TRUE,
+            fill = symbol_colors,
+            color = "black",
+            position = ggplot2::position_nudge(y = pos),
+            size = height / 20
+          )
+      }
+    } else {
+      symbol_colors <- sapply(work_data$group, function(x) {
+        ifelse(x %in% names(symbol_color), symbol_color[[x]], NA)
+      }, USE.NAMES = FALSE)
 
-  if (any(trt_per_subject$n > 1)) {
-    position <- 0.5 - (length(symbol_color) + 1) * 0.1
-    for (i in seq_along(symbol_color)) {
-      data <- main_p$data |>
-        dplyr::filter(
-          .data[["group"]] == names(symbol_color)[i]
-        )
-      # Transform symbol_color[i] into a vector to fix legend
-      # (ggplot2 doing ggplot2 things...)
-      symbol_colors <- rep(symbol_color[i], nrow(data))
-      pos <- position + 0.1 * i
+      # Add drug administration events
       main_p <- main_p +
         ggplot2::geom_linerange(
-          data = data,
           ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
           color = symbol_colors,
-          position = ggplot2::position_nudge(y = pos),
+          position = ggplot2::position_nudge(y = 0.35),
           linewidth = 2 / 140 * height,
           na.rm = TRUE
         ) +
         ggplot2::geom_point(
-          data = data,
           ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
           na.rm = TRUE,
           fill = symbol_colors,
           color = "black",
-          position = ggplot2::position_nudge(y = pos),
+          position = ggplot2::position_nudge(y = 0.35),
           size = height / 20
         )
     }
-  } else {
-    symbol_colors <- sapply(work_data$group, function(x) {
-      ifelse(x %in% names(symbol_color), symbol_color[[x]], NA)
-    }, USE.NAMES = FALSE)
 
-    # Add drug administration events
-    main_p <- main_p +
-      ggplot2::geom_linerange(
-        ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
-        color = symbol_colors,
-        position = ggplot2::position_nudge(y = 0.35),
-        linewidth = 2 / 140 * height,
-        na.rm = TRUE
-      ) +
-      ggplot2::geom_point(
-        ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
-        na.rm = TRUE,
-        fill = symbol_colors,
-        color = "black",
-        position = ggplot2::position_nudge(y = 0.35),
-        size = height / 20
-      )
-  }
-
-  if (length(shapes) > 0) {
-    main_p <- main_p +
-      ggplot2::scale_shape_manual(
-        name = "Dose Change:",
-        values = shapes,
-        na.translate = FALSE,
-        breaks = x
-      )
+    if (length(shapes) > 0) {
+      main_p <- main_p +
+        ggplot2::scale_shape_manual(
+          name = "Dose Change:",
+          values = shapes,
+          na.translate = FALSE,
+          breaks = x
+        )
+    }
   }
 
   # Add arrows for open intervals

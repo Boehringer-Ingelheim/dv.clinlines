@@ -5,14 +5,14 @@
 #'
 #' @export
 mock_with_mm_app <- function() {
-  # Specifiy dataset list for modulemanager
+  # Specifiy dataset list for module manager
   dataset_list <- list(
     dummyData1 = prep_dummy_data(20),
     dummyData2 = prep_dummy_data(200)
   )
 
 
-  # Define module list for modulemanager
+  # Define module list for module manager
   module_list <- list(
     "Clinical Timelines" = mod_clinical_timelines(
       module_id = "mod1",

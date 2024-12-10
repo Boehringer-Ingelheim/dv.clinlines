@@ -194,9 +194,19 @@ mod_main_view_server <- function(module_id, initial_data, changed,
           cache$date_day_range <<- list(
             date = c(
               min(initial_data()$date_min),
-              max(c(initial_data()$end_dt_var, initial_data()$end_exp), na.rm = TRUE)
+              max(c(
+                initial_data()$start_dt_var,
+                initial_data()$end_dt_var,
+                initial_data()$start_exp,
+                initial_data()$end_exp
+              ), na.rm = TRUE)
             ),
-            day = c(start_day, max(c(initial_data()$end_dy_var, initial_data()$end_exp_day), na.rm = TRUE))
+            day = c(start_day, max(c(
+              initial_data()$start_dy_var,
+              initial_data()$end_dy_var,
+              initial_data()$start_exp_day,
+              initial_data()$end_exp_day
+            ), na.rm = TRUE))
           )
         }
 
