@@ -10,9 +10,9 @@
 #'
 check_valid_color <- function(color_palette) {
 
-  hex_colors <- color_palette[grepl('^#', color_palette)]
+  hex_colors <- color_palette[grepl("^#", color_palette)]
   no_colors <- hex_colors[!grepl("^#([A-Fa-f0-9]{6})$", hex_colors)]
-  other_colors <- color_palette[!grepl('^#', color_palette)]
+  other_colors <- color_palette[!grepl("^#", color_palette)]
   no_colors <- c(no_colors, other_colors[!other_colors %in% colors()])
 
   if (length(no_colors) > 0) {
@@ -270,7 +270,7 @@ create_main_plot <- function(work_data,
           position = ggplot2::position_nudge(y = pos),
           linewidth = 2 / 140 * height,
           na.rm = TRUE
-        )+
+        ) +
         ggplot2::geom_point(
           data = data,
           ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),

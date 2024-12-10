@@ -27,7 +27,7 @@ combined_data <- combine_data(
 
 # Tests for add_ids() ----
 test_that("add_ids() returns a named list", {
-  expect_named(data_list, c("adsl", "adae", "adcm", "exp", "exp2"), ignore.order = TRUE)
+  expect_named(data_list, c("adsl", "adae", "adcm", "exp"), ignore.order = TRUE)
   expect_type(data_list, "list")
 })
 

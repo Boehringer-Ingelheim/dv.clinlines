@@ -251,7 +251,7 @@ mod_clinical_timelines_server <- function(module_id,
             type = "message"
           )
         } else if (!is.null(receiver_id)) {
-          afmm_param$utils$switch2(afmm_param$module_names[[receiver_id]])
+          afmm_param$utils$switch2mod(receiver_id)
         }
       })
 
