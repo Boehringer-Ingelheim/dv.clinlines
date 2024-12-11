@@ -10,4 +10,3 @@ mock_with_mm_app()
 Launches an example app that shows a Clinical Timelines module integrated in the
 module manager surface. Displays data from the \pkg{pharmaverseadam} package.
 }
-\keyword{internal}

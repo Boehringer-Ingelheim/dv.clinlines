@@ -12,6 +12,7 @@ mod_clinical_timelines(
   filter = NULL,
   subjid_var = "USUBJID",
   default_plot_settings = list(x_param = "day", start_day = NULL, boxheight_val = 60),
+  color_palette = NULL,
   ms = 1000,
   receiver_id = NULL
 )
@@ -59,6 +60,12 @@ contains an integer indicating the lower x-axis limit in case of study day displ
 (defaults to NULL, using the day of the earliest event to be displayed),
 \code{boxheight_val} contains a value between 30 and 150 defining the initial height of
 the individual timeline plot boxes at app launch (defaults to 60).}
+
+\item{color_palette}{\verb{[character(1+) | NULL]}
+
+A named vector that specifies the colors for drawing events or intervals.
+Each name in the vector should correspond to an entry in the legend.
+If \code{NULL} (default), the default color palette is used.}
 
 \item{ms}{\verb{[numeric(1)]}
 
@@ -153,19 +160,22 @@ If not NULL, the \code{drug_admin} list must contain the following elements:
 \item{\code{dataset_name}: Character name of the dataset that holds drug administration data
 (e.g. ex domain), as it is called in the datalist that is provided to the
 \pkg{modulemanager}.}
+\item{\code{trt_var}: Character name of the variable that contains the
+treatment name which must be present in the dataset mentioned in the
+\code{dataset_name} element.}
 \item{\code{start_var}: Character name of the variable that contains the start dates
 (e.g. exposure start dates) which must be present in the dataset mentioned in the
-\code{name} element.}
+\code{dataset_name} element.}
 \item{\code{end_var}: Character name of the variable that contains the end dates
 (e.g. exposure end dates) which must be present in the dataset mentioned in the
-\code{name} element.}
+\code{dataset_name} element.}
 \item{\code{detail_var}: Character name of the variable that contains the treatment
-information. Must exist in the dataset mentioned in the \code{name} element.}
+information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
 \item{\code{label}: Free-text character label for the drug administration event.}
 \item{\code{dose_var}: Character name of the variable that contains the dosis level
-information. Must exist in the dataset mentioned in the \code{name} element.}
+information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
 \item{\code{dose_unit_var}: Character name of the variable that contains the dosis
-unit. Must exist in the dataset mentioned in the \code{name} element.}
+unit. Must exist in the dataset mentioned in the \code{dataset_name} element.}
 }
 
 \cr

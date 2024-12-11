@@ -4,6 +4,7 @@
 * Allow for customized color palettes.
 * Use dv.manager's switch2mod() instead of deprecated switch2() function.
 * Export mock app.
+* Fix error occurring in case only timepoints (i.e., no intervals) are specified.
 
 # dv.clinlines 1.0.4
 

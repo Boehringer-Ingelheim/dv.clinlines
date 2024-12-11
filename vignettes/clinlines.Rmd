@@ -141,7 +141,12 @@ Optional parameters of `mod_clinical_timelines()` are:
 
 -   `filter`: Defaults to `NULL`, which means no local filters for adverse event data will be offered within the module. Filters can be activated by providing their names through a list (see `vignette("ae-filter")`).
 
-- `receiver_id`: Character string defining the ID of the module to which to send a subject ID. The corresponding module must exist in the module list. The default is NULL which disables communication. See `vignette("communication")` for further information. 
+- `receiver_id`: Optional character string defining the ID of the module to which to send a subject ID. The corresponding module must exist in the module list. The default is NULL which disables communication. See `vignette("communication")` for further information. 
+
+- `default_plot_settings`: An optional named list containing three elements: `x_param` defines if the x axis shows the date or study days as default setting at app launch, `start_day` indicates the lower x-axis limit in case of study day display at app launch, and `boxheight_val` defines the initial height of the individual timeline plot boxes at app launch.
+
+- `color_palette`: An optional named vector that allows customizing the colors for drawing events or intervals.
+
 
 An illustrative definition of a module list (containing only a Clinical Timelines module with only mandatory parameters) is shown below:
 

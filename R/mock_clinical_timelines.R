@@ -10,7 +10,7 @@ mock_clinical_timelines_UI <- function(id = NULL) { # nolint
 
   ui <- shiny::fluidPage(
     theme = bslib::bs_theme(version = "4"),
-    shiny::tags$h1("BI Clinical Timelines", class = "mod-title"),
+    shiny::tags$h1("DaVinci's Clinical Timelines Module", class = "mod-title"),
     mod_clinical_timelines_UI(
       ns("clin_tl"),
       list("serious_ae_var", "soc_var", "pref_term_var", "drug_rel_ae_var")
