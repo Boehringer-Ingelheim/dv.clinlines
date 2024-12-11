@@ -82,7 +82,8 @@ mock_with_mm_app <- function() {
         x_param = "day",
         start_day = -5,
         boxheight_val = 60
-      )#,
+      )
+      # nolint start: commented_code_linter
       # color_palette = c(
       #   "Treatment End" = "blue",
       #   "Treatment Start" = "red",
@@ -91,6 +92,7 @@ mock_with_mm_app <- function() {
       #   "Informed Consent" = "purple",
       #   "Adverse Events" = "orange"
       # )
+      # nolint end
     )
   )
 
