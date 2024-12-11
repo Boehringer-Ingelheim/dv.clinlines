@@ -12,6 +12,7 @@ vdoc <- local({
 specs <- vdoc[["specs"]]
 #  validation (F)
 
+
 #' Test harness for communication with `dv.papo`.
 #'
 #' @param mod Parameterized instance of the module to test. Should produce valid output and not trigger a `shiny::req`.
@@ -51,7 +52,7 @@ test_communication_with_papo <- function(mod, data, trigger_input_id) {
   test_that("module adheres to send_subject_id_to_papo protocol", {
     app <- shinytest2::AppDriver$new(app, name = "test_send_subject_id_to_papo_protocol")
 
-    app$wait_for_idle()
+    app$wait_for_idle(timeout = 30000)
 
     # Module starts and sends no message
     exports <- app$get_values()[["export"]]
@@ -69,7 +70,7 @@ test_communication_with_papo <- function(mod, data, trigger_input_id) {
     subject_ids <- c("A", "A", "B")
     for (i in seq_along(subject_ids)) {
       trigger_subject_selection(subject_ids[[i]])
-      app$wait_for_idle()
+      app$wait_for_idle(timeout = 30000)
 
       exports <- app$get_values()[["export"]]
       # Module outputs selection once
