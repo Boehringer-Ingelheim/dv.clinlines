@@ -22,7 +22,7 @@ mod <- mod_clinical_timelines(
     )
   ),
   drug_admin = list(
-    dataset_name = "exp", start_var = "EXSTDTC", end_var = "EXENDTC", detail_var = "EXTRT",
+    dataset_name = "exp", trt_var = "EXTRT", start_var = "EXSTDTC", end_var = "EXENDTC", detail_var = "EXTRT",
     label = "Drug Administration", dose_var = "EXDOSE", dose_unit_var = "EXDOSU"
   ),
   subjid_var = "USUBJID",
