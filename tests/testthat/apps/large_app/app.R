@@ -29,25 +29,11 @@ adsl <- adsl %>%
 adae <- adae %>%
   dplyr::mutate(
     AESTDTC = lubridate::ymd_hm(.data$ASTDT, truncated = 2),
-    AEENDTC = lubridate::ymd_hm(.data$AENDT, truncated = 2),
-    AERELFLG = dplyr::case_when(
-      AEREL %in% c("REMOTE", "NONE") ~ "N",
-      AEREL %in% c("POSSIBLE", "PROBABLE") ~ "Y",
-      TRUE ~ ""
-    )
+    AEENDTC = lubridate::ymd_hm(.data$AENDT, truncated = 2)
   ) %>%
   dplyr::filter(.data$USUBJID %in% adsl$USUBJID)
 
-exp <- pharmaverseadam::adex %>%
-  dplyr::mutate(
-    EXSTDTC = lubridate::ymd_hm(.data$EXSTDTC, truncated = 2),
-    EXENDTC = lubridate::ymd_hm(.data$EXENDTC, truncated = 2),
-    subject_id = .data$USUBJID
-  ) %>%
-  dplyr::filter(.data$USUBJID %in% adsl$USUBJID)
-
-
-data_list <- list(adsl = adsl, adae = adae, exp = exp)
+data_list <- list(adsl = adsl, adae = adae)
 
 
 # Define module
@@ -76,16 +62,7 @@ clinlines <- dv.clinlines::mod_clinical_timelines(
       )
     )
   ),
-  drug_admin = list(
-    dataset_name = "exp",
-    trt_var = "EXTRT",
-    start_var = "EXSTDTC",
-    end_var = "EXENDTC",
-    detail_var = "EXTRT",
-    label = "Drug Administration",
-    dose_var = "EXDOSE",
-    dose_unit_var = "EXDOSU"
-  ),
+  drug_admin = NULL,
   subjid_var = "USUBJID"
 )
 

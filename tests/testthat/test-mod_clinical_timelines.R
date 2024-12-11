@@ -232,7 +232,7 @@ test_that("an informative error message gets displayed in case of the plot being
   vdoc[["add_spec"]](specs$plot_specs$errors), {
   app_dir <- "./apps/large_app"
   app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_error_big_plot")
-  app$wait_for_idle(timeout = 30000)
+  app$wait_for_idle()
   Sys.sleep(1) # wait for error message being replaced
 
   # Verify that original error occurs
