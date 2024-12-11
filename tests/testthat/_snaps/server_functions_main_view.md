@@ -104,7 +104,8 @@
     [1] 50
     
     $filter_event
-    [1] "Treatment Start"     "Drug Administration"
+    [1] "Treatment Start"                 "Drug Administration: PLACEBO"   
+    [3] "Drug Administration: XANOMELINE"
     
     $time_range
     [1] "2012-08-15 00:00:00 UTC" "2015-01-01 01:00:00 UTC"

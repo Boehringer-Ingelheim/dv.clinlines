@@ -290,7 +290,7 @@ create_main_plot <- function(work_data,
       # Add drug administration events
       main_p <- main_p +
         ggplot2::geom_linerange(
-          ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
+          ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]]),
           color = symbol_colors,
           position = ggplot2::position_nudge(y = 0.35),
           linewidth = 2 / 140 * height,
