@@ -1,4 +1,4 @@
-# dv.clinlines 1.0.5
+# dv.clinlines 1.1.0
 
 * Display drug administration information in different colors, depending on the treatment name.
 * Allow for customized color palettes.
