@@ -49,7 +49,7 @@ df <- prep_data(
   )
 )
 
-colors <- shiny::reactive(color_lookup(unique(df$group)))
+colors <- shiny::reactive(color_lookup(unique(df$group), NULL))
 changed <- shiny::reactive(0)
 
 plot_click_li <- list(
@@ -84,13 +84,12 @@ plot_click_li <- list(
 
 test_that("mod_main_view_server() returns the subject ID the user clicked on" %>%
   vdoc[["add_spec"]](specs$integration_specs$jumping), {
-  server_func <- function(id, initial_data, changed, colors_groups, ms = 100) {
+  server_func <- function(id, initial_data, changed, colors_groups) {
     mod_main_view_server(
       module_id = id,
       initial_data = initial_data,
       changed = changed,
-      colors_groups = colors_groups,
-      ms = ms
+      colors_groups = colors_groups
     )
   }
 

@@ -57,6 +57,7 @@ test_that("default_drug_admin() returns a named list with default settings", {
   outcome <- default_drug_admin()
   expected <- list(
     dataset_name = "exp",
+    trt_var = "EXTRT",
     start_var = "EXSTDTC",
     end_var = "EXENDTC",
     detail_var = "EXTRT",

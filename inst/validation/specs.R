@@ -11,6 +11,7 @@ plot_specs <- specs_list(
   "event_types" = "The plot displays events that reflect a milestone (timepoint) as bullet, and events that reflect a time period (interval) as horizontal line on the timeline.",
   "drug_admin_event" = "Drug administration events additionally indicate trough different marker shapes if the drug dose changed compared to the last administration (equal, decrease, increase).",
   "colors" = "Events are displayed in a type specific color. A legend indicates which color refers to which event type.",
+  "customizable_colors" = "Event/interval colors can be customized.",
   "hovering" = "The plot provides a hover-over function in the sense that hovering with the mouse over a subject row triggers a tooltip to appear to list events in direct proximity to the mouse position, including event type, date(s) and further details (e.g. preferred term, medication name, …).",
   "errors" = "If the plot cannot be generated, the module displays an informative message why this is the case and how to proceed."
 )

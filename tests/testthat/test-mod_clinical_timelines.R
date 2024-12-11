@@ -69,6 +69,38 @@ test_that("mod_main_view_server() returns the subject ID the user clicked on" %>
   )
 })
 
+test_that(
+  "mod_main_view_server() runs even if there is no drug admin information",
+  {
+    df <- prep_dummy_data(n = 2)
+    df <- df[names(df) != "exp"]
+
+    server_func <- function(id, data_name, dataset_list) {
+      mod_clinical_timelines_server(
+        module_id = id,
+        data_name = data_name,
+        dataset_list = dataset_list,
+        drug_admin = NULL
+      )
+    }
+
+    expect_no_error(
+      shiny::testServer(
+        server_func,
+        args = list(
+          id = "test",
+          data_name = shiny::reactive("test"),
+          dataset_list = shiny::reactive(df)
+        ),
+        {
+          session$flushReact()
+        }
+      )
+    )
+  }
+)
+
+
 
 # Tests using mm_app
 app_dir <- "./apps/mm_app"
@@ -196,7 +228,7 @@ test_that("bookmarking works as intended" %>% vdoc[["add_spec"]](specs$integrati
   app$stop()
 })
 
-test_that("an informative error message gets displayed in case of the plot being to big" %>%
+test_that("an informative error message gets displayed in case of the plot being too big" %>%
   vdoc[["add_spec"]](specs$plot_specs$errors), {
   app_dir <- "./apps/large_app"
   app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_error_big_plot")

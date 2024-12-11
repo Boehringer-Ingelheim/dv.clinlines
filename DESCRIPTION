@@ -1,6 +1,6 @@
 Package: dv.clinlines
 Title: DaVinci's Clinical Timelines
-Version: 1.0.4
+Version: 1.0.4-01
 Authors@R:
     c(
       person("Boehringer-Ingelheim Pharma GmbH & Co.KG", role = c("cph", "fnd")),
@@ -21,7 +21,7 @@ Imports:
     bslib (>= 0.6.1),
     checkmate (>= 2.3.1),
     dplyr (>= 1.1.0),
-    dv.manager (>= 2.1.0),
+    dv.manager (>= 2.1.4),
     ggplot2 (>= 3.4.4),
     lubridate (>= 1.9.3),
     magrittr (>= 2.0.3),
@@ -46,7 +46,6 @@ Suggests:
     testthat (>= 3.2.1)
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-Remotes: boehringer-ingelheim/dv.manager@v2.1.2
+RoxygenNote: 7.3.2
+Remotes: boehringer-ingelheim/dv.manager@v2.1.4
 VignetteBuilder: knitr
-

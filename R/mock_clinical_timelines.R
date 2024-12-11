@@ -10,7 +10,7 @@ mock_clinical_timelines_UI <- function(id = NULL) { # nolint
 
   ui <- shiny::fluidPage(
     theme = bslib::bs_theme(version = "4"),
-    shiny::tags$h1("BI Clinical Timelines", class = "mod-title"),
+    shiny::tags$h1("DaVinci's Clinical Timelines Module", class = "mod-title"),
     mod_clinical_timelines_UI(
       ns("clin_tl"),
       list("serious_ae_var", "soc_var", "pref_term_var", "drug_rel_ae_var")
@@ -69,6 +69,7 @@ mock_clinical_timelines_server <- function(input, output, session) {
     ),
     drug_admin = list(
       dataset_name = "exp",
+      trt_var = "EXTRT",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
@@ -87,6 +88,7 @@ mock_clinical_timelines_server <- function(input, output, session) {
         drug_rel_ae_var = "AEREL"
       )
     ),
+    start_day = -5,
     ms = 50
   )
 }
@@ -98,6 +100,7 @@ mock_clinical_timelines_server <- function(input, output, session) {
 #' \code{mock_clinical_timelines_app()} runs the \pkg{dv.clinlines} module
 #' with dummy data. Local adverse event filters included.
 #'
+#' @export
 mock_clinical_timelines_app <- function() {
   shiny::shinyApp(
     ui = mock_clinical_timelines_UI,

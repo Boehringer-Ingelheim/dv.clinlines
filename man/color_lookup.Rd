@@ -4,7 +4,7 @@
 \alias{color_lookup}
 \title{Create color lookup table}
 \usage{
-color_lookup(groups)
+color_lookup(groups, color_palette)
 }
 \arguments{
 \item{groups}{Character vector of unique event types of the data to be

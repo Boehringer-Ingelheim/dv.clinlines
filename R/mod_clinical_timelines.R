@@ -105,6 +105,7 @@ mod_clinical_timelines_server <- function(module_id,
                                           filter = NULL,
                                           subjid_var = "USUBJID",
                                           start_day = NULL,
+                                          color_palette = NULL,
                                           ms = 1000,
                                           receiver_id = NULL,
                                           afmm_param = NULL) {
@@ -137,7 +138,13 @@ mod_clinical_timelines_server <- function(module_id,
   checkmate::assert_list(drug_admin, types = "character", null.ok = TRUE, add = ac)
   checkmate::assert_subset(
     names(drug_admin),
-    choices = c("dataset_name", "start_var", "end_var", "detail_var", "label", "dose_var", "dose_unit_var"),
+    choices = c(
+      "dataset_name",
+      "trt_var",
+      "start_var", "end_var",
+      "detail_var", "label",
+      "dose_var", "dose_unit_var"
+    ),
     add = ac
   )
   checkmate::assert_list(filter, types = "list", null.ok = TRUE, add = ac)
@@ -153,7 +160,10 @@ mod_clinical_timelines_server <- function(module_id,
   checkmate::assert_numeric(ms, len = 1, add = ac)
   checkmate::assert_string(receiver_id, min.chars = 1, null.ok = TRUE, add = ac)
   checkmate::assert_list(afmm_param, null.ok = TRUE, add = ac)
+  checkmate::assert_character(color_palette, null.ok = TRUE, add = ac)
+  checkmate::assert_character(names(color_palette), null.ok = TRUE, unique = TRUE, add = ac)
   checkmate::reportAssertions(ac)
+  check_valid_color(color_palette)
 
   shiny::moduleServer(
     module_id,
@@ -201,7 +211,9 @@ mod_clinical_timelines_server <- function(module_id,
 
       # Set a fixed color for each group
       colors_groups <- shiny::reactive({
-        if (nrow(pre_data()) > 0) color_lookup(unique(pre_data()$group))
+        if (nrow(pre_data()) > 0) {
+          color_lookup(unique(pre_data()$group), color_palette)
+        }
       })
 
       # Add adverse event data that are relevant for filtering
@@ -239,7 +251,7 @@ mod_clinical_timelines_server <- function(module_id,
             type = "message"
           )
         } else if (!is.null(receiver_id)) {
-          afmm_param$utils$switch2(afmm_param$module_names[[receiver_id]])
+          afmm_param$utils$switch2mod(receiver_id)
         }
       })
 
@@ -294,7 +306,11 @@ mod_clinical_timelines_server <- function(module_id,
 #' (defaults to NULL, using the day of the earliest event to be displayed),
 #' \code{boxheight_val} contains a value between 30 and 150 defining the initial height of
 #' the individual timeline plot boxes at app launch (defaults to 60).
+#' @param color_palette `[character(1+) | NULL]`
 #'
+#' A named vector that specifies the colors for drawing events or intervals.
+#' Each name in the vector should correspond to an entry in the legend.
+#' If \code{NULL} (default), the default color palette is used.
 #' @param ms `[numeric(1)]`
 #'
 #' Single numeric value indicating how many milliseconds to wait before the plot
@@ -377,19 +393,22 @@ mod_clinical_timelines_server <- function(module_id,
 #'   \item{\code{dataset_name}: Character name of the dataset that holds drug administration data
 #'     (e.g. ex domain), as it is called in the datalist that is provided to the
 #'     \pkg{modulemanager}.}
+#'   \item{\code{trt_var}: Character name of the variable that contains the
+#'     treatment name which must be present in the dataset mentioned in the
+#'     \code{dataset_name} element.}
 #'   \item{\code{start_var}: Character name of the variable that contains the start dates
 #'     (e.g. exposure start dates) which must be present in the dataset mentioned in the
-#'     \code{name} element.}
+#'     \code{dataset_name} element.}
 #'   \item{\code{end_var}: Character name of the variable that contains the end dates
 #'     (e.g. exposure end dates) which must be present in the dataset mentioned in the
-#'     \code{name} element.}
+#'     \code{dataset_name} element.}
 #'   \item{\code{detail_var}: Character name of the variable that contains the treatment
-#'     information. Must exist in the dataset mentioned in the \code{name} element.}
+#'     information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
 #'   \item{\code{label}: Free-text character label for the drug administration event.}
 #'   \item{\code{dose_var}: Character name of the variable that contains the dosis level
-#'     information. Must exist in the dataset mentioned in the \code{name} element.}
+#'     information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
 #'   \item{\code{dose_unit_var}: Character name of the variable that contains the dosis
-#'     unit. Must exist in the dataset mentioned in the \code{name} element.}
+#'     unit. Must exist in the dataset mentioned in the \code{dataset_name} element.}
 #' }
 #'
 #' \cr
@@ -443,6 +462,7 @@ mod_clinical_timelines <- function(module_id,
                                      start_day = NULL,
                                      boxheight_val = 60
                                    ),
+                                   color_palette = NULL,
                                    ms = 1000,
                                    receiver_id = NULL) {
   # Check validity of arguments that won't be checked in UI/server
@@ -481,6 +501,7 @@ mod_clinical_timelines <- function(module_id,
         filter = filter,
         subjid_var = subjid_var,
         start_day = default_plot_settings$start_day,
+        color_palette = color_palette,
         ms = ms,
         receiver_id = receiver_id,
         afmm_param = list(utils = afmm$utils, module_names = afmm$module_names)

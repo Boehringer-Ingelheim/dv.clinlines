@@ -45,6 +45,7 @@ module_list <- list(
     ),
     drug_admin = set_drug_admin(
       dataset_name = "adex",
+      trt_var = "EXTRT",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",
