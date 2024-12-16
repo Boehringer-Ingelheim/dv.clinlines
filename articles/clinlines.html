@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dv.clinlines</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -177,11 +177,12 @@ If not already done, install {dv.manager} following the instructions in its pack
 <p><code>drug_admin</code>: A list of named character strings that describes which variables to use to display drug administration events. If not NULL, it must contain the following elements:</p>
 <ul>
 <li><p><code>dataset_name</code>: Character name of the dataset that holds drug administration data (e.g. ex domain), as it is called in the datalist that is provided to the modulemanager.</p></li>
-<li><p><code>start_var</code>: Character name of the variable that contains the start dates (e.g. exposure start dates) which must be present in the dataset mentioned in the name element.</p></li>
-<li><p><code>end_var</code>: Character name of the variable that contains the end dates (e.g. exposure end dates) which must be present in the dataset mentioned in the name element.</p></li>
-<li><p><code>detail_var</code>: Character name of the variable that contains the treatment information. Must exist in the dataset mentioned in the name element.</p></li>
+<li><p><code>trt_var</code>: Character name of the variable that contains the treatment name which must be present in the dataset mentioned in the <code>dataset_name</code> element.</p></li>
+<li><p><code>start_var</code>: Character name of the variable that contains the start dates (e.g. exposure start dates) which must be present in the dataset mentioned in the <code>dataset_name</code> element.</p></li>
+<li><p><code>end_var</code>: Character name of the variable that contains the end dates (e.g. exposure end dates) which must be present in the dataset mentioned in the <code>dataset_name</code> element.</p></li>
+<li><p><code>detail_var</code>: Character name of the variable that contains the treatment information. Must exist in the dataset mentioned in the <code>dataset_name</code> element.</p></li>
 <li><p><code>label</code>: Free-text character label for the drug administration event.</p></li>
-<li><p><code>dose_var</code>: Character name of the variable that contains the dosis level information. Must exist in the dataset mentioned in the name element.</p></li>
+<li><p><code>dose_var</code>: Character name of the variable that contains the dosis level information. Must exist in the dataset mentioned in the <code>dataset_name</code> element.</p></li>
 <li><p><code>dose_unit_var</code>: Character name of the variable that contains the dosis unit. Must exist in the dataset mentioned in the name element.</p></li>
 </ul>
 </li>
@@ -191,7 +192,9 @@ If not already done, install {dv.manager} following the instructions in its pack
 <li><p><code>subjid_var</code>: Defaults to “USUBJID”. Specifies the name of the unique subject identifier variable for all datasets. Must be a single character value.</p></li>
 <li><p><code>ms</code>: Single numeric value. Defaults to 1000, which means that plotting in the main view will be performed with 1000 milliseconds delay. This is useful to improve performance, especially when the dataset is large and multiple adverse event filters are activated.</p></li>
 <li><p><code>filter</code>: Defaults to <code>NULL</code>, which means no local filters for adverse event data will be offered within the module. Filters can be activated by providing their names through a list (see <code><a href="../articles/ae-filter.html">vignette("ae-filter")</a></code>).</p></li>
-<li><p><code>receiver_id</code>: Character string defining the ID of the module to which to send a subject ID. The corresponding module must exist in the module list. The default is NULL which disables communication. See <code><a href="../articles/communication.html">vignette("communication")</a></code> for further information.</p></li>
+<li><p><code>receiver_id</code>: Optional character string defining the ID of the module to which to send a subject ID. The corresponding module must exist in the module list. The default is NULL which disables communication. See <code><a href="../articles/communication.html">vignette("communication")</a></code> for further information.</p></li>
+<li><p><code>default_plot_settings</code>: An optional named list containing three elements: <code>x_param</code> defines if the x axis shows the date or study days as default setting at app launch, <code>start_day</code> indicates the lower x-axis limit in case of study day display at app launch, and <code>boxheight_val</code> defines the initial height of the individual timeline plot boxes at app launch.</p></li>
+<li><p><code>color_palette</code>: An optional named vector that allows customizing the colors for drawing events or intervals.</p></li>
 </ul>
 <p>An illustrative definition of a module list (containing only a Clinical Timelines module with only mandatory parameters) is shown below:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -268,6 +271,7 @@ For a demonstration, we defined the same module as above again. But this time, w
 <span>    <span class="op">)</span>,</span>
 <span>    drug_admin <span class="op">=</span> <span class="fu"><a href="../reference/set_drug_admin.html">set_drug_admin</a></span><span class="op">(</span></span>
 <span>      dataset_name <span class="op">=</span> <span class="st">"adex"</span>,</span>
+<span>      trt_var <span class="op">=</span> <span class="st">"EXTRT"</span>,</span>
 <span>      start_var <span class="op">=</span> <span class="st">"EXSTDTC"</span>,</span>
 <span>      end_var <span class="op">=</span> <span class="st">"EXENDTC"</span>,</span>
 <span>      detail_var <span class="op">=</span> <span class="st">"EXTRT"</span>,</span>
@@ -352,6 +356,7 @@ For a demonstration, we defined the same module as above again. But this time, w
 <span>    <span class="op">)</span>,</span>
 <span>    drug_admin <span class="op">=</span> <span class="fu"><a href="../reference/set_drug_admin.html">set_drug_admin</a></span><span class="op">(</span></span>
 <span>      dataset_name <span class="op">=</span> <span class="st">"adex"</span>,</span>
+<span>      trt_var <span class="op">=</span> <span class="st">"EXTRT"</span>,</span>
 <span>      start_var <span class="op">=</span> <span class="st">"EXSTDTC"</span>,</span>
 <span>      end_var <span class="op">=</span> <span class="st">"EXENDTC"</span>,</span>
 <span>      detail_var <span class="op">=</span> <span class="st">"EXTRT"</span>,</span>

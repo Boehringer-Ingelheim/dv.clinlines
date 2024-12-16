@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">dv.clinlines</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +67,7 @@
 <span>  filter <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subjid_var <span class="op">=</span> <span class="st">"USUBJID"</span>,</span>
 <span>  default_plot_settings <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x_param <span class="op">=</span> <span class="st">"day"</span>, start_day <span class="op">=</span> <span class="cn">NULL</span>, boxheight_val <span class="op">=</span> <span class="fl">60</span><span class="op">)</span>,</span>
+<span>  color_palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ms <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  receiver_id <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -122,6 +123,13 @@ contains an integer indicating the lower x-axis limit in case of study day displ
 (defaults to NULL, using the day of the earliest event to be displayed),
 <code>boxheight_val</code> contains a value between 30 and 150 defining the initial height of
 the individual timeline plot boxes at app launch (defaults to 60).</p></dd>
+
+
+<dt>color_palette</dt>
+<dd><p><code>[character(1+) | NULL]</code></p>
+<p>A named vector that specifies the colors for drawing events or intervals.
+Each name in the vector should correspond to an entry in the legend.
+If <code>NULL</code> (default), the default color palette is used.</p></dd>
 
 
 <dt>ms</dt>
@@ -193,19 +201,22 @@ the mapping list.</p>
 <p>If not NULL, the <code>drug_admin</code> list must contain the following elements:</p><ul><li><p><code>dataset_name</code>: Character name of the dataset that holds drug administration data
 (e.g. ex domain), as it is called in the datalist that is provided to the
 <span class="pkg">modulemanager</span>.</p></li>
+<li><p><code>trt_var</code>: Character name of the variable that contains the
+treatment name which must be present in the dataset mentioned in the
+<code>dataset_name</code> element.</p></li>
 <li><p><code>start_var</code>: Character name of the variable that contains the start dates
 (e.g. exposure start dates) which must be present in the dataset mentioned in the
-<code>name</code> element.</p></li>
+<code>dataset_name</code> element.</p></li>
 <li><p><code>end_var</code>: Character name of the variable that contains the end dates
 (e.g. exposure end dates) which must be present in the dataset mentioned in the
-<code>name</code> element.</p></li>
+<code>dataset_name</code> element.</p></li>
 <li><p><code>detail_var</code>: Character name of the variable that contains the treatment
-information. Must exist in the dataset mentioned in the <code>name</code> element.</p></li>
+information. Must exist in the dataset mentioned in the <code>dataset_name</code> element.</p></li>
 <li><p><code>label</code>: Free-text character label for the drug administration event.</p></li>
 <li><p><code>dose_var</code>: Character name of the variable that contains the dosis level
-information. Must exist in the dataset mentioned in the <code>name</code> element.</p></li>
+information. Must exist in the dataset mentioned in the <code>dataset_name</code> element.</p></li>
 <li><p><code>dose_unit_var</code>: Character name of the variable that contains the dosis
-unit. Must exist in the dataset mentioned in the <code>name</code> element.</p></li>
+unit. Must exist in the dataset mentioned in the <code>dataset_name</code> element.</p></li>
 </ul><p><br></p>
 <p>If not <code>NULL</code>, <code>filter</code> defines local filters.
 So far, the following filters for adverse events are available:</p><ul><li><p><code>serious_ae_var</code>: Filter for serious adverse events.</p></li>
