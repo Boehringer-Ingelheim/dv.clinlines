@@ -359,7 +359,7 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
     dplyr::mutate(
       group = dplyr::if_else(
         !is.na(.data[["trt_var"]]),
-        paste("Drug Administration:", .data[["trt_var"]]),
+        paste0(col_list$label, ": ", .data[["trt_var"]]),
         NA
       )
     ) %>%
