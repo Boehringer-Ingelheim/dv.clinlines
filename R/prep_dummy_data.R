@@ -42,6 +42,7 @@ prep_dummy_data <- function(n = 200) {
     dplyr::filter(.data$USUBJID %in% adsl_info$USUBJID)
 
   exp_info <- pharmaverseadam::adex %>%
+    dplyr::distinct(USUBJID, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC, .keep_all = TRUE) %>%
     dplyr::mutate(
       EXSTDTC = lubridate::ymd_hm(.data$EXSTDTC, truncated = 2),
       EXENDTC = lubridate::ymd_hm(.data$EXENDTC, truncated = 2),
@@ -57,7 +58,7 @@ prep_dummy_data <- function(n = 200) {
       subject_id = .data$USUBJID
     )
 
-  return(list(adsl = adsl_info, adae = adae_info, adcm = adcm_info, exp = exp_info, exp2 = exp_empty))
+  return(list(adsl = adsl_info, adae = adae_info, adcm = adcm_info, exp = exp_info))
 }
 
 
@@ -135,6 +136,7 @@ default_drug_admin <- function() {
   return(
     list(
       dataset_name = "exp",
+      trt_var = "EXTRT",
       start_var = "EXSTDTC",
       end_var = "EXENDTC",
       detail_var = "EXTRT",

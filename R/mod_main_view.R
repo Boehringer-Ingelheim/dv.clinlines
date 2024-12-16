@@ -194,9 +194,19 @@ mod_main_view_server <- function(module_id, initial_data, changed,
           cache$date_day_range <<- list(
             date = c(
               min(initial_data()$date_min),
-              max(c(initial_data()$end_dt_var, initial_data()$end_exp), na.rm = TRUE)
+              max(c(
+                initial_data()$start_dt_var,
+                initial_data()$end_dt_var,
+                initial_data()$start_exp,
+                initial_data()$end_exp
+              ), na.rm = TRUE)
             ),
-            day = c(start_day, max(c(initial_data()$end_dy_var, initial_data()$end_exp_day), na.rm = TRUE))
+            day = c(start_day, max(c(
+              initial_data()$start_dy_var,
+              initial_data()$end_dy_var,
+              initial_data()$start_exp_day,
+              initial_data()$end_exp_day
+            ), na.rm = TRUE))
           )
         }
 
@@ -358,6 +368,22 @@ mod_main_view_server <- function(module_id, initial_data, changed,
         subject
       })
 
+      testing <- isTRUE(getOption("shiny.testmode"))
+      if (testing) {
+        subject_id_orig <- subject_id
+
+        trigger <- shiny::reactiveVal(0)
+        shiny::observeEvent(input[["debug_select_subject"]], trigger(trigger() + 1))
+        subject_id <- shiny::reactive({
+          res <- NULL
+          if (trigger()) {
+            res <- shiny::isolate(input[["debug_select_subject"]])
+          } else {
+            res <- subject_id_orig()
+          }
+          return(res)
+        })
+      }
 
       # For exchange with receiver module
       return(

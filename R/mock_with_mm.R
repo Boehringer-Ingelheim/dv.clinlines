@@ -4,17 +4,15 @@
 #' module manager surface. Displays data from the \pkg{pharmaverseadam} package.
 #'
 #' @export
-#' @keywords internal
-#'
 mock_with_mm_app <- function() {
-  # Specifiy dataset list for modulemanager
+  # Specifiy dataset list for module manager
   dataset_list <- list(
     dummyData1 = prep_dummy_data(20),
     dummyData2 = prep_dummy_data(200)
   )
 
 
-  # Define module list for modulemanager
+  # Define module list for module manager
   module_list <- list(
     "Clinical Timelines" = mod_clinical_timelines(
       module_id = "mod1",
@@ -60,6 +58,7 @@ mock_with_mm_app <- function() {
       ),
       drug_admin = list(
         dataset_name = "exp",
+        trt_var = "EXTRT",
         start_var = "EXSTDTC",
         end_var = "EXENDTC",
         detail_var = "EXTRT",
@@ -84,6 +83,16 @@ mock_with_mm_app <- function() {
         start_day = -5,
         boxheight_val = 60
       )
+      # nolint start: commented_code_linter
+      # color_palette = c(
+      #   "Treatment End" = "blue",
+      #   "Treatment Start" = "red",
+      #   "Drug Administration: PLACEBO" = "yellow",
+      #   "Drug Administration: XANOMELINE" = "green",
+      #   "Informed Consent" = "purple",
+      #   "Adverse Events" = "orange"
+      # )
+      # nolint end
     )
   )
 

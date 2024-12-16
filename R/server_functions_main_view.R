@@ -1,3 +1,26 @@
+#' Check if colors are valid
+#'
+#' Executes an error action in case of wrong color definitions.
+#'
+#' @param color_palette Vector containing strings that are meant to specify
+#' a color, either as 6-digit hex color starting with the # symbol, or as
+#' R color string like received when executing `colors()`.
+#'
+#' @keywords internal
+#'
+check_valid_color <- function(color_palette) {
+
+  hex_colors <- color_palette[grepl("^#", color_palette)]
+  no_colors <- hex_colors[!grepl("^#([A-Fa-f0-9]{6})$", hex_colors)]
+  other_colors <- color_palette[!grepl("^#", color_palette)]
+  no_colors <- c(no_colors, other_colors[!other_colors %in% colors()])
+
+  if (length(no_colors) > 0) {
+    stop(paste("Invalid color(s) in color_palette:", paste(no_colors, collapse = ", ")))
+  }
+}
+
+
 #' Create color lookup table
 #'
 #' \code{color_lookup} returns a named vector of hex colors.
@@ -9,12 +32,20 @@
 #' @return A named vector of hexcode colors.
 #' @keywords internal
 #'
-color_lookup <- function(groups) {
-  colors_groups <- scales::hue_pal()(length(groups))
+color_lookup <- function(groups, color_palette) {
 
-  # Avoid that neighbor intervals get similar colors
-  set.seed(20220202)
-  names(colors_groups) <- sample(groups)
+  if (is.null(color_palette)) {
+    colors_groups <- scales::hue_pal()(length(groups))
+
+    # Avoid that neighbor intervals get similar colors
+    set.seed(20220202)
+    names(colors_groups) <- sample(groups)
+  } else {
+    missing_groups <- groups[!groups %in% names(color_palette)]
+    grey_vec <- rep("grey", length(missing_groups))
+    names(grey_vec) <- missing_groups
+    colors_groups <- c(color_palette, grey_vec)
+  }
 
   return(colors_groups)
 }
@@ -191,7 +222,7 @@ create_main_plot <- function(work_data,
       ggplot2::aes(x = .data[["interval_points"]]),
       position = ggplot2::position_dodge2(0.9),
       size = 2 / 140 * height,
-      shape = 15, # square
+      shape = 15,
       na.rm = TRUE
     ) +
     # Draw timepoints
@@ -203,42 +234,87 @@ create_main_plot <- function(work_data,
     ) +
     x_scale
 
+  # Only if Drug Administration is defined
+  if (!all(is.na(work_data$trt_var))) {
+    x <- sort(unique(stats::na.omit(work_data$exp_dose)))
 
-  x <- sort(unique(stats::na.omit(work_data$exp_dose)))
-
-  shapes <- dplyr::case_when(
-    x == "decrease" ~ 25,
-    x == "increase" ~ 24,
-    x == "start/equal" ~ 23
-  )
-  names(shapes) <- x
-  symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
-
-  # Add drug administration events
-  main_p <- main_p +
-    ggplot2::geom_linerange(
-      ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]]),
-      position = ggplot2::position_nudge(y = 0.35),
-      linewidth = 2 / 140 * height,
-      na.rm = TRUE
-    ) +
-    ggplot2::geom_point(
-      ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
-      na.rm = TRUE,
-      fill = ifelse(length(symbol_color) > 0, symbol_color, "black"),
-      color = "black",
-      position = ggplot2::position_nudge(y = 0.35),
-      size = height / 20
+    shapes <- dplyr::case_when(
+      x == "decrease" ~ 25,
+      x == "increase" ~ 24,
+      x == "start/equal" ~ 23
     )
+    names(shapes) <- x
+    symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
 
-  if (length(shapes) > 0) {
-    main_p <- main_p +
-      ggplot2::scale_shape_manual(
-        name = "Dose Change:",
-        values = shapes,
-        na.translate = FALSE,
-        breaks = x
-      )
+    trt_per_subject <- work_data |>
+      dplyr::filter(startsWith(.data[["group"]], "Drug Administration:")) |>
+      dplyr::group_by(subject_id) |>
+      dplyr::distinct(group) |>
+      dplyr::count()
+
+    if (any(trt_per_subject$n > 1)) {
+      position <- 0.5 - (length(symbol_color) + 1) * 0.1
+      for (i in seq_along(symbol_color)) {
+        data <- main_p$data |>
+          dplyr::filter(
+            .data[["group"]] == names(symbol_color)[i]
+          )
+        # Transform symbol_color[i] into a vector to fix legend
+        # (ggplot2 doing ggplot2 things...)
+        symbol_colors <- rep(symbol_color[i], nrow(data))
+        pos <- position + 0.1 * i
+        main_p <- main_p +
+          ggplot2::geom_linerange(
+            data = data,
+            ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]], fill = group),
+            color = symbol_colors,
+            position = ggplot2::position_nudge(y = pos),
+            linewidth = 2 / 140 * height,
+            na.rm = TRUE
+          ) +
+          ggplot2::geom_point(
+            data = data,
+            ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
+            na.rm = TRUE,
+            fill = symbol_colors,
+            color = "black",
+            position = ggplot2::position_nudge(y = pos),
+            size = height / 20
+          )
+      }
+    } else {
+      symbol_colors <- sapply(work_data$group, function(x) {
+        ifelse(x %in% names(symbol_color), symbol_color[[x]], NA)
+      }, USE.NAMES = FALSE)
+
+      # Add drug administration events
+      main_p <- main_p +
+        ggplot2::geom_linerange(
+          ggplot2::aes(xmin = .data[["xmin_exp"]], xmax = .data[["xmax_exp"]]),
+          color = symbol_colors,
+          position = ggplot2::position_nudge(y = 0.35),
+          linewidth = 2 / 140 * height,
+          na.rm = TRUE
+        ) +
+        ggplot2::geom_point(
+          ggplot2::aes(x = .data[[point_exp]], shape = .data[["exp_dose"]]),
+          na.rm = TRUE,
+          fill = symbol_colors,
+          color = "black",
+          position = ggplot2::position_nudge(y = 0.35),
+          size = height / 20
+        )
+    }
+
+    if (length(shapes) > 0) {
+      main_p <- main_p +
+        ggplot2::scale_shape_manual(
+          name = "Dose Change:",
+          values = shapes,
+          na.translate = FALSE,
+          breaks = x
+        )
+    }
   }
 
   # Add arrows for open intervals
@@ -354,10 +430,38 @@ create_ggdata_y <- function(p, hover) {
     dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
     dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
 
-  # Drug_admin is always layer 4
-  interval_exp_data <- ggdata$data[[4]] %>%
-    dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
-    dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+
+
+  if (length(ggdata$data) > 4) {
+    df_list <- lapply(4:length(ggdata$data), function(x) {
+      dataset_names <- names(ggdata$data[[x]])
+      if ("y" %in% dataset_names && !("shape" %in% dataset_names)) {
+        ret_data <- ggdata$data[[x]] %>%
+          dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+          dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+
+        if (nrow(ret_data) > 0) {
+          ret_data
+        } else {
+          NULL
+        }
+      }
+    })
+
+    if (length(purrr::compact(df_list)) > 0) {
+      interval_exp_data <- purrr::compact(df_list)[[1]]
+    } else {
+      interval_exp_data <- ggdata$data[[4]] %>%
+        dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+        dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+    }
+
+  } else {
+    # Drug_admin is always layer 4
+    interval_exp_data <- ggdata$data[[4]] %>%
+      dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+      dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+  }
 
   return(list(interval_data, timepoint_data, interval_point_data, interval_exp_data))
 }
@@ -556,7 +660,7 @@ get_groups <- function(ggdata_y, color_map, x_range) {
     dplyr::mutate(
       # Assign event names based on the color
       event = purrr::map_chr(
-        .data[["colour"]], ~ names(color_map[which(color_map == .x)])
+        .data[["colour"]], ~ ifelse(.x != "<NA>", names(color_map[which(color_map == .x)]), NA)
       ),
       xmin = as.numeric(.data[["xmin"]]), # to silence dplyr warning
       xmax = as.numeric(.data[["xmax"]])

@@ -6,6 +6,7 @@
 \usage{
 set_drug_admin(
   dataset_name,
+  trt_var,
   start_var,
   end_var,
   detail_var,
@@ -18,24 +19,27 @@ set_drug_admin(
 \item{dataset_name}{Character name of the data frame that holds drug administration data
 (e.g. ex domain) as it is called in the \code{data_list} parameter.}
 
+\item{trt_var}{Character name of the variable that contains the treatment name.
+Must be present in the data frame mentioned in the \code(dataset_name) element.}
+
 \item{start_var}{Character name of the variable that contains the start dates
-(e.g. exposure start dates). Must be present in the data frame mentioned in the name
-element.}
+(e.g. exposure start dates). Must be present in the data frame mentioned in the
+\code(dataset_name) element.}
 
 \item{end_var}{Character name of the variable that contains the end dates
-(e.g. exposure start dates). Must be present in the data frame mentioned in the name
-element.}
+(e.g. exposure start dates). Must be present in the data frame mentioned in the
+\code(dataset_name) element.}
 
 \item{detail_var}{Character name of the variable that contains the treatment
-information. Must exist in the dataset mentioned in the name element.}
+information. Must exist in the dataset mentioned in the \code(dataset_name) element.}
 
 \item{label}{Free-text character label for the drug administration event.}
 
 \item{dose_var}{Character name of the variable that contains the dosis level
-information. Must exist in the dataset mentioned in the name element.}
+information. Must exist in the dataset mentioned in the \code(dataset_name) element.}
 
 \item{dose_unit_var}{Character name of the variable that contains the dosis unit.
-Must exist in the dataset mentioned in the name element.}
+Must exist in the dataset mentioned in the \code(dataset_name) element.}
 }
 \value{
 A list that could directly be used as input for the \code{drug_admin} parameter

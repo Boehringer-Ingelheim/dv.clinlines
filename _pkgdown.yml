@@ -34,6 +34,7 @@ reference:
 - contents:
   - mod_clinical_timelines
   - mock_clinical_timelines_app
+  - mock_with_mm_app
   - set_basic_info
   - set_event
   - set_drug_admin
