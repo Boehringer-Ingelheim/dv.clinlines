@@ -4,7 +4,7 @@
 #' module manager surface. Displays data from the \pkg{pharmaverseadam} package.
 #'
 #' @export
-mock_with_mm_app <- function() {
+mock_clinlines_with_mm_app <- function() {
   # Specifiy dataset list for module manager
   dataset_list <- list(
     dummyData1 = prep_dummy_data(20),

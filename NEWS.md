@@ -1,3 +1,8 @@
+# dv.clinlines 1.1.0-9001
+
+* Some minor maintenance updates and renaming of mock app.
+
+
 # dv.clinlines 1.1.0
 
 * Display drug administration information in different colors, depending on the treatment name.
