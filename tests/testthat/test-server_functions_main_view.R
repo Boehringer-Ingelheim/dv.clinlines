@@ -104,7 +104,8 @@ p <- create_main_plot(p_df, "earliest", time_range, colors, 50, "subject_id")
 
 # How to get the following list:
 # 1. Add dput(hover) within create_tooltip()
-# 2. Run mock_clinlines_with_mm_app() and make sure that the app is set-up in a way that all events like shown in p are displayed
+# 2. Run mock_clinlines_with_mm_app() and make sure that the app is set-up
+#    in a way that all events like shown in p are displayed
 # 3. Use global filter to filter for the 5 subjects as below
 # 4. Switch to date, select the correct time range, sort y-axis correctly, and choose correct boxheight
 # 4. Hover over an Adverse Event and wait until app is ready. Remove curser quickly!
