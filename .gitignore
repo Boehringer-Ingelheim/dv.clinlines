@@ -4,3 +4,4 @@
 .Ruserdata
 docs
 shiny_bookmarks
+man/*.Rd
