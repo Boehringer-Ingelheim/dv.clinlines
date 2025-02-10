@@ -3,24 +3,26 @@ template:
 
 navbar:
   type: inverse
+  structure:
+    left: [intro, reference, articles, tutorials, news, qc]
   components:
-   articles:
-    text: Articles
-    menu:
-    - text: "Basic usage"
-    - text: "Include dv.clinlines in an app"
-      href: articles/clinlines.html
-    - text: "Additional features"
-    - text: "Add custom adverse event filters"
-      href: articles/ae-filter.html
-    - text: "Enable communication to DaVinci modules"
-      href: articles/communication.html
-    - text: "Preprocessing"
-    - text: "Data Requirements"
-      href: articles/data-requirements.html
-    - text: "Quality Control"
-    - text: "QC Report"
+    qc:
+      text: "Quality Control"
       href: articles/qc.html
+    articles:
+      text: Articles
+      menu:
+        - text: "Basic usage"
+        - text: "Include dv.clinlines in an app"
+          href: articles/clinlines.html
+        - text: "Additional features"
+        - text: "Add custom adverse event filters"
+          href: articles/ae-filter.html
+        - text: "Enable communication to DaVinci modules"
+          href: articles/communication.html
+        - text: "Preprocessing"
+        - text: "Data Requirements"
+          href: articles/data-requirements.html
 
 
 home:
