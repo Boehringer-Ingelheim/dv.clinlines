@@ -37,4 +37,4 @@ mod <- mod_clinical_timelines(
 )
 data <- dv.clinlines:::prep_dummy_data()
 trigger_input_id <- "mod-main_view-debug_select_subject"
-test_communication_with_papo(mod, data, trigger_input_id)
+test_communication_with_papo(mod, data, trigger_input_id, 'jumping_feature', specs$jumping_feature)
