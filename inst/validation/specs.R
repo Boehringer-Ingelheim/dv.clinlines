@@ -50,5 +50,6 @@ specs <- specs_list(
   sidebar_specs = sidebar_specs,
   default_values = default_values,
   integration_specs = integration_specs,
-  app_creation_specs = app_creation_specs
+  app_creation_specs = app_creation_specs,
+  jumping_feature = "Jump-to-subject feature."
 )
