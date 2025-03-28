@@ -247,7 +247,7 @@ create_main_plot <- function(work_data,
     symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
 
     trt_per_subject <- work_data |>
-      dplyr::filter(startsWith(.data[["group"]], "Drug Administration:")) |>
+      dplyr::filter(.data[["group"]] %in% names(symbol_color)) |>
       dplyr::group_by(subject_id) |>
       dplyr::distinct(group) |>
       dplyr::count()
