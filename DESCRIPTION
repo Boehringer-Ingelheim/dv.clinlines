@@ -1,6 +1,6 @@
 Package: dv.clinlines
 Title: DaVinci's Clinical Timelines
-Version: 1.1.0-9002
+Version: 1.1.1
 Authors@R:
     c(
       person("Boehringer-Ingelheim Pharma GmbH & Co.KG", role = c("cph", "fnd")),

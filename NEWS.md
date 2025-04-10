@@ -1,4 +1,4 @@
-# dv.clinlines 1.1.0-9002
+# dv.clinlines 1.1.1
 
 * Some minor maintenance updates and renaming of mock app.
 * Small bugfix: Removing hard coded drug_admin label in code
