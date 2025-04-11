@@ -118,6 +118,9 @@
     <loc>/reference/mock_clinical_timelines_server.html</loc>
   </url>
   <url>
+    <loc>/reference/mock_clinlines_with_mm_app.html</loc>
+  </url>
+  <url>
     <loc>/reference/mock_local_filter_UI.html</loc>
   </url>
   <url>
@@ -134,9 +137,6 @@
   </url>
   <url>
     <loc>/reference/mock_main_view_server.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_with_mm_app.html</loc>
   </url>
   <url>
     <loc>/reference/mod_clinical_timelines.html</loc>
