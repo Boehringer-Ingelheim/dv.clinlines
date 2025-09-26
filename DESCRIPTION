@@ -1,6 +1,6 @@
 Package: dv.clinlines
 Title: DaVinci's Clinical Timelines
-Version: 1.1.1
+Version: 1.1.1-9000
 Authors@R:
     c(
       person("Boehringer-Ingelheim Pharma GmbH & Co.KG", role = c("cph", "fnd")),
@@ -22,7 +22,7 @@ Imports:
     checkmate (>= 2.3.1),
     dplyr (>= 1.1.0),
     dv.manager (>= 2.1.4),
-    ggplot2 (>= 3.4.4),
+    ggplot2 (>= 3.5.0),
     lubridate (>= 1.9.3),
     magrittr (>= 2.0.3),
     purrr (>= 1.0.2),

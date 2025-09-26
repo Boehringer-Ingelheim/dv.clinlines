@@ -1,3 +1,7 @@
+# dv.clinlines 1.1.1-9000
+
+* Increase ggplot2 dependency version to 3.5.0 to rely on "new" guide system.
+
 # dv.clinlines 1.1.1
 
 * Some minor maintenance updates and renaming of mock app.
