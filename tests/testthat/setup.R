@@ -5,7 +5,7 @@ vdoc <- local({
   #                      ##########
   # package_name is used # INSIDE # the sourced file below
   #                      ##########
-  package_name <- read.dcf("../../DESCRIPTION")[, "Package"]
+  package_name <- "dv.clinlines"
   utils_file_path <- system.file("validation", "utils-validation.R", package = package_name, mustWork = TRUE)
   source(utils_file_path, local = TRUE)[["value"]]
 })
@@ -52,8 +52,8 @@ test_communication_with_papo <- function(mod, data, trigger_input_id, papo_spec_
 
   app <- shiny::shinyApp(ui = app_ui, server = app_server)
 
-  testthat::test_that("module adheres to send_subject_id_to_papo protocol" |>
-    vdoc[["add_spec"]](papo_spec_text, papo_spec_id), { 
+  testthat::test_that("module adheres to send_subject_id_to_papo protocol" %>%
+    vdoc[["add_spec"]](papo_spec_text, papo_spec_id), {
     app <- shinytest2::AppDriver$new(app, name = "test_send_subject_id_to_papo_protocol")
 
     app$wait_for_idle()
