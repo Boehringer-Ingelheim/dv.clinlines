@@ -457,10 +457,19 @@ create_ggdata_y <- function(p, hover) {
     }
 
   } else {
-    # Drug_admin is always layer 4
-    interval_exp_data <- ggdata$data[[4]] %>%
-      dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
-      dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+
+    if ("y" %in% names(ggdata$data[[4]])) {
+      # Drug_admin is always layer 4
+      interval_exp_data <- ggdata$data[[4]] %>%
+        dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+        dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+    } else {
+      # If drug_admin is NULL
+      interval_exp_data <- data.frame(
+        colour = character(0), xmin = numeric(0), xmax = numeric(0)
+      )
+    }
+
   }
 
   return(list(interval_data, timepoint_data, interval_point_data, interval_exp_data))

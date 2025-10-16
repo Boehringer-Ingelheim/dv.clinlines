@@ -1,11 +1,12 @@
-# dv.clinlines 1.1.1-9000
+# dv.clinlines 1.1.1-9001
 
 * Increase ggplot2 dependency version to 3.5.0 to rely on "new" guide system.
+* Fix tooltip in case `drug_admin` is set to `NULL`.
 
 # dv.clinlines 1.1.1
 
 * Some minor maintenance updates and renaming of mock app.
-* Small bugfix: Removing hard coded drug_admin label in code
+* Small bugfix: Removing hard coded drug_admin label in code.
 
 
 # dv.clinlines 1.1.0
