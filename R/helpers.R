@@ -78,20 +78,20 @@ set_event <- function(start_dt_var,
 #' @param dataset_name Character name of the data frame that holds drug administration data
 #'   (e.g. ex domain) as it is called in the \code{data_list} parameter.
 #' @param trt_var Character name of the variable that contains the treatment name.
-#'   Must be present in the data frame mentioned in the \code(dataset_name) element.
+#'   Must be present in the data frame mentioned in the \code{dataset_name} element.
 #' @param start_var Character name of the variable that contains the start dates
 #'   (e.g. exposure start dates). Must be present in the data frame mentioned in the
-#'   \code(dataset_name) element.
+#'   \code{dataset_name} element.
 #' @param end_var Character name of the variable that contains the end dates
 #'   (e.g. exposure start dates). Must be present in the data frame mentioned in the
-#'   \code(dataset_name) element.
+#'   \code{dataset_name} element.
 #' @param detail_var Character name of the variable that contains the treatment
-#' information. Must exist in the dataset mentioned in the \code(dataset_name) element.
+#' information. Must exist in the dataset mentioned in the \code{dataset_name} element.
 #' @param label Free-text character label for the drug administration event.
 #' @param dose_var Character name of the variable that contains the dosis level
-#' information. Must exist in the dataset mentioned in the \code(dataset_name) element.
+#' information. Must exist in the dataset mentioned in the \code{dataset_name} element.
 #' @param dose_unit_var Character name of the variable that contains the dosis unit.
-#' Must exist in the dataset mentioned in the \code(dataset_name) element.
+#' Must exist in the dataset mentioned in the \code{dataset_name} element.
 #'
 #' @return A list that could directly be used as input for the \code{drug_admin} parameter
 #'   of \code{mod_clinical_timelines()} and \code{mod_clinical_timelines_server()}.

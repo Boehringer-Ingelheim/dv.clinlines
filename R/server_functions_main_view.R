@@ -13,7 +13,7 @@ check_valid_color <- function(color_palette) {
   hex_colors <- color_palette[grepl("^#", color_palette)]
   no_colors <- hex_colors[!grepl("^#([A-Fa-f0-9]{6})$", hex_colors)]
   other_colors <- color_palette[!grepl("^#", color_palette)]
-  no_colors <- c(no_colors, other_colors[!other_colors %in% colors()])
+  no_colors <- c(no_colors, other_colors[!other_colors %in% grDevices::colors()])
 
   if (length(no_colors) > 0) {
     stop(paste("Invalid color(s) in color_palette:", paste(no_colors, collapse = ", ")))
@@ -246,16 +246,16 @@ create_main_plot <- function(work_data,
     names(shapes) <- x
     symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
 
-    trt_per_subject <- work_data |>
-      dplyr::filter(.data[["group"]] %in% names(symbol_color)) |>
-      dplyr::group_by(subject_id) |>
-      dplyr::distinct(group) |>
+    trt_per_subject <- work_data %>%
+      dplyr::filter(.data[["group"]] %in% names(symbol_color)) %>%
+      dplyr::group_by(subject_id) %>%
+      dplyr::distinct(group) %>%
       dplyr::count()
 
     if (any(trt_per_subject$n > 1)) {
       position <- 0.5 - (length(symbol_color) + 1) * 0.1
       for (i in seq_along(symbol_color)) {
-        data <- main_p$data |>
+        data <- main_p$data %>%
           dplyr::filter(
             .data[["group"]] == names(symbol_color)[i]
           )
@@ -457,10 +457,19 @@ create_ggdata_y <- function(p, hover) {
     }
 
   } else {
-    # Drug_admin is always layer 4
-    interval_exp_data <- ggdata$data[[4]] %>%
-      dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
-      dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+
+    if ("y" %in% names(ggdata$data[[4]])) {
+      # Drug_admin is always layer 4
+      interval_exp_data <- ggdata$data[[4]] %>%
+        dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+        dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
+    } else {
+      # If drug_admin is NULL
+      interval_exp_data <- data.frame(
+        colour = character(0), xmin = numeric(0), xmax = numeric(0)
+      )
+    }
+
   }
 
   return(list(interval_data, timepoint_data, interval_point_data, interval_exp_data))
