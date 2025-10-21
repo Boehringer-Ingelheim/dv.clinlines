@@ -492,6 +492,9 @@ mod_clinical_timelines <- function(module_id,
         # afmm$dataset_metadata$name holds the name of the currently selected set of dataset (dv.manager)
         data_name = afmm$dataset_metadata$name,
         dataset_list = shiny::reactive({
+          checkmate::assert_subset(basic_info$subject_level_dataset_name, choices = names(afmm$filtered_dataset()))
+          checkmate::assert_subset(names(mapping), choices = names(afmm$filtered_dataset()))
+          checkmate::assert_subset(drug_admin$dataset_name, choices = names(afmm$filtered_dataset()))
           needed_datasets <- unique(c(basic_info$subject_level_dataset_name, names(mapping), drug_admin$dataset_name))
           afmm$filtered_dataset()[needed_datasets]
         }),
