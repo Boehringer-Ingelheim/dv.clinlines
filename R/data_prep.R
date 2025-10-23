@@ -97,6 +97,11 @@ prep_data <- function(data_list,
     subjid_var = "subject_id"
   )
 
+  # The following is needed in case global filter removes all rows
+  if (nrow(one_data) == 0) {
+    return(one_data)
+  }
+
   initial_data <- one_data %>%
     complete_events(basics_list$trt_start, basics_list$trt_end)
 
