@@ -52,6 +52,12 @@ set_pts <- function(status_filters, soc, prepped_data, filter) {
 #'
 #' @keywords internal
 filter_data <- function(data, status_filters, input_filters, filter) {
+
+  # No need for filtering if there is no data
+  if (nrow(data) == 0) {
+    return(data)
+  }
+
   # .data$set != info_ae$name ensures to also display non-AE data
   if (status_filters[["serious_ae"]]) {
     if (input_filters$serious_ae != "all") {

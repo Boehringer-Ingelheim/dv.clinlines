@@ -305,7 +305,7 @@ mod_main_view_server <- function(module_id, initial_data, changed,
       # Create plot on the main screen
       output$main_plot <- shiny::renderPlot(
         expr = {
-          if (length(plot_obj_d()$plot) == 1) {
+          if (is.character(plot_obj_d()$plot)) {
             shiny::validate(shiny::need(plot_obj_d()$plot != "No_start_data", CL$VAL1))
           } else {
             shiny::validate(shiny::need(!is.null(plot_obj_d()$filter_event), CL$VAL2))
