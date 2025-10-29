@@ -465,11 +465,18 @@ mod_clinical_timelines <- function(module_id,
                                    color_palette = NULL,
                                    ms = 1000,
                                    receiver_id = NULL) {
+
   # Check validity of arguments that won't be checked in UI/server
   ac <- checkmate::makeAssertCollection()
   checkmate::assert_list(default_plot_settings, null.ok = TRUE, add = ac)
   checkmate::assert_subset(names(default_plot_settings), choices = c("x_param", "start_day", "boxheight_val"), add = ac)
   checkmate::reportAssertions(ac)
+
+  needed_datasets <- unique(c(
+    basic_info$subject_level_dataset_name,
+    names(mapping),
+    drug_admin$dataset_name
+  ))
 
   mod <- list(
     ui = function(id) {
@@ -487,6 +494,7 @@ mod_clinical_timelines <- function(module_id,
       )
     },
     server = function(afmm) {
+
       dv.clinlines::mod_clinical_timelines_server(
         module_id = module_id,
         # afmm$dataset_metadata$name holds the name of the currently selected set of dataset (dv.manager)
@@ -495,7 +503,6 @@ mod_clinical_timelines <- function(module_id,
           checkmate::assert_subset(basic_info$subject_level_dataset_name, choices = names(afmm$filtered_dataset()))
           checkmate::assert_subset(names(mapping), choices = names(afmm$filtered_dataset()))
           checkmate::assert_subset(drug_admin$dataset_name, choices = names(afmm$filtered_dataset()))
-          needed_datasets <- unique(c(basic_info$subject_level_dataset_name, names(mapping), drug_admin$dataset_name))
           afmm$filtered_dataset()[needed_datasets]
         }),
         basic_info = basic_info,
@@ -510,7 +517,8 @@ mod_clinical_timelines <- function(module_id,
         afmm_param = list(utils = afmm$utils, module_names = afmm$module_names)
       )
     },
-    module_id = module_id
+    module_id = module_id,
+    meta = list(dataset_info = list(all = needed_datasets))
   )
 
   return(mod)

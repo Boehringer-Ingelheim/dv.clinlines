@@ -1,9 +1,10 @@
-# dv.clinlines 1.1.1-9003
+# dv.clinlines 1.1.1-9004
 
 * Increase ggplot2 dependency version to 3.5.0 to rely on "new" guide system.
 * Fix tooltip in case `drug_admin` is set to `NULL`.
 * Enhance error messages for incorrectly specified dataset names.
 * Ensure compatibility with the modifications in {ggplot2} version 4.0.0.
+* Add metadata to module output so that dataset-based filters from **dv.manager** are updated accordingly. 
 
 # dv.clinlines 1.1.1
 
