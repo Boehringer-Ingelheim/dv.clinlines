@@ -1,4 +1,4 @@
-# dv.clinlines 1.1.1-9004
+# dv.clinlines 1.1.2
 
 * Increase ggplot2 dependency version to 3.5.0 to rely on "new" guide system.
 * Fix tooltip in case `drug_admin` is set to `NULL`.
