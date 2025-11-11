@@ -1,198 +1,68 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/ae-filter.html</loc>
-  </url>
-  <url>
-    <loc>/articles/clinlines.html</loc>
-  </url>
-  <url>
-    <loc>/articles/communication.html</loc>
-  </url>
-  <url>
-    <loc>/articles/data-requirements.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/qc.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_ids.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_x_range.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_date_type.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_filters.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_names.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_receiver.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_valid_color.html</loc>
-  </url>
-  <url>
-    <loc>/reference/collapse_cols.html</loc>
-  </url>
-  <url>
-    <loc>/reference/color_lookup.html</loc>
-  </url>
-  <url>
-    <loc>/reference/combine_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/complete_events.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_ggdata_y.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_hover_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_main_plot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_plot_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_tooltip.html</loc>
-  </url>
-  <url>
-    <loc>/reference/default_basic_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/default_drug_admin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/default_mapping.html</loc>
-  </url>
-  <url>
-    <loc>/reference/filter_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/filter_nearest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_filter_status.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_groups.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/local_filters.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_clinical_timelines_UI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_clinical_timelines_app.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_clinical_timelines_server.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_clinlines_with_mm_app.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_local_filter_UI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_local_filter_app.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_local_filter_server.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_main_view_UI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_main_view_app.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mock_main_view_server.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mod_clinical_timelines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mod_clinical_timelines_UI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mod_clinical_timelines_server.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mod_local_filter_UI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mod_local_filter_server.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mod_main_view_UI.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mod_main_view_server.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pack_of_constants.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/prep_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/prep_dummy_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_basic_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_basics.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_drug_admin.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_event.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_events_intern.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_exp_intervals.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_filter_dataset.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_pts.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/articles/ae-filter.html</loc></url>
+<url><loc>/articles/clinlines.html</loc></url>
+<url><loc>/articles/communication.html</loc></url>
+<url><loc>/articles/data-requirements.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/qc.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/add_ids.html</loc></url>
+<url><loc>/reference/calc_x_range.html</loc></url>
+<url><loc>/reference/check_date_type.html</loc></url>
+<url><loc>/reference/check_filters.html</loc></url>
+<url><loc>/reference/check_names.html</loc></url>
+<url><loc>/reference/check_receiver.html</loc></url>
+<url><loc>/reference/check_valid_color.html</loc></url>
+<url><loc>/reference/collapse_cols.html</loc></url>
+<url><loc>/reference/color_lookup.html</loc></url>
+<url><loc>/reference/combine_data.html</loc></url>
+<url><loc>/reference/complete_events.html</loc></url>
+<url><loc>/reference/create_ggdata_y.html</loc></url>
+<url><loc>/reference/create_hover_info.html</loc></url>
+<url><loc>/reference/create_main_plot.html</loc></url>
+<url><loc>/reference/create_plot_data.html</loc></url>
+<url><loc>/reference/create_tooltip.html</loc></url>
+<url><loc>/reference/default_basic_info.html</loc></url>
+<url><loc>/reference/default_drug_admin.html</loc></url>
+<url><loc>/reference/default_mapping.html</loc></url>
+<url><loc>/reference/filter_data.html</loc></url>
+<url><loc>/reference/filter_nearest.html</loc></url>
+<url><loc>/reference/get_filter_status.html</loc></url>
+<url><loc>/reference/get_groups.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/local_filters.html</loc></url>
+<url><loc>/reference/mock_clinical_timelines_UI.html</loc></url>
+<url><loc>/reference/mock_clinical_timelines_app.html</loc></url>
+<url><loc>/reference/mock_clinical_timelines_server.html</loc></url>
+<url><loc>/reference/mock_clinlines_with_mm_app.html</loc></url>
+<url><loc>/reference/mock_local_filter_UI.html</loc></url>
+<url><loc>/reference/mock_local_filter_app.html</loc></url>
+<url><loc>/reference/mock_local_filter_server.html</loc></url>
+<url><loc>/reference/mock_main_view_UI.html</loc></url>
+<url><loc>/reference/mock_main_view_app.html</loc></url>
+<url><loc>/reference/mock_main_view_server.html</loc></url>
+<url><loc>/reference/mod_clinical_timelines.html</loc></url>
+<url><loc>/reference/mod_clinical_timelines_UI.html</loc></url>
+<url><loc>/reference/mod_clinical_timelines_server.html</loc></url>
+<url><loc>/reference/mod_local_filter_UI.html</loc></url>
+<url><loc>/reference/mod_local_filter_server.html</loc></url>
+<url><loc>/reference/mod_main_view_UI.html</loc></url>
+<url><loc>/reference/mod_main_view_server.html</loc></url>
+<url><loc>/reference/pack_of_constants.html</loc></url>
+<url><loc>/reference/pipe.html</loc></url>
+<url><loc>/reference/prep_data.html</loc></url>
+<url><loc>/reference/prep_dummy_data.html</loc></url>
+<url><loc>/reference/set_basic_info.html</loc></url>
+<url><loc>/reference/set_basics.html</loc></url>
+<url><loc>/reference/set_drug_admin.html</loc></url>
+<url><loc>/reference/set_event.html</loc></url>
+<url><loc>/reference/set_events_intern.html</loc></url>
+<url><loc>/reference/set_exp_intervals.html</loc></url>
+<url><loc>/reference/set_filter_dataset.html</loc></url>
+<url><loc>/reference/set_pts.html</loc></url>
 </urlset>
+
