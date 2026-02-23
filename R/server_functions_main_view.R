@@ -580,8 +580,7 @@ create_tooltip <- function(hover, y_screen_pct) {
   style <- paste0(
     "position:absolute;
                     z-index:100;
-                    background-color: rgba(190, 228, 253, 0.85);
-                    color: rgba(127, 127, 127, 1);",
+                    background-color: rgba(var(--bs-light-rgb), 0.85);",
     pos_x, pos_y
   )
 

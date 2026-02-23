@@ -57,7 +57,11 @@ mod_main_view_UI <- function(module_id, x_param = "day", boxheight_val = 60) { #
         inputId = ns("x_scale"),
         label = "Scale x-axis to",
         choices = c("Date" = "date", "Study day" = "day"),
-        selected = x_param
+        selected = x_param,
+        size     = "sm",
+        width    = "100%",
+        direction = "vertical"
+
       ),
 
       # Set time range input depending on x-axis scale
