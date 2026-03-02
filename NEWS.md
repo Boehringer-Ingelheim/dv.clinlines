@@ -1,4 +1,4 @@
-# dv.clinlines 1.1.2-9000
+# dv.clinlines 1.1.2-9001
 
 * Ensure compatibility of buttons and tooltip with {dv.manager}'s update to bootstrap 5.
 * Align QC report with updated template.
