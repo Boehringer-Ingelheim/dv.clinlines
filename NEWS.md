@@ -1,3 +1,8 @@
+# dv.clinlines 1.1.3
+
+* Ensure compatibility of buttons and tooltip with {dv.manager}'s update to bootstrap 5.
+* Align QC report with updated template.
+
 # dv.clinlines 1.1.2
 
 * Increase ggplot2 dependency version to 3.5.0 to rely on "new" guide system.
