@@ -1,3 +1,7 @@
+# dv.clinlines 1.1.3-9000
+
+- [NOT USER-FACING] Update communication with papo test snippet
+
 # dv.clinlines 1.1.3
 
 * Ensure compatibility of buttons and tooltip with {dv.manager}'s update to bootstrap 5.
