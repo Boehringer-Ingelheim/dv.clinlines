@@ -83,14 +83,14 @@ create_plot_data <- function(work_data, time_range, filter_event) {
     time_range <- as.numeric(time_range)
   }
 
-  work_data <- work_data %>%
+  work_data <- work_data |>
     dplyr::filter(.data$group %in% filter_event)
 
   if (nrow(work_data) == 0) {
     return(work_data)
   }
 
-  work_data <- work_data %>%
+  work_data <- work_data |>
     dplyr::mutate(
       # Add arrow positions for open intervals
       arrow_left = dplyr::case_when(
@@ -203,7 +203,7 @@ create_main_plot <- function(work_data,
     return("No_start_data")
   }
 
-  main_p <- work_data %>%
+  main_p <- work_data |>
     ggplot2::ggplot(
       ggplot2::aes(
         y = stats::reorder(.data[[subjid_var]], dplyr::desc(get(sort_by))),
@@ -246,16 +246,16 @@ create_main_plot <- function(work_data,
     names(shapes) <- x
     symbol_color <- colors[unique(work_data[!is.na(work_data$xmin_exp), ]$group)]
 
-    trt_per_subject <- work_data %>%
-      dplyr::filter(.data[["group"]] %in% names(symbol_color)) %>%
-      dplyr::group_by(subject_id) %>%
-      dplyr::distinct(group) %>%
+    trt_per_subject <- work_data |>
+      dplyr::filter(.data[["group"]] %in% names(symbol_color)) |>
+      dplyr::group_by(subject_id) |>
+      dplyr::distinct(group) |>
       dplyr::count()
 
     if (any(trt_per_subject$n > 1)) {
       position <- 0.5 - (length(symbol_color) + 1) * 0.1
       for (i in seq_along(symbol_color)) {
-        data <- main_p$data %>%
+        data <- main_p$data |>
           dplyr::filter(
             .data[["group"]] == names(symbol_color)[i]
           )
@@ -418,16 +418,16 @@ create_ggdata_y <- function(p, hover) {
   range_hover_y <- c(hover$y - domain_5px, hover$y + domain_5px)
 
   # Restrict data points to those within the +/- 5 px range
-  interval_data <- ggdata$data[[1]] %>%
-    dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+  interval_data <- ggdata$data[[1]] |>
+    dplyr::mutate(y = as.numeric(.data[["y"]])) |> # to silence dplyr warning
     dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
 
-  timepoint_data <- ggdata$data[[2]] %>%
-    dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+  timepoint_data <- ggdata$data[[2]] |>
+    dplyr::mutate(y = as.numeric(.data[["y"]])) |> # to silence dplyr warning
     dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
 
-  interval_point_data <- ggdata$data[[3]] %>%
-    dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+  interval_point_data <- ggdata$data[[3]] |>
+    dplyr::mutate(y = as.numeric(.data[["y"]])) |> # to silence dplyr warning
     dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
 
 
@@ -436,8 +436,8 @@ create_ggdata_y <- function(p, hover) {
     df_list <- lapply(4:length(ggdata$data), function(x) {
       dataset_names <- names(ggdata$data[[x]])
       if ("y" %in% dataset_names && !("shape" %in% dataset_names)) {
-        ret_data <- ggdata$data[[x]] %>%
-          dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+        ret_data <- ggdata$data[[x]] |>
+          dplyr::mutate(y = as.numeric(.data[["y"]])) |> # to silence dplyr warning
           dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
 
         if (nrow(ret_data) > 0) {
@@ -451,8 +451,8 @@ create_ggdata_y <- function(p, hover) {
     if (length(purrr::compact(df_list)) > 0) {
       interval_exp_data <- purrr::compact(df_list)[[1]]
     } else {
-      interval_exp_data <- ggdata$data[[4]] %>%
-        dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+      interval_exp_data <- ggdata$data[[4]] |>
+        dplyr::mutate(y = as.numeric(.data[["y"]])) |> # to silence dplyr warning
         dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
     }
 
@@ -460,8 +460,8 @@ create_ggdata_y <- function(p, hover) {
 
     if ("y" %in% names(ggdata$data[[4]])) {
       # Drug_admin is always layer 4
-      interval_exp_data <- ggdata$data[[4]] %>%
-        dplyr::mutate(y = as.numeric(.data[["y"]])) %>% # to silence dplyr warning
+      interval_exp_data <- ggdata$data[[4]] |>
+        dplyr::mutate(y = as.numeric(.data[["y"]])) |> # to silence dplyr warning
         dplyr::filter(dplyr::between(.data[["y"]], range_hover_y[1], range_hover_y[2]))
     } else {
       # If drug_admin is NULL
@@ -623,7 +623,7 @@ calc_x_range <- function(hover) {
 #' @keywords internal
 get_groups <- function(ggdata_y, color_map, x_range) {
   # Intervals
-  ggdata_y_interv <- ggdata_y[[1]] %>%
+  ggdata_y_interv <- ggdata_y[[1]] |>
     dplyr::mutate(
       # Assign event names based on the color
       event = purrr::map_chr(
@@ -631,40 +631,40 @@ get_groups <- function(ggdata_y, color_map, x_range) {
       ),
       xmin = as.numeric(.data[["xmin"]]), # to silence dplyr warning
       xmax = as.numeric(.data[["xmax"]])
-    ) %>%
+    ) |>
     dplyr::filter(
       dplyr::between(.data[["xmin"]], x_range[1], x_range[2]) |
         dplyr::between(.data[["xmax"]], x_range[1], x_range[2])
     )
 
   # Timepoints
-  ggdata_y_points <- ggdata_y[[2]] %>%
+  ggdata_y_points <- ggdata_y[[2]] |>
     dplyr::mutate(
       # assign event names based on the color
       event = purrr::map_chr(
         .data[["colour"]], ~ names(color_map[which(color_map == .x)])
       ),
       x = as.numeric(.data[["x"]]) # to silence dplyr warning
-    ) %>%
+    ) |>
     dplyr::filter(
       dplyr::between(.data[["x"]], x_range[1], x_range[2])
     )
 
   # Interval points
-  ggdata_y_inter_pt <- ggdata_y[[3]] %>%
+  ggdata_y_inter_pt <- ggdata_y[[3]] |>
     dplyr::mutate(
       # assign event names based on the color
       event = purrr::map_chr(
         .data[["colour"]], ~ names(color_map[which(color_map == .x)])
       ),
       x = as.numeric(.data[["x"]]) # to silence dplyr warning
-    ) %>%
+    ) |>
     dplyr::filter(
       dplyr::between(.data[["x"]], x_range[1], x_range[2])
     )
 
 
-  ggdata_y_interv_exp <- ggdata_y[[4]] %>%
+  ggdata_y_interv_exp <- ggdata_y[[4]] |>
     dplyr::mutate(
       # Assign event names based on the color
       event = purrr::map_chr(
@@ -672,7 +672,7 @@ get_groups <- function(ggdata_y, color_map, x_range) {
       ),
       xmin = as.numeric(.data[["xmin"]]), # to silence dplyr warning
       xmax = as.numeric(.data[["xmax"]])
-    ) %>%
+    ) |>
     dplyr::filter(
       dplyr::between(.data[["xmin"]], x_range[1], x_range[2]) |
         dplyr::between(.data[["xmax"]], x_range[1], x_range[2])
@@ -716,7 +716,7 @@ filter_nearest <- function(initial_data, subject, rel_groups, x_range, x_scale, 
     upper_exp <- "end_exp_day"
   }
 
-  near_data <- initial_data %>%
+  near_data <- initial_data |>
     dplyr::filter(
       # Only display events near cursor (y position +/- 5px)
       .data[["subject_id"]] == subject,
@@ -729,7 +729,7 @@ filter_nearest <- function(initial_data, subject, rel_groups, x_range, x_scale, 
         dplyr::between(.data[[upper_exp]], x_range[1], x_range[2]) |
         (.data[[lower]] < time_range[[1]] & .data[[upper]] >= x_range[[1]]) |
         (.data[[upper]] > time_range[[2]] & .data[[lower]] <= x_range[[2]])
-    ) %>%
+    ) |>
     dplyr::mutate(
       # Display original values
       start_dt_var = dplyr::if_else(.data[["start_missing"]], "NA", as.character(.data[["start_dt_var"]])),
@@ -750,8 +750,8 @@ filter_nearest <- function(initial_data, subject, rel_groups, x_range, x_scale, 
         .data[["start_exp_day"]],
         .data[["end_exp_day"]]
       )
-    ) %>%
-    dplyr::select(tidyselect::all_of(c("detail_var", "dates", "days", "group"))) %>%
+    ) |>
+    dplyr::select(tidyselect::all_of(c("detail_var", "dates", "days", "group"))) |>
     dplyr::rename(
       dplyr::all_of(c("Details" = "detail_var", "Time Range" = "dates", "Study Days" = "days", "Event" = "group"))
     )

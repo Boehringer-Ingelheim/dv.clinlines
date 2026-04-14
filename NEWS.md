@@ -1,3 +1,7 @@
+# dv.clinlines 1.1.3-9001
+
+- [NOT USER-FACING] Transition away from magrittr and into the native R pipe.
+
 # dv.clinlines 1.1.3-9000
 
 - [NOT USER-FACING] Update communication with papo test snippet

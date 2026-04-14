@@ -10,27 +10,27 @@ n <- 5
 adsl <- data.frame()
 adae <- data.frame()
 for (i in 1:n) {
-  manipulated_adsl <- pharmaverseadam::adsl %>%
+  manipulated_adsl <- pharmaverseadam::adsl |>
     dplyr::mutate(USUBJID = paste0(i, USUBJID))
-  manipulated_adae <- pharmaverseadam::adae %>%
+  manipulated_adae <- pharmaverseadam::adae |>
     dplyr::mutate(USUBJID = paste0(i, USUBJID))
   adsl <- dplyr::bind_rows(adsl, manipulated_adsl)
   adae <- dplyr::bind_rows(adae, manipulated_adae)
 }
 
 # Prepare data
-adsl <- adsl %>%
+adsl <- adsl |>
   dplyr::mutate(
     TRTSDT = lubridate::ymd_hm(.data$TRTSDT, truncated = 2),
     TRTEDT = lubridate::ymd_hm(.data$TRTEDT, truncated = 2),
     RFICDT = lubridate::ymd_hm(.data$RFSTDTC, truncated = 2)
   )
 
-adae <- adae %>%
+adae <- adae |>
   dplyr::mutate(
     AESTDTC = lubridate::ymd_hm(.data$ASTDT, truncated = 2),
     AEENDTC = lubridate::ymd_hm(.data$AENDT, truncated = 2)
-  ) %>%
+  ) |>
   dplyr::filter(.data$USUBJID %in% adsl$USUBJID)
 
 data_list <- list(adsl = adsl, adae = adae)

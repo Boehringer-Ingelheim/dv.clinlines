@@ -1,5 +1,5 @@
 # Tests for mod_main_view_UI() ----
-test_that("mod_main_view_UI() returns a named shiny tagList" %>%
+test_that("mod_main_view_UI() returns a named shiny tagList" |>
   vdoc[["add_spec"]](specs$output_specs$general_display), {
   ui <- mod_main_view_UI("test")
 
@@ -82,7 +82,7 @@ plot_click_li <- list(
 )
 
 
-test_that("mod_main_view_server() returns the subject ID the user clicked on" %>%
+test_that("mod_main_view_server() returns the subject ID the user clicked on" |>
   vdoc[["add_spec"]](specs$integration_specs$jumping), {
   server_func <- function(id, initial_data, changed, colors_groups) {
     mod_main_view_server(

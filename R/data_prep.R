@@ -29,7 +29,7 @@ prep_data <- function(data_list,
       details = character(),
       dose = character(),
       unit = character()
-    ) %>%
+    ) |>
       dplyr::rename(!!subjid_var := "subjects")
 
     data_list <- append(data_list, list(no_da = empty_drug_admin))
@@ -102,7 +102,7 @@ prep_data <- function(data_list,
     return(one_data)
   }
 
-  initial_data <- one_data %>%
+  initial_data <- one_data |>
     complete_events(basics_list$trt_start, basics_list$trt_end)
 
   # Add additional information for local ae filters
@@ -152,8 +152,8 @@ prep_data <- function(data_list,
 #' @return A list of the same datasets but with an additional column set_id that serves
 #'   as row ID's.
 add_ids <- function(data_list) {
-  data_list <- names(data_list) %>%
-    purrr::set_names() %>%
+  data_list <- names(data_list) |>
+    purrr::set_names() |>
     purrr::map(function(x) {
       dplyr::mutate(
         data_list[[x]],
@@ -231,21 +231,21 @@ set_basics <- function(data_list, basic_info = default_basic_info(), subjid_var)
 #' @keywords internal
 set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var) {
   # Mapping contains one or multiple event definitions per dataset
-  per_set <- names(mapping) %>%
+  per_set <- names(mapping) |>
     purrr::map(function(set) { # Per dataset
 
       df <- data_list[[set]]
-      per_event <- names(mapping[[set]]) %>%
+      per_event <- names(mapping[[set]]) |>
         purrr::map(function(event) { # Per event within one dataset
 
-          sub_df <- df %>%
+          sub_df <- df |>
             # Elements of mapping[[set]][[event]]: "start_dt_var" "end_dt_var" "start_dy_var" "end_dy_var" "detail_var"
-            dplyr::select(dplyr::all_of(c(subjid_var, unlist(mapping[[set]][[event]]), "set_id"))) %>%
+            dplyr::select(dplyr::all_of(c(subjid_var, unlist(mapping[[set]][[event]]), "set_id"))) |>
             dplyr::mutate(group = rep(event))
 
           if ("end_dt_var" %in% colnames(sub_df)) { # I.e. if it's an interval event
 
-            sub_df <- sub_df %>%
+            sub_df <- sub_df |>
               dplyr::mutate(
 
                 # Missing flags
@@ -257,7 +257,7 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
                 arrow_right = .data$end_missing
               )
           } else {
-            sub_df <- sub_df %>%
+            sub_df <- sub_df |>
               dplyr::mutate(
                 start_missing = FALSE,
                 end_missing = FALSE,
@@ -269,13 +269,13 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
           return(sub_df)
         })
 
-      set_df <- dplyr::bind_rows(per_event) %>%
+      set_df <- dplyr::bind_rows(per_event) |>
         dplyr::mutate(set = set)
 
       return(set_df)
     })
 
-  event_df <- dplyr::bind_rows(per_set) %>%
+  event_df <- dplyr::bind_rows(per_set) |>
     dplyr::rename(dplyr::all_of(c(subject_id = subjid_var)))
 
   return(event_df)
@@ -338,8 +338,8 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
   check_names(data, cols, subjid_var)
   check_date_type(data, c(col_list$start_var, col_list$end_var))
 
-  data <- data %>%
-    dplyr::group_by(get(subjid_var), get(col_list$trt_var)) %>%
+  data <- data |>
+    dplyr::group_by(get(subjid_var), get(col_list$trt_var)) |>
     dplyr::mutate(
       exp_dose = dplyr::case_when(
         is.na(dplyr::lag(get(col_list$dose_var))) ~ "start/equal",
@@ -347,9 +347,9 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
         dplyr::lag(get(col_list$dose_var)) < get(col_list$dose_var) ~ "increase",
         dplyr::lag(get(col_list$dose_var)) > get(col_list$dose_var) ~ "decrease"
       )
-    ) %>%
+    ) |>
     dplyr::ungroup()
-  interval_df <- data %>%
+  interval_df <- data |>
     dplyr::mutate(
       detail_var = paste(
         .data[[col_list$detail_var]], "-",
@@ -357,22 +357,22 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
         .data[[col_list$dose_unit_var]]
       ),
       trt_var = .data[[col_list$trt_var]]
-    ) %>%
+    ) |>
     dplyr::select(
       tidyselect::all_of(c(subjid_var, cols[1:2], "set_id", "exp_dose", "detail_var", "trt_var"))
-    ) %>%
+    ) |>
     dplyr::mutate(
       group = dplyr::if_else(
         !is.na(.data[["trt_var"]]),
         paste0(col_list$label, ": ", .data[["trt_var"]]),
         NA
       )
-    ) %>%
+    ) |>
     dplyr::rename(
       start_exp = tidyselect::all_of(col_list$start_var),
       end_exp = tidyselect::all_of(col_list$end_var)
-    ) %>%
-    dplyr::mutate(set = mapping$dataset_name) %>%
+    ) |>
+    dplyr::mutate(set = mapping$dataset_name) |>
     dplyr::rename(dplyr::all_of(c(subject_id = subjid_var)))
 
   return(interval_df)
@@ -418,13 +418,13 @@ combine_data <- function(df_list,
                          icf_date,
                          subjid_var) {
   # Set informed consent date as earliest event
-  basic_data <- basic_info_df %>%
+  basic_data <- basic_info_df |>
     dplyr::select(
       dplyr::all_of(c(subjid_var, trtstart, trtend, "earliest" = icf_date))
     )
 
   # Combine interval and timepoint data
-  one_data <- dplyr::bind_rows(df_list) %>%
+  one_data <- dplyr::bind_rows(df_list) |>
     dplyr::left_join(basic_data)
 
   return(one_data)
@@ -477,8 +477,8 @@ complete_events <- function(combined_data, trt_start, trt_end) {
   }
 
   # Set dates & days for plotting purposes later
-  df <- combined_data %>%
-    dplyr::filter(!is.na(.data[[trt_start]])) %>% # do not display screening failures
+  df <- combined_data |>
+    dplyr::filter(!is.na(.data[[trt_start]])) |> # do not display screening failures
     dplyr::mutate(
       # Set missing start dates to informed consent date (stored in "earliest" col)
       start_dt_var = dplyr::if_else(.data$start_missing, .data$earliest, .data$start_dt_var),
@@ -610,7 +610,7 @@ set_filter_dataset <- function(filter, data_list, mapping, subjid_var) {
 
   ae_info <- mapping[[filter$ae_filter$dataset_name]][[filter$ae_filter$label]]
 
-  filter_dataset <- data_list[[filter$ae_filter$dataset_name]] %>%
+  filter_dataset <- data_list[[filter$ae_filter$dataset_name]] |>
     dplyr::select(
       dplyr::all_of(
         c(

@@ -8,7 +8,7 @@ test_that("mod_local_filter_UI() returns a shiny.tag list", {
 })
 
 test_that(
-  "mod_local_filter_UI() returns only UI elements for local filters defined" %>%
+  "mod_local_filter_UI() returns only UI elements for local filters defined" |>
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     # two filters
@@ -32,14 +32,14 @@ test_that(
 # Tests for mod_local_filter_server() ----
 data_list <- add_ids(prep_dummy_data(50))
 
-filter_data <- data_list$adae %>%
-  dplyr::mutate(subject_id = USUBJID) %>%
+filter_data <- data_list$adae |>
+  dplyr::mutate(subject_id = USUBJID) |>
   dplyr::select(
     dplyr::all_of(c("set_id", "subject_id", "AESTDTC", "AEENDTC", "AEDECOD", "AESER", "AESOC", "AEREL"))
   )
 
 data <- shiny::reactive({
-  prep_data(data_list) %>%
+  prep_data(data_list) |>
     dplyr::left_join(
       filter_data,
       by = c("set_id" = "set_id", "subject_id" = "subject_id", "start_dt_var" = "AESTDTC", "end_dt_var" = "AEENDTC")
@@ -58,7 +58,7 @@ server <- function(id) {
 }
 
 test_that(
-  "mod_local_filter_server() returns the same data frame as received, only filtered by adverse events" %>%
+  "mod_local_filter_server() returns the same data frame as received, only filtered by adverse events" |>
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     shiny::testServer(server, {
