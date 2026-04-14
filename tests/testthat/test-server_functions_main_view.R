@@ -7,13 +7,13 @@ range_day <- c(12, 21)
 plot_date <- create_plot_data(df, time_range = range_date, filter_event = unique(df$group))
 plot_day <- create_plot_data(df, time_range = range_day, filter_event = "Informed Consent")
 
-test_that("create_plot_data() returns only events to plot" %>%
+test_that("create_plot_data() returns only events to plot" |>
   vdoc[["add_spec"]](specs$plot_specs$events), {
   expect_equal(unique(plot_day$group), "Informed Consent")
 })
 
 test_that(
-  "create_plot_data() sets interval start values to time range start value" %>%
+  "create_plot_data() sets interval start values to time range start value" |>
     vdoc[["add_spec"]](specs$sidebar_specs$time_range),
   {
     expect_true(all(na.omit(plot_date$xmin) >= range_date[1]))
@@ -22,7 +22,7 @@ test_that(
 )
 
 test_that(
-  "create_plot_data() sets interval end values to time range end value" %>%
+  "create_plot_data() sets interval end values to time range end value" |>
     vdoc[["add_spec"]](specs$sidebar_specs$time_range),
   {
     expect_true(all(na.omit(plot_date$xmax) <= range_date[2]))
@@ -35,7 +35,7 @@ test_that("create_plot_data() returns a data frame", {
 })
 
 test_that(
-  "create_plot_data() includes all the same subjects as the corresponding adsl data" %>%
+  "create_plot_data() includes all the same subjects as the corresponding adsl data" |>
     vdoc[["add_spec"]](specs$plot_specs$events),
   {
     expect_equal(unique(plot_date$subject_id), unique(df$subject_id))
@@ -44,14 +44,14 @@ test_that(
 )
 
 test_that(
-  "create_plot_data() only includes events that are specified by the event filter" %>%
+  "create_plot_data() only includes events that are specified by the event filter" |>
     vdoc[["add_spec"]](specs$sidebar_specs$event_type_filter),
   {
     expect_equal(unique(plot_day$group), "Informed Consent")
   }
 )
 
-test_that("create_plot_data() does not return rows if no event is selected" %>%
+test_that("create_plot_data() does not return rows if no event is selected" |>
   vdoc[["add_spec"]](specs$sidebar_specs$event_type_filter), {
   plot_date <- create_plot_data(df, time_range = range_date, filter_event = NULL)
   expect_equal(length(plot_date$group), 0)
@@ -198,7 +198,7 @@ test_that("filter_nearest() returns a subset of initial_data", {
     Time_Range = c("2012-08-07 - NA", "2012-08-07 - 2012-08-30", "2012-08-07 - 2012-08-30", "2012-08-26 - NA"),
     Study_Days = c("3 - NA", "3 - 26", "3 - 26", "22 - NA"),
     Event = rep("Adverse Events", times = 4)
-  ) %>%
+  ) |>
     dplyr::rename(dplyr::all_of(c("Time Range" = "Time_Range", "Study Days" = "Study_Days")))
   observed <- filter_nearest(df, subject, rel_groups, x_range, x_scale, time_range)
 
@@ -228,7 +228,7 @@ test_that("collapse_cols() returns a single character vector", {
 ggdata_y <- create_ggdata_y(p, hover)
 
 test_that(
-  "create_hover_info() returns a list that specifies the tooltip content" %>%
+  "create_hover_info() returns a list that specifies the tooltip content" |>
     vdoc[["add_spec"]](specs$plot_specs$hovering),
   {
     observed <- create_hover_info(hover, ggdata_y, df, colors, "date", 0.2, time_range)
@@ -241,7 +241,7 @@ test_that(
 
 # Tests for create tooltip() ----
 test_that(
-  "tooltip() returns a character vector that defines the style property" %>%
+  "tooltip() returns a character vector that defines the style property" |>
     vdoc[["add_spec"]](specs$plot_specs$hovering),
   {
     observed_top <- create_tooltip(hover, 0.3)
@@ -261,7 +261,7 @@ test_that(
 
 # Tests for create_main_plot() ----
 test_that(
-  "create_main_plot() returns a string when plot cannot be created due to settings" %>%
+  "create_main_plot() returns a string when plot cannot be created due to settings" |>
     vdoc[["add_spec"]](specs$plot_specs$errors),
   {
     df <- prep_data(add_ids(prep_dummy_data(n = 50)))
@@ -324,7 +324,7 @@ server_func <- function(id, initial_data, changed, colors_groups, ms = 100) {
 }
 
 test_that(
-  "create_main_plot() displays events per subject and milestones as bullets/periods as horizontal lines" %>%
+  "create_main_plot() displays events per subject and milestones as bullets/periods as horizontal lines" |>
     vdoc[["add_spec"]](c(specs$plot_specs$events, specs$plot_specs$event_types)),
   {
     shiny::testServer(
@@ -358,7 +358,7 @@ test_that(
 )
 
 test_that(
-  "create_main_plot() returns a plot that scales the x-axis either as date or as numeric" %>%
+  "create_main_plot() returns a plot that scales the x-axis either as date or as numeric" |>
     vdoc[["add_spec"]](specs$sidebar_specs$date_day),
   {
     shiny::testServer(
@@ -397,7 +397,7 @@ test_that(
 )
 
 test_that(
-  "create_main_plot() returns a plot that sorts the y-axis either alphanumerically or by earliest event" %>%
+  "create_main_plot() returns a plot that sorts the y-axis either alphanumerically or by earliest event" |>
     vdoc[["add_spec"]](specs$sidebar_specs$sorting),
   {
     shiny::testServer(
@@ -436,7 +436,7 @@ test_that(
 )
 
 test_that(
-  "create_main_plot() returns a plot that determines vertical space per subject according to user settings" %>%
+  "create_main_plot() returns a plot that determines vertical space per subject according to user settings" |>
     vdoc[["add_spec"]](specs$sidebar_specs$boxheight),
   {
     shiny::testServer(
@@ -478,7 +478,7 @@ test_that(
 )
 
 test_that(
-  "create_main_plot() returns a plot that indicates dose changes visually" %>%
+  "create_main_plot() returns a plot that indicates dose changes visually" |>
     vdoc[["add_spec"]](specs$plot_specs$drug_admin_event),
   {
     df <- prep_data(add_ids(prep_dummy_data(n = 3)))
@@ -537,20 +537,20 @@ test_that("check_valid_color() detects invalid colors", {
 
 
 # Tests for color_lookup() ----
-test_that("color_lookup() returns a named vector of hex colors as default colors" %>%
+test_that("color_lookup() returns a named vector of hex colors as default colors" |>
   vdoc[["add_spec"]](specs$plot_specs$colors), {
   colors <- color_lookup(c("a", "b"), NULL)
   expect_named(colors, c("a", "b"), ignore.order = TRUE)
 })
 
-test_that("color_lookup() returns a customized color palette as is" %>%
+test_that("color_lookup() returns a customized color palette as is" |>
   vdoc[["add_spec"]](specs$plot_specs$customizable_colors), {
   color_palette <- c("a" = "blue", "b" = "red")
   colors <- color_lookup(c("a", "b"), color_palette)
   expect_equal(colors, color_palette)
 })
 
-test_that("color_lookup() adds grey for missing events in customized color palette" %>%
+test_that("color_lookup() adds grey for missing events in customized color palette" |>
   vdoc[["add_spec"]](specs$plot_specs$customizable_colors), {
   color_palette <- c("a" = "blue")
   colors <- color_lookup(c("a", "b"), color_palette)
