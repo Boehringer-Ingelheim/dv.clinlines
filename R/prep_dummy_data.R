@@ -14,14 +14,14 @@
 #'
 
 prep_dummy_data <- function(n = 200) {
-  adsl_info <- pharmaverseadam::adsl[1:n, ] %>%
+  adsl_info <- pharmaverseadam::adsl[1:n, ] |>
     dplyr::mutate(
       TRTSDT = lubridate::ymd_hm(.data$TRTSDT, truncated = 2),
       TRTEDT = lubridate::ymd_hm(.data$TRTEDT, truncated = 2),
       RFICDT = lubridate::ymd_hm(.data$RFSTDTC, truncated = 2)
     )
 
-  adae_info <- pharmaverseadam::adae %>%
+  adae_info <- pharmaverseadam::adae |>
     dplyr::mutate(
       AESTDTC = lubridate::ymd_hm(.data$ASTDT, truncated = 2),
       AEENDTC = lubridate::ymd_hm(.data$AENDT, truncated = 2),
@@ -30,28 +30,28 @@ prep_dummy_data <- function(n = 200) {
         AEREL %in% c("POSSIBLE", "PROBABLE") ~ "Y",
         TRUE ~ ""
       )
-    ) %>%
+    ) |>
     dplyr::filter(.data$USUBJID %in% adsl_info$USUBJID)
 
-  adcm_info <- pharmaverseadam::adcm %>%
-    dplyr::filter(!is.na(.data$CMSTDTC)) %>%
+  adcm_info <- pharmaverseadam::adcm |>
+    dplyr::filter(!is.na(.data$CMSTDTC)) |>
     dplyr::mutate(
       CMSTDTC = lubridate::ymd_hm(.data$CMSTDTC, truncated = 4),
       CMENDTC = lubridate::ymd_hm(.data$CMENDTC, truncated = 4)
-    ) %>%
+    ) |>
     dplyr::filter(.data$USUBJID %in% adsl_info$USUBJID)
 
-  exp_info <- pharmaverseadam::adex %>%
-    dplyr::distinct(USUBJID, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC, .keep_all = TRUE) %>%
+  exp_info <- pharmaverseadam::adex |>
+    dplyr::distinct(USUBJID, EXTRT, EXDOSE, EXDOSU, EXSTDTC, EXENDTC, .keep_all = TRUE) |>
     dplyr::mutate(
       EXSTDTC = lubridate::ymd_hm(.data$EXSTDTC, truncated = 2),
       EXENDTC = lubridate::ymd_hm(.data$EXENDTC, truncated = 2),
       subject_id = .data$USUBJID
-    ) %>%
+    ) |>
     dplyr::filter(.data$USUBJID %in% adsl_info$USUBJID)
 
-  exp_empty <- pharmaverseadam::adex %>%
-    dplyr::filter(.data$USUBJID == "+") %>%
+  exp_empty <- pharmaverseadam::adex |>
+    dplyr::filter(.data$USUBJID == "+") |>
     dplyr::mutate(
       EXSTDTC = lubridate::ymd_hm(.data$EXSTDTC),
       EXENDTC = lubridate::ymd_hm(.data$EXENDTC),

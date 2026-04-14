@@ -62,21 +62,21 @@ Note that we drop adverse events that have missing start dates for simplificatio
 ```{r preprocess}
 library(magrittr)
 
-data_list$adsl <- data_list$adsl %>%
+data_list$adsl <- data_list$adsl |>
   dplyr::mutate(
     TRTSDT = lubridate::ymd_hm(TRTSDT, truncated = 2),
     TRTEDT = lubridate::ymd_hm(TRTEDT, truncated = 2),
     RFICDT = lubridate::ymd_hm(RFSTDTC, truncated = 2)
   )
 
-data_list$adae <- data_list$adae %>%
-  dplyr::filter(!is.na(ASTDT)) %>%
+data_list$adae <- data_list$adae |>
+  dplyr::filter(!is.na(ASTDT)) |>
   dplyr::mutate(
     AESTDTC = lubridate::ymd_hm(ASTDT, truncated = 2),
     AEENDTC = lubridate::ymd_hm(AENDT, truncated = 2)
   )
 
-data_list$adex <- data_list$adex %>%
+data_list$adex <- data_list$adex |>
   dplyr::mutate(
     EXSTDTC = lubridate::ymd_hm(EXSTDTC, truncated = 2),
     EXENDTC = lubridate::ymd_hm(EXENDTC, truncated = 2),
@@ -271,21 +271,21 @@ data_list <- list(
 )
 
 # Preprocess data
-data_list$adsl <- data_list$adsl %>%
+data_list$adsl <- data_list$adsl |>
   dplyr::mutate(
     TRTSDT = lubridate::ymd_hm(TRTSDT, truncated = 2),
     TRTEDT = lubridate::ymd_hm(TRTEDT, truncated = 2),
     RFICDT = lubridate::ymd_hm(RFSTDTC, truncated = 2)
   )
 
-data_list$adae <- data_list$adae %>%
-  dplyr::filter(!is.na(ASTDT)) %>%
+data_list$adae <- data_list$adae |>
+  dplyr::filter(!is.na(ASTDT)) |>
   dplyr::mutate(
     AESTDTC = lubridate::ymd_hm(ASTDT, truncated = 2),
     AEENDTC = lubridate::ymd_hm(AENDT, truncated = 2)
   )
 
-data_list$adex <- data_list$adex %>%
+data_list$adex <- data_list$adex |>
   dplyr::mutate(
     EXSTDTC = lubridate::ymd_hm(EXSTDTC, truncated = 2),
     EXENDTC = lubridate::ymd_hm(EXENDTC, truncated = 2),

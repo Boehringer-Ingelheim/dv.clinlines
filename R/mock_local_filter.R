@@ -27,12 +27,12 @@ mock_local_filter_UI <- function(request) { # nolint
 mock_local_filter_server <- function(input, output, session) {
   initial_data <- shiny::reactive({
     data_list <- prep_dummy_data()
-    data_list$adae <- data_list$adae %>%
+    data_list$adae <- data_list$adae |>
       dplyr::mutate(
         # Note: conversion below is only for mock purpose and changes the data
         AEREL = dplyr::if_else(AEREL == "NONE", "N", "Y")
       )
-    data_list <- purrr::set_names(names(data_list)) %>%
+    data_list <- purrr::set_names(names(data_list)) |>
       purrr::map(function(x) {
         dplyr::mutate(
           data_list[[x]],
@@ -43,10 +43,10 @@ mock_local_filter_server <- function(input, output, session) {
     data <- prep_data(data_list)
 
     if (TRUE) {
-      filter_data <- data_list$adae %>%
+      filter_data <- data_list$adae |>
         dplyr::mutate(
           subject_id = .data$USUBJID
-        ) %>%
+        ) |>
         dplyr::select(
           .data$set_id, .data$subject_id, .data$AESTDTC, .data$AEENDTC,
           .data$AEDECOD, .data$AESER, .data$AESOC, .data$AEREL
@@ -77,7 +77,7 @@ mock_local_filter_server <- function(input, output, session) {
   )
 
   output$table <- shiny::renderTable({
-    filtered_data() %>% dplyr::filter(.data$set == "adae")
+    filtered_data() |> dplyr::filter(.data$set == "adae")
   })
 }
 
