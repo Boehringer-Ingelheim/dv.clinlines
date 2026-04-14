@@ -60,8 +60,6 @@ According to the data requirements (see `vignette("data-requirements")`), the lo
 Note that we drop adverse events that have missing start dates for simplification purposes. 
 
 ```{r preprocess}
-library(magrittr)
-
 data_list$adsl <- data_list$adsl |>
   dplyr::mutate(
     TRTSDT = lubridate::ymd_hm(TRTSDT, truncated = 2),
@@ -260,7 +258,6 @@ dv.manager::run_app(
 For convenience, the code chunks scattered across this page are gathered together below:
 
 ```{r example}
-library(magrittr)
 library(dv.clinlines)
 
 # Load data
