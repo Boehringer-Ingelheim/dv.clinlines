@@ -64,7 +64,8 @@ mock_clinlines_with_mm_app <- function() {
         detail_var = "EXTRT",
         label = "Drug Administration",
         dose_var = "EXDOSE",
-        dose_unit_var = "EXDOSU"
+        dose_unit_var = "EXDOSU",
+        show_dose_info = TRUE
       ),
       subjid_var = "USUBJID",
       filter = list(
