@@ -515,17 +515,9 @@ create_hover_info <- function(hover, ggdata_y, initial_data, color_map, x_scale,
     hover_df <- "Please move the cursor near an event start/end."
   } else {
     hover_df <- print(xtable::xtable(near_data), type = "html", print.results = FALSE)
-    # Inject separation lines manually
-    hover_df <- gsub(
-      "<td",
-      '<td style="border-left: 1px solid #808080; padding: 5px;"',
-      hover_df
-    )
-    hover_df <- gsub(
-      "<th",
-      '<th style="border-left: 1px solid #808080; border-bottom: 1px solid #808080; padding: 5px; background-color: #E6EAEA;"',
-      hover_df
-    )
+    # Inject border lines manually
+    hover_df <- gsub("<th", '<th style="border: 1px solid #808080; padding: 5px; background-color: #E6EAEA;"', hover_df)
+    hover_df <- gsub("<td", '<td style="border: 1px solid #808080; padding: 5px;"', hover_df)
   }
 
   # Actual tooltip

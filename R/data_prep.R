@@ -330,7 +330,7 @@ set_events_intern <- function(data_list, mapping = default_mapping(), subjid_var
 #' @keywords internal
 #'
 set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_var) {
-  col_list <- mapping[!names(mapping) %in% c("dataset_name")]
+  col_list <- mapping[!names(mapping) %in% c("dataset_name", "show_dose_info")]
 
   cols <- c(col_list$start_var, col_list$end_var, col_list$detail_var, col_list$trt_var)
   data <- data_list[[mapping$dataset_name]]
@@ -357,14 +357,21 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
       ""
     }
 
+  data[["detail_var"]] <-
+    ifelse(is.na(data[["detail_var"]]), "", data[["detail_var"]])
+
   # Add dose information to details unless specified not to
-  if (is.null(col_list$show_dose_info) || col_list$show_dose_info) {
+  if (is.null(mapping$show_dose_info) || mapping$show_dose_info) {
+    data[[col_list$dose_var]] <-
+      ifelse(is.na(data[[col_list$dose_var]]), "", as.character(data[[col_list$dose_var]]))
     data[["detail_var"]] <- paste0(
       data[["detail_var"]],
       ifelse(data[["detail_var"]] != "", " - ", ""),
       data[[col_list$dose_var]]
     )
     if (!is.null(col_list$dose_unit_var)) {
+      data[[col_list$dose_unit_var]] <-
+        ifelse(is.na(data[[col_list$dose_unit_var]]), "", data[[col_list$dose_unit_var]])
       data[["detail_var"]] <- paste(
         data[["detail_var"]],
         data[[col_list$dose_unit_var]]
