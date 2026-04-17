@@ -358,7 +358,7 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
     }
 
   data[["detail_var"]] <-
-    ifelse(is.na(data[["detail_var"]]), "", data[["detail_var"]])
+    ifelse(is.na(data[["detail_var"]]), "", as.character(data[["detail_var"]]))
 
   # Add dose information to details unless specified not to
   if (is.null(mapping$show_dose_info) || mapping$show_dose_info) {
@@ -371,7 +371,7 @@ set_exp_intervals <- function(data_list, mapping = default_drug_admin(), subjid_
     )
     if (!is.null(col_list$dose_unit_var)) {
       data[[col_list$dose_unit_var]] <-
-        ifelse(is.na(data[[col_list$dose_unit_var]]), "", data[[col_list$dose_unit_var]])
+        ifelse(is.na(data[[col_list$dose_unit_var]]), "", as.character(data[[col_list$dose_unit_var]]))
       data[["detail_var"]] <- paste(
         data[["detail_var"]],
         data[[col_list$dose_unit_var]]
