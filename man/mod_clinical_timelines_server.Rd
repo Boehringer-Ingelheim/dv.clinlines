@@ -183,13 +183,18 @@ treatment name. Must exist in the dataset mentioned in the
 (e.g. exposure end dates). Must exist in the dataset mentioned in the
 \code{dataset_name} element.}
 \item{\code{detail_var}: Character name of the variable that contains the treatment
-information to appear in the Details column of the hover box. Must exist in the dataset
-mentioned in the \code{dataset_name} element.}
+name to appear in the Details column of the hover box. Must exist in the dataset
+mentioned in the \code{dataset_name} element. Can be set to \code{NULL} for no treatment
+name. If \code{show_dose_info} is unspecified or set to true then dose information will
+also be added to the Details column.}
 \item{\code{label}: Free-text character label for the drug administration event.}
 \item{\code{dose_var}: Character name of the variable that contains the dose level
-information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
+information to be used for indication of increased/decreased dose, and added to Details
+column of the hover box. Must exist in the dataset mentioned in the \code{dataset_name}
+element.}
 \item{\code{dose_unit_var}: Character name of the variable that contains the dose
-unit. Must exist in the dataset mentioned in the \code{dataset_name} element.}
+unit to appear in the Details column of the hover box. Must exist in the dataset
+mentioned in the \code{dataset_name} element. Can be set to \code{NULL} for no unit.}
 \item{\code{show_dose_info}: Logical indicating whether or not to show dose level and
 unit in the Details column of the hover box.}
 }

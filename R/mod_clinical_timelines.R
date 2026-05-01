@@ -162,6 +162,12 @@ mod_clinical_timelines_server <- function(module_id,
   checkmate::assert_list(afmm_param, null.ok = TRUE, add = ac)
   checkmate::assert_character(color_palette, null.ok = TRUE, add = ac)
   checkmate::assert_character(names(color_palette), null.ok = TRUE, unique = TRUE, add = ac)
+  if (!is.null(drug_admin)) {
+    checkmate::assert_character(drug_admin$detail_var, null.ok = TRUE, add = ac)
+    checkmate::assert_character(drug_admin$dose_var, add = ac)
+    checkmate::assert_character(drug_admin$dose_unit_var, null.ok = TRUE, add = ac)
+    checkmate::assert_logical(drug_admin$show_dose_info, null.ok = TRUE, add = ac)
+  }
   checkmate::reportAssertions(ac)
   check_valid_color(color_palette)
 
@@ -404,15 +410,20 @@ mod_clinical_timelines_server <- function(module_id,
 #'     (e.g. exposure end dates). Must exist in the dataset mentioned in the
 #'     \code{dataset_name} element.}
 #'   \item{\code{detail_var}: Character name of the variable that contains the treatment
-#'     information to appear in the Details column of the hover box. Must exist in the dataset
-#'     mentioned in the \code{dataset_name} element.}
+#'     name to appear in the Details column of the hover box. Must exist in the dataset
+#'     mentioned in the \code{dataset_name} element. Can be set to \code{NULL} for no treatment
+#'     name. If \code{show_dose_info} is unspecified or set to true then dose information will
+#'     also be added to the Details column.}
 #'   \item{\code{label}: Free-text character label for the drug administration event.}
 #'   \item{\code{dose_var}: Character name of the variable that contains the dose level
-#'     information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
+#'     information to be used for indication of increased/decreased dose, and added to Details
+#'     column of the hover box. Must exist in the dataset mentioned in the \code{dataset_name}
+#'     element.}
 #'   \item{\code{dose_unit_var}: Character name of the variable that contains the dose
-#'     unit. Must exist in the dataset mentioned in the \code{dataset_name} element.}
+#'     unit to appear in the Details column of the hover box. Must exist in the dataset
+#'     mentioned in the \code{dataset_name} element. Can be set to \code{NULL} for no unit.}
 #'   \item{\code{show_dose_info}: Logical indicating whether or not to show dose level and
-#'   unit in the Details column of the hover box.}
+#'     unit in the Details column of the hover box.}
 #' }
 #'
 #' \cr
