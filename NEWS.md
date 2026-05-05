@@ -1,3 +1,8 @@
+# dv.clinlines 1.1.3-9002
+
+- Allow more flexibility in the Details column of the drug admin hover box.
+- Insert separation lines between columns in the hover box.
+
 # dv.clinlines 1.1.3-9001
 
 - [NOT USER-FACING] Transition away from magrittr and into the native R pipe.

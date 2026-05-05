@@ -156,7 +156,7 @@ test_that("set_basics() returns a list with fixed names", {
 
 
 # Tests for set_exp_intervals() ----
-test_that("set_exo_intervals() returns a data.frame with fixed column names", {
+test_that("set_exp_intervals() returns a data.frame with fixed column names", {
   df_exp <- set_exp_intervals(data_list, subjid_var = "USUBJID")
 
   expect_true("data.frame" %in% class(df_exp))
@@ -171,6 +171,28 @@ test_that("set_exo_intervals() returns a data.frame with fixed column names", {
       "group",
       "set"
   ))
+})
+
+test_that("set_exp_intervals() adds dose level and unit to detail_var by default", {
+  df_exp <- set_exp_intervals(data_list, subjid_var = "USUBJID")
+
+  expected_detail_var <- paste(data_list$exp$EXTRT, "-", data_list$exp$EXDOSE, data_list$exp$EXDOSU)
+  expected_detail_var <- gsub("NA", "", expected_detail_var)
+  expected_detail_var <- gsub("^ - ", "", expected_detail_var)
+
+  expect_equal(df_exp$detail_var, expected_detail_var)
+})
+
+test_that("set_exp_intervals() allows suppression of dose level and unit in detail_var", {
+  df_exp <- set_exp_intervals(
+    data_list,
+    mapping = c(default_drug_admin(), list(show_dose_info = FALSE)),
+    subjid_var = "USUBJID"
+  )
+
+  expected_detail_var <- ifelse(is.na(data_list$exp$EXTRT), "", data_list$exp$EXTRT)
+
+  expect_equal(df_exp$detail_var, expected_detail_var)
 })
 
 

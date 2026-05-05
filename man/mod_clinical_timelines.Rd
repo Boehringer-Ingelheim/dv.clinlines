@@ -155,27 +155,36 @@ the mapping list.
 
 \cr
 
-If not NULL, the \code{drug_admin} list must contain the following elements:
+If not NULL, the \code{drug_admin} list must contain the following elements (with the
+exception of \code{show_dose_info} being optional):
 \itemize{
 \item{\code{dataset_name}: Character name of the dataset that holds drug administration data
 (e.g. ex domain), as it is called in the datalist that is provided to the
 \pkg{modulemanager}.}
 \item{\code{trt_var}: Character name of the variable that contains the
-treatment name which must be present in the dataset mentioned in the
+treatment name. Must exist in the dataset mentioned in the
 \code{dataset_name} element.}
 \item{\code{start_var}: Character name of the variable that contains the start dates
-(e.g. exposure start dates) which must be present in the dataset mentioned in the
+(e.g. exposure start dates). Must exist in the dataset mentioned in the
 \code{dataset_name} element.}
 \item{\code{end_var}: Character name of the variable that contains the end dates
-(e.g. exposure end dates) which must be present in the dataset mentioned in the
+(e.g. exposure end dates). Must exist in the dataset mentioned in the
 \code{dataset_name} element.}
 \item{\code{detail_var}: Character name of the variable that contains the treatment
-information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
+name to appear in the Details column of the hover box. Must exist in the dataset
+mentioned in the \code{dataset_name} element. Can be set to \code{NULL} for no treatment
+name. If \code{show_dose_info} is unspecified or set to true then dose information will
+also be added to the Details column.}
 \item{\code{label}: Free-text character label for the drug administration event.}
-\item{\code{dose_var}: Character name of the variable that contains the dosis level
-information. Must exist in the dataset mentioned in the \code{dataset_name} element.}
-\item{\code{dose_unit_var}: Character name of the variable that contains the dosis
-unit. Must exist in the dataset mentioned in the \code{dataset_name} element.}
+\item{\code{dose_var}: Character name of the variable that contains the dose level
+information to be used for indication of increased/decreased dose, and added to Details
+column of the hover box. Must exist in the dataset mentioned in the \code{dataset_name}
+element.}
+\item{\code{dose_unit_var}: Character name of the variable that contains the dose
+unit to appear in the Details column of the hover box. Must exist in the dataset
+mentioned in the \code{dataset_name} element. Can be set to \code{NULL} for no unit.}
+\item{\code{show_dose_info}: Logical indicating whether or not to show dose level and
+unit in the Details column of the hover box.}
 }
 
 \cr
