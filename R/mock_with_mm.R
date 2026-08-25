@@ -101,6 +101,6 @@ mock_clinlines_with_mm_app <- function() {
   dv.manager::run_app(
     data = dataset_list,
     module_list = module_list,
-    filter_data = "adsl"
+    filter_dataset_name = "adsl"
   )
 }

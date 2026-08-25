@@ -1,3 +1,7 @@
+# dv.clinlines 1.1.3-9003
+
+- [NOT USER-FACING] Address dv.manager deprecation warning messages
+
 # dv.clinlines 1.1.3-9002
 
 - Allow more flexibility in the Details column of the drug admin hover box.
