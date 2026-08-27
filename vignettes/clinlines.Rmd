@@ -251,7 +251,7 @@ Use `run_app()` from the {dv.manager} package to launch the application with the
 dv.manager::run_app(
   data = list("my_data" = data_list),
   module_list = module_list,
-  filter_data = "adsl"
+  filter_dataset_name = "adsl"
 )
 ```
 
@@ -329,6 +329,6 @@ module_list <- list(
 dv.manager::run_app(
   data = list("my_data" = data_list),
   module_list = module_list,
-  filter_data = "adsl"
+  filter_dataset_name = "adsl"
 )
 ```

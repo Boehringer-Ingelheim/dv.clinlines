@@ -70,5 +70,5 @@ clinlines <- dv.clinlines::mod_clinical_timelines(
 dv.manager::run_app(
   data = list("my_data" = data_list),
   module_list = list("Clinical Timelines" = clinlines),
-  filter_data = "adsl"
+  filter_dataset_name = "adsl"
 )

@@ -512,13 +512,16 @@ mod_clinical_timelines <- function(module_id,
 
       dv.clinlines::mod_clinical_timelines_server(
         module_id = module_id,
-        # afmm$dataset_metadata$name holds the name of the currently selected set of dataset (dv.manager)
-        data_name = afmm$dataset_metadata$name,
+        data_name = shiny::reactive(
+          # this holds the name of the currently selected set of dataset (dv.manager)
+          attr(afmm[["unfiltered_dataset_list_with_filter_info"]]()[["unfiltered_dataset_list"]],
+               "dataset_list_name")
+        ),
         dataset_list = shiny::reactive({
-          checkmate::assert_subset(basic_info$subject_level_dataset_name, choices = names(afmm$filtered_dataset()))
-          checkmate::assert_subset(names(mapping), choices = names(afmm$filtered_dataset()))
-          checkmate::assert_subset(drug_admin$dataset_name, choices = names(afmm$filtered_dataset()))
-          afmm$filtered_dataset()[needed_datasets]
+          checkmate::assert_subset(basic_info$subject_level_dataset_name, choices = names(afmm$filtered_dataset_list()))
+          checkmate::assert_subset(names(mapping), choices = names(afmm$filtered_dataset_list()))
+          checkmate::assert_subset(drug_admin$dataset_name, choices = names(afmm$filtered_dataset_list()))
+          afmm$filtered_dataset_list()[needed_datasets]
         }),
         basic_info = basic_info,
         mapping = mapping,
