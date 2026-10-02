@@ -1,18 +1,9 @@
-# dv.clinlines 1.1.3-9003
+# dv.clinlines 1.1.4
 
 - [NOT USER-FACING] Address dv.manager deprecation warning messages
-
-# dv.clinlines 1.1.3-9002
-
 - Allow more flexibility in the Details column of the drug admin hover box.
 - Insert separation lines between columns in the hover box.
-
-# dv.clinlines 1.1.3-9001
-
 - [NOT USER-FACING] Transition away from magrittr and into the native R pipe.
-
-# dv.clinlines 1.1.3-9000
-
 - [NOT USER-FACING] Update communication with papo test snippet
 
 # dv.clinlines 1.1.3
