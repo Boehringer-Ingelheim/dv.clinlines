@@ -1,0 +1,126 @@
+# Adding custom adverse event filters
+
+{dv.clinlines} offers optional local filters for adverse event data
+which will be added to the bottom of the sidebar. The following filters
+are available:
+
+- `serious_ae_var`: Offers the possibility to filter adverse events to
+  show only serious/non-serious adverse events.
+- `soc_var`: Offers the possibility to filter adverse events by System
+  Organ Class.
+- `pref_term_var`: Offers the possibility to filter adverse events by
+  Preferred Term.
+- `drug_rel_ae_var`: Offers the possibility to filter adverse events to
+  show only drug related/non drug related adverse events.
+
+Activate local filters by adding their names through a list to the
+`filter` parameter of the
+[`mod_clinical_timelines()`](../reference/mod_clinical_timelines.md)
+call. Use `NULL` (the default) to turn all filters down. To specify one
+or multiple local adverse event filters, you need to provide a list with
+the following elements:
+
+- `dataset_name`: Character name of the adverse events dataset of your
+  loaded data list. Must be a single value. (Mandatory.)
+- `label`: Character value which is exactly the same as the name for the
+  adverse events event defined in the `mapping` parameter of
+  [`mod_clinical_timelines()`](../reference/mod_clinical_timelines.md).
+- `serious_ae_var`: Character name of the variable that holds Y/N flags
+  for serious adverse events. Must be a single value.
+- `soc_var`: Character name of the variable that holds system organ
+  classes. Must be a single value.
+- `pref_term_var`: Character name of the variable that holds preferred
+  terms. Must be a single value.
+- `drug_rel_ae_var`: Character name of the variable that holds Y/N flags
+  for causality. Must be a single value.
+
+Wrap this list with another list. The inner list must be named
+`ae_filter`. The outer list should be assigned to the `filter` parameter
+of [`mod_clinical_timelines()`](../reference/mod_clinical_timelines.md).
+
+Find an example of the code structure below:
+
+``` r
+
+# To deactivate local filters
+filter <- NULL
+
+# To activate all local adverse event filters
+filter <- list(
+  ae_filter = list(
+    dataset_name = "adae", # mandatory - as defined in the data list
+    label = "Adverse Events", # mandatory - as defined in the mapping parameter
+    soc_var = "AESOC",
+    serious_ae_var = "AESER",
+    pref_term_var = "AEDECOD",
+    drug_rel_ae_var = "AEREL"
+  )
+)
+```
+
+For multiple filters, filtering will be performed using AND condition.\
+\
+The code below shows a module list containing a Clinical Timelines
+module with only three local adverse event filters:
+
+``` r
+
+module_list <- list(
+  "Clinical Timelines" = mod_clinical_timelines(
+    module_id = "mod1",
+    basic_info = list(
+      subject_level_dataset_name = "adsl",
+      trt_start_var = "TRTSDT",
+      trt_end_var = "TRTEDT",
+      icf_date_var = "RFICDT"
+    ),
+    mapping = list(
+      adsl = list(
+        "Treatment Start" = list(
+          start_dt_var = "TRTSDT",
+          end_dt_var = NULL,
+          start_dy_var = NULL,
+          end_dy_var = NULL,
+          detail_var = NULL
+        ),
+        "Treatment End" = list(
+          start_dt_var = "TRTEDT",
+          end_dt_var = NULL,
+          start_dy_var = NULL,
+          end_dy_var = NULL,
+          detail_var = NULL
+        )
+      ),
+      adae = list(
+        "Adverse Events" = list(
+          start_dt_var = "AESTDTC",
+          end_dt_var = "AEENDTC",
+          start_dy_var = NULL,
+          end_dy_var = NULL,
+          detail_var = "AEDECOD"
+        )
+      )
+    ),
+    drug_admin = list(
+      dataset_name = "exp",
+      trt_var = "EXTRT",
+      start_var = "EXSTDTC",
+      end_var = "EXENDTC",
+      detail_var = "EXTRT",
+      label = "Drug Administration",
+      dose_var = "EXDOSE",
+      dose_unit_var = "EXDOSU"
+    ),
+    filter = list(
+      ae_filter = list(
+        dataset_name = "adae",
+        label = "Adverse Events",
+        soc_var = "AESOC",
+        serious_ae_var = "AESER",
+        drug_rel_ae_var = "AEREL"
+        # Note: The pref_term_var filter is not specified in this example.
+      )
+    )
+  )
+)
+```

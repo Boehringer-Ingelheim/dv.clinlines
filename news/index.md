@@ -1,0 +1,124 @@
+# Changelog
+
+## dv.clinlines 1.1.4
+
+- \[NOT USER-FACING\] Address dv.manager deprecation warning messages
+- Allow more flexibility in the Details column of the drug admin hover
+  box.
+- Insert separation lines between columns in the hover box.
+- \[NOT USER-FACING\] Transition away from magrittr and into the native
+  R pipe.
+- \[NOT USER-FACING\] Update communication with papo test snippet
+
+## dv.clinlines 1.1.3
+
+- Ensure compatibility of buttons and tooltip with {dv.manager}’s update
+  to bootstrap 5.
+- Align QC report with updated template.
+
+## dv.clinlines 1.1.2
+
+- Increase ggplot2 dependency version to 3.5.0 to rely on “new” guide
+  system.
+- Fix tooltip in case `drug_admin` is set to `NULL`.
+- Enhance error messages for incorrectly specified dataset names.
+- Ensure compatibility with the modifications in {ggplot2} version
+  4.0.0.
+- Add metadata to module output so that dataset-based filters from
+  **dv.manager** are updated accordingly.
+
+## dv.clinlines 1.1.1
+
+- Some minor maintenance updates and renaming of mock app.
+- Small bugfix: Removing hard coded drug_admin label in code.
+
+## dv.clinlines 1.1.0
+
+- Display drug administration information in different colors, depending
+  on the treatment name.
+- Allow for customized color palettes.
+- Use dv.manager’s switch2mod() instead of deprecated switch2()
+  function.
+- Export mock app.
+- Fix error occurring in case only timepoints (i.e., no intervals) are
+  specified.
+
+## dv.clinlines 1.0.4
+
+- Adapt basic_info, filter, and drug_admin parameter to adhere module
+  standard
+
+## dv.clinlines 1.0.3
+
+- Initial release of dv.clinlines package to GitHub.
+
+## dv.clinlines 1.0.2
+
+- Catch error that occurred in case of empty datasets.
+- Improve usage of default values for plot settings.
+- Improve checks for date variable types.
+- Add informative error message in case of the plot being to big.
+
+## dv.clinlines 1.0.1
+
+- Fix issue with local filters getting reset unintentionally (occurred
+  especially in combination with dv.filter \>= 2.1.0)
+- Solve incompatibility with dplyr \>= 1.1.0 (note: **dv.clinlines** now
+  requires dplyr \>= 1.1.0 due to updates within the
+  [`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case_when.html)
+  function)
+- Update code to not use deprecated `afmm$dataset_name` parameter but
+  `afmm$dataset_metadata$name` from **dv.manager** \>= 2.1.0
+- Standardize module handling by renaming the subject identifier and
+  using the receiver module’s ID for inter-module communication
+- Introduce the possibility to set default plot settings
+- Structure plot legend vertically instead of horizontally to avoid
+  cropping
+
+## dv.clinlines 1.0.0
+
+- This is the first productive release of clinical timelines
+- Primary interface:
+  [`mod_clinical_timelines()`](../reference/mod_clinical_timelines.md)
+
+## dv.clinlines 0.0.4
+
+- Refactor package
+- Restructure wrapper
+- Generalize between-module communication (not only to patient profile
+  modules)
+- Adaptions for better orientation
+  - Add plot title, legend title, and x-axis label for better
+    orientation
+  - Remove participant dropdown (“Subject View”) and rearrange sidebar
+  - Impute missing start and end dates by informed consent dates and end
+    of participation dates or today for ongoing
+  - Make drug administration event optional
+
+## dv.clinlines 0.0.3
+
+- Remove detail view completely
+- Enable communication with a patient profile module when used within
+  **dv.manager**
+- Shorten hover box to display only relevant data points
+- Fix a variety of bugs
+- Refine error messages that are thrown when setting up an app
+- Prepare code export functionality
+
+## dv.clinlines 0.0.2
+
+- Improve interaction with **dv.manager**/ **dv.filter**:
+  - Prevent module from being restarted when global filters in the
+    module manager are used.
+  - Ensure controls/filters are resetted when a dataset in module
+    manager is changed.
+  - Ensure that all controls/filters are being restored properly when
+    bookmarking happened.
+- Add `ms` parameter to
+  [`mod_clinical_timelines()`](../reference/mod_clinical_timelines.md)
+  so that users can specify the amount of time that passes by before the
+  plot on the main view re-renders.
+
+## dv.clinlines 0.0.1
+
+- Change package name from **clinicaltimelines** to **dv.clinlines**.
