@@ -31,10 +31,10 @@ get_filter_status <- function(all_filters, chosen_filters) {
 #' @keywords internal
 set_pts <- function(status_filters, soc, prepped_data, filter) {
   if (status_filters[["soc"]] && !is.null(soc)) {
-    pt_choices <- prepped_data %>%
-      dplyr::filter(.data[[filter$soc_var]] %in% soc) %>%
-      dplyr::select(tidyselect::all_of(filter$pref_term_var)) %>%
-      dplyr::distinct() %>%
+    pt_choices <- prepped_data |>
+      dplyr::filter(.data[[filter$soc_var]] %in% soc) |>
+      dplyr::select(tidyselect::all_of(filter$pref_term_var)) |>
+      dplyr::distinct() |>
       dplyr::arrange()
   } else {
     pt_choices <- sort(unique(prepped_data[[filter$pref_term_var]]))
@@ -61,7 +61,7 @@ filter_data <- function(data, status_filters, input_filters, filter) {
   # .data$set != info_ae$name ensures to also display non-AE data
   if (status_filters[["serious_ae"]]) {
     if (input_filters$serious_ae != "all") {
-      data <- data %>% dplyr::filter(
+      data <- data |> dplyr::filter(
         .data[[filter$ae_filter$serious_ae_var]] == input_filters$serious |
           .data$set != filter$ae_filter$dataset_name
       )
@@ -70,7 +70,7 @@ filter_data <- function(data, status_filters, input_filters, filter) {
 
   if (status_filters[["soc"]]) {
     if (!is.null(input_filters$soc)) {
-      data <- data %>% dplyr::filter(
+      data <- data |> dplyr::filter(
         .data[[filter$ae_filter$soc_var]] %in% input_filters$soc |
           .data$set != filter$ae_filter$dataset_name
       )
@@ -79,7 +79,7 @@ filter_data <- function(data, status_filters, input_filters, filter) {
 
   if (status_filters[["pref_term"]]) {
     if (!is.null(input_filters$pref_term)) {
-      data <- data %>% dplyr::filter(
+      data <- data |> dplyr::filter(
         .data[[filter$ae_filter$pref_term_var]] %in% input_filters$pref_term |
           .data$set != filter$ae_filter$dataset_name
       )
@@ -88,7 +88,7 @@ filter_data <- function(data, status_filters, input_filters, filter) {
 
   if (status_filters[["drug_rel_ae"]]) {
     if (input_filters$drug_rel_ae != "all") {
-      data <- data %>% dplyr::filter(
+      data <- data |> dplyr::filter(
         .data[[filter$ae_filter$drug_rel_ae_var]] == input_filters$drug_rel_ae |
           .data$set != filter$ae_filter$dataset_name
       )

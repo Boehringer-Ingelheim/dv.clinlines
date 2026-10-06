@@ -4,7 +4,7 @@ chosen <- as.list(paste0(all[1:3], "_var"))
 outcome <- get_filter_status(all_filters = all, chosen_filters = chosen)
 
 test_that(
-  "get_filter_status() returns a logical vector that indicates which local filters where defined" %>%
+  "get_filter_status() returns a logical vector that indicates which local filters where defined" |>
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     expect_type(outcome, "logical")
@@ -24,7 +24,7 @@ data <- prep_data(add_ids(prep_dummy_data()), filter = filter)
 socs <- unique(data[["AESOC"]])
 
 test_that(
-  "set_pts() returns a character vector of preferred terms available in the data" %>%
+  "set_pts() returns a character vector of preferred terms available in the data" |>
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     soc <- socs[3]
@@ -36,7 +36,7 @@ test_that(
 )
 
 test_that(
-  "set_pts() provides only PT's of the specified SOC('s)" %>%
+  "set_pts() provides only PT's of the specified SOC('s)" |>
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     soc <- socs[c(5, 7)]
@@ -48,7 +48,7 @@ test_that(
 )
 
 test_that(
-  "set_pts() returns all available PT's if no SOC is specified" %>%
+  "set_pts() returns all available PT's if no SOC is specified" |>
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     pts <- set_pts(status, soc = NULL, data, filter$ae_filters)
@@ -66,7 +66,7 @@ data_list <- add_ids(prep_dummy_data())
 df <- prep_data(data_list)
 
 test_that(
-  "filter_data() returns filtered AE data according to the parameters" %>%
+  "filter_data() returns filtered AE data according to the parameters" |>
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     # One filter
@@ -114,7 +114,7 @@ test_that(
 )
 
 test_that(
-  "filter_data() does not filter if no filters were set" %>%
+  "filter_data() does not filter if no filters were set" |>
     vdoc[["add_spec"]](specs$sidebar_specs$AE_filter),
   {
     # No filter
@@ -140,7 +140,7 @@ test_that(
 
 # Tests for check_filters() ----
 test_that(
-  "check_filters() throws an error when a non-existing filter is specified" %>%
+  "check_filters() throws an error when a non-existing filter is specified" |>
     vdoc[["add_spec"]](c(specs$app_creation_specs$errors_def)),
   {
     all <- c("serious_ae", "soc", "pref_term", "drug")

@@ -44,7 +44,7 @@ test_that("add_ids() uses unique IDs for each data frame", {
 prepped_df <- prep_data(data_list = data_list)
 
 test_that(
-  "prep_data() returns a data frame containing data from all events defined in the mapping parameter" %>%
+  "prep_data() returns a data frame containing data from all events defined in the mapping parameter" |>
     vdoc[["add_spec"]](specs$plot_specs$events),
   {
     prepped_w_filter <- prep_data(
@@ -98,7 +98,7 @@ test_that("prep_data() throws an error if local filter parameters are not set pr
 })
 
 test_that(
-  "prep_data() throws an error if specified data is not available" %>%
+  "prep_data() throws an error if specified data is not available" |>
     vdoc[["add_spec"]](specs$app_creation_specs$errors_def),
   {
     wrong <- default_mapping()
@@ -109,7 +109,7 @@ test_that(
 )
 
 test_that(
-  "prep_data() does not drop data values related to AE local filters for ongoing data during data preparation steps" %>%
+  "prep_data() does not drop data values related to AE local filters for ongoing data during data preparation steps" |>
     vdoc[["add_spec"]](specs$sidebar_specs$event_type_filter),
   {
     prepped_w_filter <- prep_data(
@@ -124,10 +124,10 @@ test_that(
       )
     )
 
-    expected <- data_list$adae %>%
-      dplyr::filter(!is.na(TRTSDT)) %>%
+    expected <- data_list$adae |>
+      dplyr::filter(!is.na(TRTSDT)) |>
       dplyr::select(dplyr::all_of(c(subject_id = "USUBJID", "AESOC", "AESER")))
-    to_check <- dplyr::filter(prepped_w_filter, group == "Adverse Events") %>%
+    to_check <- dplyr::filter(prepped_w_filter, group == "Adverse Events") |>
       dplyr::select(dplyr::all_of(c("subject_id", "AESOC", "AESER")))
 
     expect_equal(to_check, expected, ignore_attr = TRUE)
@@ -156,7 +156,7 @@ test_that("set_basics() returns a list with fixed names", {
 
 
 # Tests for set_exp_intervals() ----
-test_that("set_exo_intervals() returns a data.frame with fixed column names", {
+test_that("set_exp_intervals() returns a data.frame with fixed column names", {
   df_exp <- set_exp_intervals(data_list, subjid_var = "USUBJID")
 
   expect_true("data.frame" %in% class(df_exp))
@@ -171,6 +171,28 @@ test_that("set_exo_intervals() returns a data.frame with fixed column names", {
       "group",
       "set"
   ))
+})
+
+test_that("set_exp_intervals() adds dose level and unit to detail_var by default", {
+  df_exp <- set_exp_intervals(data_list, subjid_var = "USUBJID")
+
+  expected_detail_var <- paste(data_list$exp$EXTRT, "-", data_list$exp$EXDOSE, data_list$exp$EXDOSU)
+  expected_detail_var <- gsub("NA", "", expected_detail_var)
+  expected_detail_var <- gsub("^ - ", "", expected_detail_var)
+
+  expect_equal(df_exp$detail_var, expected_detail_var)
+})
+
+test_that("set_exp_intervals() allows suppression of dose level and unit in detail_var", {
+  df_exp <- set_exp_intervals(
+    data_list,
+    mapping = c(default_drug_admin(), list(show_dose_info = FALSE)),
+    subjid_var = "USUBJID"
+  )
+
+  expected_detail_var <- ifelse(is.na(data_list$exp$EXTRT), "", data_list$exp$EXTRT)
+
+  expect_equal(df_exp$detail_var, expected_detail_var)
 })
 
 
@@ -243,7 +265,7 @@ test_that("complete_events() names output columns correctly", {
 test_that(
   "complete_events() replaces missing start values by informed consent dates",
   {
-    data <- combined_data %>% dplyr::filter(is.na(start_dt_var), !is.na(earliest), set == "adcm")
+    data <- combined_data |> dplyr::filter(is.na(start_dt_var), !is.na(earliest), set == "adcm")
     out <- complete_events(data, trt_start = "TRTSDT", trt_end = "TRTEDT")
 
     expect_equal(out$start_dt_var, out$earliest)
@@ -251,9 +273,9 @@ test_that(
 )
 
 test_that("complete_events() replaces missing end dates", {
-  data <- combined_data %>%
-    dplyr::filter(is.na(end_dt_var), set == "adae") %>%
-    dplyr::slice(1:20) %>%
+  data <- combined_data |>
+    dplyr::filter(is.na(end_dt_var), set == "adae") |>
+    dplyr::slice(1:20) |>
     dplyr::mutate(TRTEDT = dplyr::if_else(subject_id == "01-701-1111", as.POSIXct(NA_real_), TRTEDT))
   out <- complete_events(data, trt_start = "TRTSDT", trt_end = "TRTEDT")
   expected <- data$TRTEDT
@@ -268,17 +290,23 @@ test_that("complete_events() replaces missing end dates", {
 })
 
 test_that("complete_events() calculates study relative dates, if missing", {
-  data <- combined_data %>%
-    dplyr::filter(set %in% c("adsl", "adae")) %>%
+  data <- combined_data |>
+    dplyr::filter(set %in% c("adsl", "adae")) |>
     dplyr::slice_sample(n = 20)
   out <- complete_events(data, trt_start = "TRTSDT", trt_end = "TRTEDT")
   expect_true(any(c("start_dy_var", "end_dy_var") %in% names(out)))
 
   # check that they will not be touched in case they are available
-  data <- combined_data %>%
-    dplyr::filter(set %in% c("adsl", "adae"), !is.na(TRTSDT)) %>%
-    dplyr::slice_sample(n = 20) %>%
-    dplyr::mutate(start_dy_var = as.double(seq_len(nrow(.))), end_dy_var = as.double(rev(seq_len(nrow(.)))))
+  data <- combined_data |>
+    dplyr::filter(set %in% c("adsl", "adae"), !is.na(TRTSDT)) |>
+    dplyr::slice_sample(n = 20)
+  data <- dplyr::mutate(
+    data,
+    start_dy_var = as.double(seq_len(nrow(data))),
+    end_dy_var   = as.double(rev(seq_len(nrow(data))))
+  )
+
+
   out <- complete_events(data, trt_start = "TRTSDT", trt_end = "TRTEDT")
 
   expect_equal(out$start_dy_var, data$start_dy_var)
@@ -382,16 +410,16 @@ test_that(
 # Tests for check_*() functions ----
 df <- data.frame(id = 1, char_col = "a", date_col = Sys.Date())
 
-test_that("check_*() throws an error when columns names do not exist" %>%
+test_that("check_*() throws an error when columns names do not exist" |>
   vdoc[["add_spec"]](specs$app_creation_specs$errors_def), {
   expect_error(check_names(df, var_names = c("char_col", "not_existing"), subjid_var = "id"))
 })
-test_that("check_*() throws an error when date columns are not of type date" %>%
+test_that("check_*() throws an error when date columns are not of type date" |>
   vdoc[["add_spec"]](specs$app_creation_specs$errors_data), {
   expect_error(check_date_type(df, var_names = c("char_col", "date_col")))
 })
 
-test_that("check_*() produces a warning when it can’t find the receiver module" %>%
+test_that("check_*() produces a warning when it can’t find the receiver module" |>
   vdoc[["add_spec"]](c(specs$app_creation_specs$errors_def, specs$integration_specs$jumping)), {
   expect_warning(check_receiver("mod3", c("mod1", "mod2")))
 })

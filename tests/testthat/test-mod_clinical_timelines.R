@@ -42,7 +42,7 @@ plot_click_li <- list(
   log = list(x = NULL, y = NULL)
 )
 
-test_that("mod_main_view_server() returns the subject ID the user clicked on" %>%
+test_that("mod_main_view_server() returns the subject ID the user clicked on" |>
   vdoc[["add_spec"]](specs$integration_specs$jumping), {
   shiny::testServer(
     server_func,
@@ -105,7 +105,7 @@ test_that(
 # Tests using mm_app
 app_dir <- "./apps/mm_app"
 
-test_that("local filters are resetted (only) after dataset switch" %>%
+test_that("local filters are resetted (only) after dataset switch" |>
   vdoc[["add_spec"]](specs$integration_specs$reset_filters), {
   app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_reset_local_filters")
 
@@ -150,7 +150,7 @@ test_that("local filters are resetted (only) after dataset switch" %>%
 })
 
 test_that(
-  "the default values for plot settings are displayed as specified at app launch" %>%
+  "the default values for plot settings are displayed as specified at app launch" |>
     vdoc[["add_spec"]](c(
       specs$default_values$plot_settings_x_param,
       specs$default_values$plot_settings_start_day,
@@ -173,7 +173,7 @@ test_that(
   }
 )
 
-test_that("informative messages are visible in case a plot cannot be displayed" %>%
+test_that("informative messages are visible in case a plot cannot be displayed" |>
   vdoc[["add_spec"]](specs$plot_specs$errors), {
   app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_reset_local_filters")
 
@@ -200,7 +200,7 @@ test_that("informative messages are visible in case a plot cannot be displayed" 
   app$stop()
 })
 
-test_that("bookmarking works as intended" %>% vdoc[["add_spec"]](specs$integration_specs$bookmarking), {
+test_that("bookmarking works as intended" |> vdoc[["add_spec"]](specs$integration_specs$bookmarking), {
   # Original app
   app_dir <- "./apps/bmk_app"
   app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_bookmarking")
@@ -228,7 +228,7 @@ test_that("bookmarking works as intended" %>% vdoc[["add_spec"]](specs$integrati
   app$stop()
 })
 
-test_that("an informative error message gets displayed in case of the plot being too big" %>%
+test_that("an informative error message gets displayed in case of the plot being too big" |>
   vdoc[["add_spec"]](specs$plot_specs$errors), {
   app_dir <- "./apps/large_app"
   app <- shinytest2::AppDriver$new(app_dir = app_dir, name = "test_error_big_plot")
