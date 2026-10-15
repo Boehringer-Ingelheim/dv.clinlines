@@ -231,21 +231,24 @@ mod_main_view_server <- function(module_id, initial_data, changed,
       })
 
       # Take over bookmarked values to cache for later usage
+      bookmark_filter_event <- NULL
       shiny::onRestore(function(state) {
         cache$date_day_range <<- state$values$date_day_range
+        bookmark_filter_event <<- state$input$filter_event
       })
 
-      # Restore event groups after bookmarking
-      shiny::onRestored(function(state) {
-        event_choices <- names(colors_groups())
-        event_selected <- if (is.null(state$input$filter_event)) {
-          event_choices
-        } else {
-          state$input$filter_event
-        }
-
-        shinyWidgets::updatePickerInput(session, "filter_event", choices = event_choices, selected = event_selected)
-      })
+      # TODO: quick fix for bookmarking, refactoring needed!
+     shiny::observeEvent(colors_groups(), {
+       shiny::req(!is.null(bookmark_filter_event))
+       event_choices <- names(colors_groups())
+       event_selected <- if (is.null(bookmark_filter_event)) {
+         event_choices
+       } else {
+         bookmark_filter_event
+       }
+       shinyWidgets::updatePickerInput(session, "filter_event", choices = event_choices, selected = event_selected)
+       bookmark_filter_event <<- NULL
+     })
 
       shiny::observe({
         # Exclude inputs not needed for bookmarking
