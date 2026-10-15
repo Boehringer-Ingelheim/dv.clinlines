@@ -1,8 +1,8 @@
 # Quality Control
 
-### ✅ dv.clinlines 1.1.4
+### ✅ dv.clinlines 1.1.5
 
-Date: 2026-Oct-06 09:20:28
+Date: 2026-Oct-15 14:48:53
 
 This document provides the Quality Control (QC) report for the R package
 to confirm that it fulfills the criteria required for a “released”
@@ -59,7 +59,7 @@ test execution.
     #>  collate  en_US.UTF-8
     #>  ctype    en_US.UTF-8
     #>  tz       Etc/UTC
-    #>  date     2026-10-06
+    #>  date     2026-10-15
     #>  pandoc   3.9 @ /usr/bin/ (via rmarkdown)
     #>  quarto   1.8.27 @ /usr/local/bin/quarto
     #> 
@@ -104,7 +104,7 @@ test execution.
     #>  xfun          0.54    2025-10-30 [2] RSPM
     #>  yaml          2.3.11  2025-11-28 [2] RSPM
     #> 
-    #>  [1] /tmp/Rtmp1whkmZ/temp_libpath20b7e8a016f
+    #>  [1] /tmp/RtmpJgEviB/temp_libpath20b490a0e88
     #>  [2] /usr/local/lib/R/site-library
     #>  [3] /usr/local/lib/R/library
     #> 
