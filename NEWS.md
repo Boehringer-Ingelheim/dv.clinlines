@@ -1,4 +1,4 @@
-# dv.clinlines 1.1.4-9000
+# dv.clinlines 1.1.5
 
 - bugfix: Fix bookmarking
 
