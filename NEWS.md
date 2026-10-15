@@ -1,3 +1,7 @@
+# dv.clinlines 1.1.4-9000
+
+- bugfix: Fix bookmarking
+
 # dv.clinlines 1.1.4
 
 - [NOT USER-FACING] Address dv.manager deprecation warning messages
