@@ -1,7 +1,7 @@
-# {dv.clinlines} and {dv.manager}
+# dv.clinlines and dv.manager
 
 DaVinci’s Clinical Timelines module is intended to be used as part of an
-application created by means of DaVinci’s {dv.manager} package.\
+application created by means of DaVinci’s {dv.manager} package.  
 If not already done, install {dv.manager} following the instructions in
 its package documentation.
 
@@ -43,7 +43,6 @@ For our example, we just put the datasets mentioned above into a named
 list:
 
 ``` r
-
 data_list <- list(
   adsl = pharmaverseadam::adsl,
   adae = pharmaverseadam::adae,
@@ -66,7 +65,6 @@ Note that we drop adverse events that have missing start dates for
 simplification purposes.
 
 ``` r
-
 data_list$adsl <- data_list$adsl |>
   dplyr::mutate(
     TRTSDT = lubridate::ymd_hm(TRTSDT, truncated = 2),
@@ -243,7 +241,6 @@ An illustrative definition of a module list (containing only a Clinical
 Timelines module with only mandatory parameters) is shown below:
 
 ``` r
-
 module_list <- list(
   "Clinical Timelines" = dv.clinlines::mod_clinical_timelines(
     module_id = "mod1",
@@ -299,12 +296,11 @@ the lists for `basic_info`, `mapping`, and `drug_admin`. These functions
 take the variable names as input parameters and return a list that can
 directly be used for the wrapper parameters. The intention is to reduce
 errors produced by typos or missing/wrongly named list elements. See
-their help pages for more detailed information on how they work.\
+their help pages for more detailed information on how they work.  
 For a demonstration, we defined the same module as above again. But this
 time, we use the helper functions instead typing the lists by our own:
 
 ``` r
-
 library(dv.clinlines)
 
 module_list <- list(
@@ -358,7 +354,6 @@ with the specified modules. Note that the loaded data list from above
 had to be wrapped itself in a named list.
 
 ``` r
-
 dv.manager::run_app(
   data = list("my_data" = data_list),
   module_list = module_list,
@@ -372,7 +367,6 @@ For convenience, the code chunks scattered across this page are gathered
 together below:
 
 ``` r
-
 library(dv.clinlines)
 
 # Load data

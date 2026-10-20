@@ -14,11 +14,11 @@
 ## Citation
 
 Glauss I, Knizia J, Matthias K (2026). *dv.clinlines: DaVinci's Clinical
-Timelines*. R package version 1.1.5.
+Timelines*. R package version 1.1.6.
 
     @Manual{,
       title = {dv.clinlines: DaVinci's Clinical Timelines},
       author = {Isabel Glauss and Jessica Knizia and Korbinian Matthias},
       year = {2026},
-      note = {R package version 1.1.5},
+      note = {R package version 1.1.6},
     }

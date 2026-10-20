@@ -1,18 +1,21 @@
 # Changelog
 
+## dv.clinlines 1.1.6
+
+- Maintenance: Adapt package to new behavior of {shinytest}.
+
 ## dv.clinlines 1.1.5
 
 - bugfix: Fix bookmarking
 
 ## dv.clinlines 1.1.4
 
-- \[NOT USER-FACING\] Address dv.manager deprecation warning messages
+- Address dv.manager deprecation warning messages
 - Allow more flexibility in the Details column of the drug admin hover
   box.
 - Insert separation lines between columns in the hover box.
-- \[NOT USER-FACING\] Transition away from magrittr and into the native
-  R pipe.
-- \[NOT USER-FACING\] Update communication with papo test snippet
+- Transition away from magrittr and into the native R pipe.
+- Update communication with papo test snippet
 
 ## dv.clinlines 1.1.3
 
@@ -69,7 +72,7 @@
   especially in combination with dv.filter \>= 2.1.0)
 - Solve incompatibility with dplyr \>= 1.1.0 (note: **dv.clinlines** now
   requires dplyr \>= 1.1.0 due to updates within the
-  [`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case_when.html)
+  [`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case-and-replace-when.html)
   function)
 - Update code to not use deprecated `afmm$dataset_name` parameter but
   `afmm$dataset_metadata$name` from **dv.manager** \>= 2.1.0

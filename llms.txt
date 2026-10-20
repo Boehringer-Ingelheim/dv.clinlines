@@ -8,10 +8,10 @@ as needed. Periods of drug administration are displayed in a special
 way, indicating dose changes. The module offers an overview of events of
 all subjects.
 
-![](reference/figures/clin-tl_main_view.PNG)\
-\
-For adverse event data, supplementary local filters can be added.\
-\
+![dv.clinlines](reference/figures/clin-tl_main_view.PNG)  
+  
+For adverse event data, supplementary local filters can be added.  
+  
 The module is prepared to be used in combination with DaVinci’s
 {dv.manager} package and supports its bookmarking functionality. It also
 allows to enable communication with other DaVinci modules for drilling
@@ -24,7 +24,6 @@ Feel free to copy the following code chunk to install the latest version
 of {dv.clinlines}.
 
 ``` r
-
 if (!require("remotes")) install.packages("remotes")
 remotes::install_github("Boehringer-Ingelheim/dv.clinlines")
 ```
@@ -35,7 +34,6 @@ remotes::install_github("Boehringer-Ingelheim/dv.clinlines")
 data from the {pharmaverseadam} R package for demonstration purposes:
 
 ``` r
-
 dv.clinlines::mock_clinical_timelines_app()
 ```
 
@@ -51,7 +49,6 @@ information on how to use {dv.clinlines} with {dv.manager}. Usage of
 helper and default functions are also explained there.
 
 ``` r
-
 module_list <- list(
   "Clinical Timelines" = dv.clinlines::mod_clinical_timelines(
     module_id = "mod1",
@@ -158,7 +155,7 @@ module_list <- list(
 ### All vignettes
 
 - [Adding custom adverse event filters](ae-filter.md):
-- [{dv.clinlines} and {dv.manager}](clinlines.md):
+- [dv.clinlines and dv.manager](clinlines.md):
 - [Communication with DaVinci modules](communication.md):
 - [Data requirements](data-requirements.md):
 - [Quality Control](qc.md):

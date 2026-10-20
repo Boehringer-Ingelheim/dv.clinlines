@@ -51,7 +51,7 @@ The list provided to `mapping` must follow a strict hierarchy. It must
 contain one entry per dataset/domain that serves as basis for the
 events. These entries need to be named according to the names of the
 datalist that is provided to the modulemanager. The entries by oneself
-must again be lists.\
+must again be lists.  
 These second level lists contain the variable names that are needed to
 plot the events, gathered in yet another lists, which are named
 according to the labels that shall be assigned to each event, and that
@@ -87,14 +87,14 @@ The structure of the `mapping` parameters for one single event is
 mentioned below. It is possible to define multiple events for one
 dataset, and multiple datasets in the mapping list.
 
-`mapping = list(`\
-` ``<data name> = list`(\
-` `` ``<event label> = list`(\
-` `` `` ``start_dt_var = <variable name>,`\
-` `` `` ``end_dt_var = <variable name or NULL>,`\
-` `` `` ``start_dy_var = <variable name or NULL>,`\
-` `` `` ``end_dy_var = <variable name or NULL>,`\
-` `` `` ``detail_var = <variable name or NULL>`\
-` `` ``)`\
-` ``)`\
+`mapping = list(`  
+` ``<data name> = list`(  
+` `` ``<event label> = list`(  
+` `` `` ``start_dt_var = <variable name>,`  
+` `` `` ``end_dt_var = <variable name or NULL>,`  
+` `` `` ``start_dy_var = <variable name or NULL>,`  
+` `` `` ``end_dy_var = <variable name or NULL>,`  
+` `` `` ``detail_var = <variable name or NULL>`  
+` `` ``)`  
+` ``)`  
 `)`

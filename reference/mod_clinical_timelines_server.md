@@ -152,13 +152,13 @@ The `basic_info` list must contain the following elements:
   consent dates which must be present in the dataset mentioned in the
   `data` element.
 
-\
+  
 
 The list provided to `mapping` must follow a strict hierarchy. It must
 contain one entry per dataset/domain that serves as basis for the
 events. These entries need to be named according to the names of the
 datalist that is provided to the modulemanager. The entries by oneself
-must again be lists.\
+must again be lists.  
 These second level lists contain the variable names that are needed to
 plot the events, gathered in yet another lists, which are named
 according to the labels that shall be assigned to each event, and that
@@ -194,19 +194,19 @@ The structure of the `mapping` parameters for one single event is
 mentioned below. It is possible to define multiple events for one
 dataset, and multiple datasets in the mapping list.
 
-`mapping = list(`\
-` ``<data name> = list`(\
-` `` ``<event label> = list`(\
-` `` `` ``start_dt_var = <variable name>,`\
-` `` `` ``end_dt_var = <variable name or NULL>,`\
-` `` `` ``start_dy_var = <variable name or NULL>,`\
-` `` `` ``end_dy_var = <variable name or NULL>,`\
-` `` `` ``detail_var = <variable name or NULL>`\
-` `` ``)`\
-` ``)`\
+`mapping = list(`  
+` ``<data name> = list`(  
+` `` ``<event label> = list`(  
+` `` `` ``start_dt_var = <variable name>,`  
+` `` `` ``end_dt_var = <variable name or NULL>,`  
+` `` `` ``start_dy_var = <variable name or NULL>,`  
+` `` `` ``end_dy_var = <variable name or NULL>,`  
+` `` `` ``detail_var = <variable name or NULL>`  
+` `` ``)`  
+` ``)`  
 `)`
 
-\
+  
 
 If not NULL, the `drug_admin` list must contain the following elements
 (with the exception of `show_dose_info` being optional):
@@ -249,7 +249,7 @@ If not NULL, the `drug_admin` list must contain the following elements
 - `show_dose_info`: Logical indicating whether or not to show dose level
   and unit in the Details column of the hover box.
 
-\
+  
 
 If not `NULL`, `filter` defines local filters. So far, the following
 filters for adverse events are available:

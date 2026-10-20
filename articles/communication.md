@@ -27,7 +27,6 @@ Example code of a module list definition to turn the communication
 feature on between a Clinical Timelines and a Patient Profile module:
 
 ``` r
-
 module_list <- list(
   "Clinical Timelines" = mod_clinical_timelines(
     module_id = "mod1",

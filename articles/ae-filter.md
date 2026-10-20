@@ -41,7 +41,6 @@ of [`mod_clinical_timelines()`](../reference/mod_clinical_timelines.md).
 Find an example of the code structure below:
 
 ``` r
-
 # To deactivate local filters
 filter <- NULL
 
@@ -58,13 +57,12 @@ filter <- list(
 )
 ```
 
-For multiple filters, filtering will be performed using AND condition.\
-\
+For multiple filters, filtering will be performed using AND condition.  
+  
 The code below shows a module list containing a Clinical Timelines
 module with only three local adverse event filters:
 
 ``` r
-
 module_list <- list(
   "Clinical Timelines" = mod_clinical_timelines(
     module_id = "mod1",
