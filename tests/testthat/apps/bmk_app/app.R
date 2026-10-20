@@ -1,8 +1,6 @@
 use_load_all <- isTRUE(as.logical(Sys.getenv("TEST_LOCAL"))) | isTRUE(as.logical(Sys.getenv("TEST_PUSH")))
 if (use_load_all) {
   devtools::load_all("../../../../", quiet = TRUE)
-} else {
-  library(dv.clinlines)
 }
 
 bmk_ui <- function(id) {
@@ -10,7 +8,7 @@ bmk_ui <- function(id) {
 
   shiny::fluidPage(
     shiny::bookmarkButton(),
-    mod_clinical_timelines_UI(ns("mod"), list("serious_ae_var", "soc_var", "pref_term_var", "drug_rel_ae_var"))
+    dv.clinlines::mod_clinical_timelines_UI(ns("mod"), list("serious_ae_var", "soc_var", "pref_term_var", "drug_rel_ae_var"))
   )
 }
 
@@ -24,7 +22,7 @@ bmk_server <- function(input, output, session) {
 
   data_list <- shiny::reactive(dv.clinlines:::prep_dummy_data())
 
-  mod_clinical_timelines_server(
+  dv.clinlines::mod_clinical_timelines_server(
     "mod",
     data_name = shiny::reactive("dummyData"),
     data_list,
