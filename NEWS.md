@@ -1,3 +1,7 @@
+# dv.clinlines 1.1.5-9000
+
+- [NOT USER-FACING] Adapt shinytests2 apps to not use library call
+
 # dv.clinlines 1.1.5
 
 - bugfix: Fix bookmarking
