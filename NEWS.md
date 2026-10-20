@@ -1,14 +1,18 @@
+# dv.clinlines 1.1.6
+
+- Maintenance: Adapt package to new behavior of {shinytest}.
+
 # dv.clinlines 1.1.5
 
 - bugfix: Fix bookmarking
 
 # dv.clinlines 1.1.4
 
-- [NOT USER-FACING] Address dv.manager deprecation warning messages
+- Address dv.manager deprecation warning messages
 - Allow more flexibility in the Details column of the drug admin hover box.
 - Insert separation lines between columns in the hover box.
-- [NOT USER-FACING] Transition away from magrittr and into the native R pipe.
-- [NOT USER-FACING] Update communication with papo test snippet
+- Transition away from magrittr and into the native R pipe.
+- Update communication with papo test snippet
 
 # dv.clinlines 1.1.3
 

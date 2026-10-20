@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # dv.clinlines
 
 <!-- badges: start -->
@@ -14,7 +12,7 @@ Events to show can be chosen as needed. Periods of drug administration
 are displayed in a special way, indicating dose changes. The module
 offers an overview of events of all subjects.
 
-<img src="man/figures/clin-tl_main_view.PNG" width="100%" /> <br> <br>
+<img src="man/figures/clin-tl_main_view.PNG" width="100%" alt="dv.clinlines" /> <br> <br>
 For adverse event data, supplementary local filters can be added. <br>
 <br> The module is prepared to be used in combination with DaVinci's
 {dv.manager} package and supports its bookmarking functionality. It also
