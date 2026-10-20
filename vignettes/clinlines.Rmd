@@ -1,5 +1,5 @@
 ---
-title: "{dv.clinlines} and {dv.manager}"
+title: "dv.clinlines and dv.manager"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{dv.clinlines and dv.manager}
