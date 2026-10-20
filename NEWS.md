@@ -1,4 +1,4 @@
-# dv.clinlines 1.1.5-9000
+# dv.clinlines 1.1.6
 
 - [NOT USER-FACING] Adapt shinytests2 apps to not use library call
 
